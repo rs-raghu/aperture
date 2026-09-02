@@ -1,0 +1,46 @@
+import type { AppointmentRepository } from "../appointments/appointment.repository.js";
+import type { BodyCompositionRepository } from "../body-composition/body-composition.repository.js";
+import type { EquipmentRepository } from "../equipment/equipment.repository.js";
+import type { ExerciseSetRepository } from "../exercise-sets/exercise-set.repository.js";
+import type { ExerciseRepository } from "../exercises/exercise.repository.js";
+import type { HydrationEntryRepository } from "../hydration/hydration-entry.repository.js";
+import type { LaboratoryResultRepository } from "../laboratory-results/laboratory-result.repository.js";
+import type { HealthMeasurementRepository } from "../measurements/health-measurement.repository.js";
+import type { MedicationLogRepository, MedicationRepository } from "../medications/medication.repository.js";
+import type { NutritionEntryRepository } from "../nutrition/nutrition-entry.repository.js";
+import type { PersonalRecordRepository } from "../personal-records/personal-record.repository.js";
+import type { HealthProfileRepository } from "../profiles/health-profile.repository.js";
+import type { RecoveryEntryRepository } from "../recovery/recovery-entry.repository.js";
+import type { RunningActivityRepository } from "../running/running-activity.repository.js";
+import type { RunningSplitRepository } from "../running-splits/running-split.repository.js";
+import type { ActivityRouteRepository } from "../routes/activity-route.repository.js";
+import type { SleepRecordRepository } from "../sleep/sleep-record.repository.js";
+import type { SymptomEntryRepository } from "../symptoms/symptom-entry.repository.js";
+import type { VitalReadingRepository } from "../vitals/vital-reading.repository.js";
+import type { WorkoutPlanRepository } from "../workout-plans/workout-plan.repository.js";
+import type { WorkoutSessionRepository } from "../workouts/workout-session.repository.js";
+
+export interface HealthRepository {
+  readonly profiles: HealthProfileRepository;
+  readonly measurements: HealthMeasurementRepository;
+  readonly vitalReadings: VitalReadingRepository;
+  readonly bodyComposition: BodyCompositionRepository;
+  readonly sleepRecords: SleepRecordRepository;
+  readonly nutritionEntries: NutritionEntryRepository;
+  readonly hydrationEntries: HydrationEntryRepository;
+  readonly medications: MedicationRepository;
+  readonly medicationLogs: MedicationLogRepository;
+  readonly symptomEntries: SymptomEntryRepository;
+  readonly appointments: AppointmentRepository;
+  readonly laboratoryResults: LaboratoryResultRepository;
+  readonly exercises: ExerciseRepository;
+  readonly workoutPlans: WorkoutPlanRepository;
+  readonly workoutSessions: WorkoutSessionRepository;
+  readonly exerciseSets: ExerciseSetRepository;
+  readonly runningActivities: RunningActivityRepository;
+  readonly runningSplits: RunningSplitRepository;
+  readonly activityRoutes: ActivityRouteRepository;
+  readonly equipment: EquipmentRepository;
+  readonly personalRecords: PersonalRecordRepository;
+  readonly recoveryEntries: RecoveryEntryRepository;
+}
