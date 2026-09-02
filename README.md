@@ -2,11 +2,11 @@
 
 Aperture v2 is being built incrementally as a new, independent project.
 
-The Phase 1 Education skeleton and Phase 2 Health, Fitness, Workout, and Running skeleton now exist. They contain TypeScript entity shapes, repository and service interfaces, calculation declarations, public exports, and documentation. Neither feature is functional. There is no UI, API, authentication, database, runtime repository, validation, calculation implementation, medical guidance, or training guidance.
+The Phase 1 Education, Phase 2 Health, and Phase 3 Finance skeletons now exist. They contain TypeScript entity shapes, repository and service interfaces, calculation declarations, public exports, and documentation. None is functional. There is no UI, API, authentication, database, runtime repository, validation, calculation implementation, medical guidance, training guidance, or financial advice.
 
-Do not enter personal data. The existing Aperture project is retained separately and is not imported into this project.
+Do not enter personal or financial data. The existing Aperture project is retained separately and is not imported into this project.
 
-Phase 3 has not started, and no implementation phase is underway.
+Phase 4 has not started, and no implementation phase is underway.
 
 ## Structural verification
 
@@ -15,4 +15,4 @@ npm install
 npm run typecheck
 ```
 
-See [the phase plan](docs/PHASES.md), [the Education inventory](docs/EDUCATION_SKELETON.md), [the Health inventory](docs/HEALTH_SKELETON.md), and [architectural decisions](docs/DECISIONS.md).
+See [the phase plan](docs/PHASES.md), [the Education inventory](docs/EDUCATION_SKELETON.md), [the Health inventory](docs/HEALTH_SKELETON.md), [the Finance inventory](docs/FINANCE_SKELETON.md), and [architectural decisions](docs/DECISIONS.md).
