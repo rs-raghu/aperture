@@ -1,38 +1,6 @@
-import type { IsoDateTimeString, OwnerId, OwnerQuery, PageResult } from "../education.types.js";
-import type { CourseId } from "../courses/course.types.js";
-import type { TopicId } from "../topics/topic.types.js";
-import type { Assignment, AssignmentId, AssignmentStatus } from "./assignment.types.js";
-
-export interface CreateAssignmentInput {
-  readonly ownerId: OwnerId;
-  readonly courseId: CourseId;
-  readonly topicId?: TopicId;
-  readonly title: string;
-  readonly dueAt?: IsoDateTimeString;
-}
-
-export interface UpdateAssignmentInput {
-  readonly topicId?: TopicId;
-  readonly title?: string;
-  readonly status?: AssignmentStatus;
-  readonly dueAt?: IsoDateTimeString;
-}
-
-export interface AssignmentListQuery extends OwnerQuery {
-  readonly courseId?: CourseId;
-  readonly status?: AssignmentStatus;
-}
-
-export interface UpcomingAssignmentsQuery extends AssignmentListQuery {
-  readonly dueBefore?: IsoDateTimeString;
-}
-
-export interface SubmitAssignmentInput {
-  readonly assignmentId: AssignmentId;
-  readonly ownerId: OwnerId;
-  readonly submittedAt: IsoDateTimeString;
-}
-
+import type { OwnerId, PageResult } from "../education.types.js";
+import type { Assignment, AssignmentId, AssignmentListQuery, CreateAssignmentInput, SubmitAssignmentInput, UpcomingAssignmentsQuery, UpdateAssignmentInput } from "./assignment.types.js";
+export type { AssignmentListQuery, CreateAssignmentInput, SubmitAssignmentInput, UpcomingAssignmentsQuery, UpdateAssignmentInput } from "./assignment.types.js";
 export declare function createAssignment(input: CreateAssignmentInput): Promise<Assignment>;
 export declare function updateAssignment(id: AssignmentId, ownerId: OwnerId, input: UpdateAssignmentInput): Promise<Assignment>;
 export declare function submitAssignment(input: SubmitAssignmentInput): Promise<Assignment>;

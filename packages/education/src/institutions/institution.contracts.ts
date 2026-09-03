@@ -1,20 +1,6 @@
-import type { OwnerId, OwnerQuery, PageResult } from "../education.types.js";
-import type { Institution, InstitutionId, InstitutionStatus } from "./institution.types.js";
-
-export interface CreateInstitutionInput {
-  readonly ownerId: OwnerId;
-  readonly name: string;
-}
-
-export interface UpdateInstitutionInput {
-  readonly name?: string;
-  readonly status?: InstitutionStatus;
-}
-
-export interface InstitutionListQuery extends OwnerQuery {
-  readonly status?: InstitutionStatus;
-}
-
+import type { OwnerId, PageResult } from "../education.types.js";
+import type { CreateInstitutionInput, Institution, InstitutionId, InstitutionListQuery, UpdateInstitutionInput } from "./institution.types.js";
+export type { CreateInstitutionInput, InstitutionListQuery, UpdateInstitutionInput } from "./institution.types.js";
 export declare function createInstitution(input: CreateInstitutionInput): Promise<Institution>;
 export declare function updateInstitution(id: InstitutionId, ownerId: OwnerId, input: UpdateInstitutionInput): Promise<Institution>;
 export declare function archiveInstitution(id: InstitutionId, ownerId: OwnerId): Promise<Institution>;

@@ -26,10 +26,18 @@ The web and mobile workspace manifests, route inventories, shared platform contr
 
 Phase 4 excludes executable pages, screens, components, routes, handlers, middleware, authentication behavior, Supabase clients, repositories, SQL, policies, formulas, validation behavior, import/export behavior, integration behavior, tests, application builds, launches, deployment, secrets, mock data, and seed data.
 
-## Phase 5 — not started
+## Phase 5 — Education models and validation: complete after verification
 
-Phase 5 has not been authorized or started. No work beyond the approved Phase 4 inventory is implied.
+All 14 Education entities now have strict runtime Zod schemas for stored entities, create inputs, update inputs, and queries. Shared Validation implements typed result and error-normalization helpers. Synthetic model/validation tests and model-only production builds verify the boundary.
+
+## Phase 5 exclusions
+
+Education calculations, operation implementations, repositories, services, UI, APIs, authentication, database access, Supabase, navigation, import/export, notifications, synchronization, and application behavior remain unimplemented.
+
+## Phase 6 — not started
+
+Phase 6 has not been authorized or started. No additional implementation scope is implied.
 
 ## Implementation status
 
-No implementation phase has started. Phases 1–4 define structural contracts and platform boundaries only and make no delivery promises beyond their approved inventories.
+Only Education models and shared structural validation have runtime implementations. All other domain and application behavior remains structural or declaration-only.

@@ -29,3 +29,12 @@ Versions below are the direct versions resolved on 2026-09-03. The root TypeScri
 `npx expo install` selected the mobile React, React Native, Expo Router, and Async Storage versions. `npx expo install --check` reported that dependencies are up to date. The root TypeScript check passes. No production build or application launch was attempted.
 
 `npm audit` reports 21 transitive vulnerabilities: 13 moderate and 8 high. The reported paths are within the Expo Router/Expo/React Native toolchain (`decode-uri-component`, `image-size`, and `uuid`). Suggested forced remediations would replace the SDK-compatible direct packages with breaking, older versions, so Phase 4 does not apply an automatic or forced rewrite. No application code executes these packages in this non-runnable skeleton.
+
+## Phase 5 additions
+
+| Package | Workspace | Resolved version | Kind | Purpose |
+| --- | --- | ---: | --- | --- |
+| `zod` | `@aperture/validation` | 3.25.76 | Runtime | Implements the narrow shared structural-schema and validation boundary used by Education. |
+| `vitest` | root development tooling | 4.1.11 | Development | Runs focused tests for both shared Validation and Education schemas. |
+
+`@aperture/education` depends on the local `@aperture/validation` workspace at its exact `0.5.0` version. npm 11.5.2 in this environment rejects the `workspace:*` protocol, so the matching workspace version is used; npm still links the local workspace package.

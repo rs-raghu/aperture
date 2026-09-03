@@ -1,12 +1,32 @@
-# Architectural decisions through Phase 4
+# Architectural decisions through Phase 5
 
 ## TypeScript-first shared domain
 
 Education, Health, and Finance are expressed as framework-independent TypeScript packages so future consumers can share stable domain vocabularies.
 
-## No runtime code in completed phases
+## Runtime code is limited to the Phase 5 validation boundary
 
-Phases 1 and 2 contain structural TypeScript contracts. Phase 3 uses only `.d.ts` Finance source files, and Phase 4 uses only `.d.ts` source files for new shared packages and application contracts. All completed phases include no executable business behavior or placeholder implementations.
+Phase 5 introduces runtime code only for Education schemas, shared validation helpers, and their tests. Education operations, calculations, repositories, and services remain ambient declarations or interfaces. Health, Finance, and application skeleton behavior remain unchanged.
+
+## Zod supplies structural validation
+
+`@aperture/validation` owns the Zod dependency and exposes a narrow schema/result boundary. Education depends on Validation; Validation never depends on Education. Zod is not used for repository existence, ownership, calculations, UI behavior, or persistence.
+
+## UUID identifiers
+
+Education owner and entity identifiers use UUID-compatible strings to align with a future PostgreSQL UUID design. Runtime validation checks syntax only and does not assert record existence or ownership.
+
+## Calendar-valid dates and explicit-zone timestamps
+
+Education date-only values use real `YYYY-MM-DD` calendar dates. Timestamps require RFC 3339 form with `Z` or an explicit numeric offset. Schemas preserve strings and never localize or convert boundary values.
+
+## Education decimal strings
+
+Education scores, credits, percentages, grade points, and goal values use normalized decimal strings. Structural schemas reject scientific notation, symbols, commas, non-finite tokens, and prohibited negative values. Arithmetic remains deferred.
+
+## Runtime-safe Education exports
+
+The default and `/models` entry points expose runtime schemas and inferred types. The `/contracts` entry is types-only; ambient operations and calculations are not exported as callable runtime values. Production builds exclude ambient operation, repository, service, and calculation modules.
 
 ## ISO date strings at boundaries
 

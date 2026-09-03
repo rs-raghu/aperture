@@ -1,3 +1,5 @@
+import type { z } from "zod";
+
 export interface ValidationIssue {
   readonly code: string;
   readonly message: string;
@@ -14,10 +16,8 @@ export interface ValidationFailure {
   readonly issues: readonly ValidationIssue[];
 }
 
-export type ValidationResult<Value> = ValidationSuccess<Value> | ValidationFailure;
+export type ValidationResult<Value> =
+  | ValidationSuccess<Value>
+  | ValidationFailure;
 
-export interface ValidationSchema<Input, Output> {
-  readonly name: string;
-  readonly inputType?: Input;
-  readonly outputType?: Output;
-}
+export type ValidationSchema<Output> = z.ZodType<Output>;
