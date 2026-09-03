@@ -34,10 +34,18 @@ All 14 Education entities now have strict runtime Zod schemas for stored entitie
 
 Education calculations, operation implementations, repositories, services, UI, APIs, authentication, database access, Supabase, navigation, import/export, notifications, synchronization, and application behavior remain unimplemented.
 
-## Phase 6 — not started
+## Phase 6 — Education calculations: complete after verification
 
-Phase 6 has not been authorized or started. No additional implementation scope is implied.
+The seven Education calculations are implemented as validated, deterministic, decimal-safe pure functions with explicit policies and rounding metadata.
+
+## Phase 6 exclusions
+
+CRUD operations, repository and service implementations, Health and Finance calculations, UI, APIs, authentication, persistence, Supabase, SQL, navigation, imports, notifications, and application behavior remain unimplemented.
+
+## Phase 7 — not started
+
+Phase 7 has not been authorized or started. No additional implementation scope is implied.
 
 ## Implementation status
 
-Only Education models and shared structural validation have runtime implementations. All other domain and application behavior remains structural or declaration-only.
+Only Education models, shared structural validation, and the seven Education calculations have runtime implementations. All other domain and application behavior remains structural or declaration-only.

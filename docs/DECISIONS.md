@@ -1,12 +1,12 @@
-# Architectural decisions through Phase 5
+# Architectural decisions through Phase 6
 
 ## TypeScript-first shared domain
 
 Education, Health, and Finance are expressed as framework-independent TypeScript packages so future consumers can share stable domain vocabularies.
 
-## Runtime code is limited to the Phase 5 validation boundary
+## Runtime code is limited to Education models, validation, and calculations
 
-Phase 5 introduces runtime code only for Education schemas, shared validation helpers, and their tests. Education operations, calculations, repositories, and services remain ambient declarations or interfaces. Health, Finance, and application skeleton behavior remain unchanged.
+Phase 5 introduced Education schemas and shared validation. Phase 6 adds exactly seven Education calculators. Education CRUD operations, repositories, and services remain ambient declarations or interfaces. Health, Finance, and application skeleton behavior remain unchanged.
 
 ## Zod supplies structural validation
 
@@ -20,13 +20,17 @@ Education owner and entity identifiers use UUID-compatible strings to align with
 
 Education date-only values use real `YYYY-MM-DD` calendar dates. Timestamps require RFC 3339 form with `Z` or an explicit numeric offset. Schemas preserve strings and never localize or convert boundary values.
 
-## Education decimal strings
+## Education decimal strings and arithmetic
 
-Education scores, credits, percentages, grade points, and goal values use normalized decimal strings. Structural schemas reject scientific notation, symbols, commas, non-finite tokens, and prohibited negative values. Arithmetic remains deferred.
+Education scores, credits, percentages, grade points, and goal values use normalized decimal strings. Structural schemas reject scientific notation, symbols, commas, non-finite tokens, and prohibited negative values. Academic arithmetic uses `decimal.js`; JavaScript floating-point numbers are not used for grade, credit, percentage, or weighted-score arithmetic.
+
+## Academic rounding and policy choices
+
+Calculator outputs retain an exact normalized value and a rounded display value. The documented default is two decimal places with half-up rounding; callers may select half-up, half-even, down, or up. Intermediate values are not rounded. GPA scales are caller-configurable. Zero-credit GPA courses reject by default and may be explicitly excluded. Extra credit and total weight above 100 reject unless explicitly enabled. Excused attendance always requires an explicit policy. Transfer credits count toward degree progress only when explicitly enabled.
 
 ## Runtime-safe Education exports
 
-The default and `/models` entry points expose runtime schemas and inferred types. The `/contracts` entry is types-only; ambient operations and calculations are not exported as callable runtime values. Production builds exclude ambient operation, repository, service, and calculation modules.
+The default and `/models` entry points expose runtime schemas and inferred types. The default and `/calculations` entries expose the seven implemented calculators. The `/contracts` entry remains types-only for ambient operations and storage/orchestration contracts. Production builds exclude ambient operation, repository, and service modules.
 
 ## ISO date strings at boundaries
 

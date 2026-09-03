@@ -38,3 +38,9 @@ Versions below are the direct versions resolved on 2026-09-03. The root TypeScri
 | `vitest` | root development tooling | 4.1.11 | Development | Runs focused tests for both shared Validation and Education schemas. |
 
 `@aperture/education` depends on the local `@aperture/validation` workspace at its exact `0.5.0` version. npm 11.5.2 in this environment rejects the `workspace:*` protocol, so the matching workspace version is used; npm still links the local workspace package.
+
+## Phase 6 addition
+
+| Package | Workspace | Resolved version | Kind | Purpose |
+| --- | --- | ---: | --- | --- |
+| `decimal.js` | `@aperture/education` | 10.6.0 | Runtime | Performs all academic decimal arithmetic and explicit final rounding without binary floating-point drift. |

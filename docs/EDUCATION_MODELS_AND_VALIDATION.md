@@ -1,6 +1,6 @@
 # Phase 5 Education models and validation
 
-Phase 5 is the first implementation phase. It implements runtime-safe Education data shapes and validation only. Education operations, repositories, services, calculations, applications, APIs, authentication, and persistence remain unimplemented.
+Phase 5 implemented runtime-safe Education data shapes and validation. Phase 6 now consumes that boundary for seven academic calculations; Education operations, repositories, services, applications, APIs, authentication, and persistence remain unimplemented.
 
 ## Implemented entity schema families
 
@@ -48,7 +48,7 @@ All Education and owner identifiers use RFC 4122-compatible UUID strings. IDs re
 
 ## Decimal-string convention
 
-`decimalStringSchema` accepts normalized plain decimal strings without scientific notation, commas, symbols, `NaN`, or `Infinity`. Scores, credits, grade points, percentages, and goal values use non-negative decimal strings. Percentage validation is bounded from 0 through 100. Phase 5 performs no arithmetic, conversion, aggregation, GPA calculation, or grade calculation.
+`decimalStringSchema` accepts normalized plain decimal strings without scientific notation, commas, symbols, `NaN`, or `Infinity`. Scores, credits, grade points, percentages, and goal values use non-negative decimal strings. Phase 6 calculator-specific schemas reuse this convention and perform arithmetic exclusively with `decimal.js`.
 
 ## Relationships
 
@@ -78,8 +78,8 @@ The dependency direction is Education → Validation → Zod. Validation does no
 
 - `@aperture/education` and `@aperture/education/models` expose runtime schemas, inferred entity/input/query types, primitives, and Education error shapes.
 - `@aperture/education/contracts` is a types-only entry for repository, service, operation-input, and calculation contract types.
-- Ambient operation and calculation function declarations remain in source for continuity but are not re-exported as runtime values.
-- The Education production build includes model and error modules only. It excludes tests and all ambient operation, repository, service, and calculation modules.
+- Ambient operation declarations remain source-only and are not re-exported as runtime values.
+- The Education production build includes model, error, and calculator modules. It excludes tests and ambient operation, repository, and service modules.
 
 ## Validation errors
 
@@ -89,10 +89,10 @@ Education exposes codes for invalid input, unsupported status, invalid date rang
 
 Synthetic tests cover all 14 entities: valid stored/create/update/query values; required fields; owner and related UUIDs; timestamps; strict unknown-field handling; non-empty updates; and owner reassignment rejection. Targeted tests cover calendar dates, timezone offsets, decimals, negative values, ordering, statuses, text bounds, URLs, and conflicting relationships. Shared Validation tests cover result narrowing, paths, messages, output validation, and safe error normalization.
 
-## What remains declaration-only
+## What remains declaration-only after Phase 6
 
-All 86 Education operation declarations, all 15 repository interfaces, the Education service interface, and all 7 calculation declarations remain unimplemented.
+All 79 CRUD-style Education operation declarations, all 15 repository interfaces, and the Education service interface remain unimplemented. The seven calculations are documented separately in `EDUCATION_CALCULATIONS.md`.
 
 ## Phase 5 exclusions
 
-No GPA, CGPA, weighted grade, projection, required-score, attendance, or degree-progress calculation is implemented. No repository, service, API, database, Supabase client, authentication, UI, web page, mobile screen, import/export, notification, synchronization, mock application data, or seed data is added. Phase 6 has not started.
+Phase 5 itself added no calculations. Phase 6 is limited to calculators and adds no repository, service, API, database, Supabase client, authentication, UI, web page, mobile screen, import/export, notification, synchronization, mock application data, or seed data. Phase 7 has not started.

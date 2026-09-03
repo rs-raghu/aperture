@@ -1,6 +1,6 @@
-# Education package inventory through Phase 5
+# Education package inventory through Phase 6
 
-The Phase 1 Education structure remains, while Phase 5 implements its model and validation boundary. See [Education models and validation](EDUCATION_MODELS_AND_VALIDATION.md) for the complete schema catalog and rules.
+The Phase 1 structure remains. Phase 5 implemented models and validation; Phase 6 implements exactly seven academic calculations. See [Education calculations](EDUCATION_CALCULATIONS.md).
 
 ## Package organization
 
@@ -14,7 +14,8 @@ The Phase 1 Education structure remains, while Phase 5 implements its model and 
 | Fourteen `*.contracts.ts` modules | Existing named operation declarations and contract types. | Declaration only |
 | Fourteen `*.repository.ts` modules and aggregate repository | Storage-neutral repository interfaces. | Declaration only |
 | `src/services/education-service.contract.ts` | Education orchestration interface. | Declaration only |
-| Seven `src/calculations/*.contracts.ts` modules | Calculation input/result types and function declarations. | Declaration only |
+| Seven `src/calculations/*.contracts.ts` modules | Validated decimal-safe calculator schemas, results, and functions. | Implemented |
+| `src/calculations.ts` and shared calculation modules | Runtime exports, rounding policy, decimal schemas/helpers, and typed errors. | Implemented |
 | `test/education-models.test.ts` | Synthetic schema conformance and boundary tests. | Test only |
 
 ## Entity inventory
@@ -38,7 +39,7 @@ Every entity has a strict stored schema, create schema, update schema, and query
 
 ## Declaration inventory retained
 
-The 86 named Education operation declarations are retained without bodies. This includes all Phase 1 CRUD-style declarations and the 7 calculation declarations. Fifteen repository interfaces and the Education service interface remain unimplemented. The types-only `@aperture/education/contracts` entry prevents ambient functions from appearing as callable runtime exports.
+The 79 non-calculation Education operation declarations are retained without bodies. Fifteen repository interfaces and the Education service interface remain unimplemented. The seven calculation declarations have been replaced by runtime implementations and are available from the default and `/calculations` entries.
 
 ## Relationship inventory
 
@@ -58,7 +59,7 @@ Institution
 
 Schedule entries can reference a course. Certificates can stand alone or reference academic entities. Education goals can stand alone or reference one program, semester, or course. Identifier validation does not prove that a relationship exists or belongs to the same owner.
 
-## Phase 5 checklist
+## Phase 6 checklist
 
 - [x] Fourteen stored-entity schemas.
 - [x] Fourteen create-input schemas.
@@ -72,6 +73,8 @@ Schedule entries can reference a course. Certificates can stand alone or referen
 - [x] Runtime-safe model exports.
 - [x] Shared Validation helpers and readable errors.
 - [x] Synthetic model and validation tests.
-- [x] Repository, service, operation, and calculation declarations remain without implementations.
+- [x] Seven calculation functions use validated decimal strings and `decimal.js` arithmetic.
+- [x] Exact and rounded results expose explicit rounding metadata.
+- [x] Repository, service, and CRUD-style operation declarations remain without implementations.
 - [x] No UI, API, authentication, database, or Supabase implementation.
-- [x] Phase 6 not started.
+- [x] Phase 7 not started.

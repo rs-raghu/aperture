@@ -1,6 +1,6 @@
 {
   "name": "@aperture/education",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
   "type": "module",
   "exports": {
@@ -11,6 +11,10 @@
     "./models": {
       "types": "./src/models.ts",
       "import": "./dist/models.js"
+    },
+    "./calculations": {
+      "types": "./src/calculations.ts",
+      "import": "./dist/calculations.js"
     },
     "./contracts": {
       "types": "./src/contracts.d.ts"
@@ -23,6 +27,7 @@
     "build": "tsc --project tsconfig.build.json"
   },
   "dependencies": {
-    "@aperture/validation": "0.5.0"
+    "@aperture/validation": "0.5.0",
+    "decimal.js": "^10.6.0"
   }
 }
