@@ -4,6 +4,13 @@
     "slug": "aperture-mobile-placeholder",
     "scheme": "aperture-placeholder",
     "version": "0.4.0",
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "web": {
+      "bundler": "metro"
+    }
   }
 }

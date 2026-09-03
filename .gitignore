@@ -1,6 +1,8 @@
 node_modules/
 **/.next/
 **/out/
+**/.expo/
+**/.expo-export/
 dist/
 build/
 coverage/

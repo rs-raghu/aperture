@@ -57,3 +57,23 @@ Versions below are the direct versions resolved on 2026-09-03. The root TypeScri
 | `eslint`, `eslint-config-next` | `@aperture/web` | Development | Run compatible Next.js, TypeScript, accessibility-adjacent, and React hook static checks. |
 
 No new form, state, chart, UI framework, persistence, database, authentication, API, analytics, or deployment dependency is installed. Final compatibility is verified through web tests, lint, TypeScript, and a Next.js production build. The accepted pre-existing Expo/React Native audit baseline remains 21 advisories (13 moderate and 8 high); Phase 9 introduces no additional finding.
+
+## Phase 10 additions and compatibility corrections
+
+| Package | Workspace | Resolved version | Kind | Purpose |
+| --- | --- | ---: | --- | --- |
+| `@aperture/education` | `@aperture/mobile` | 0.7.0 | Runtime workspace link | Supplies real models, validation-backed workflows, summaries, and calculations. |
+| `@aperture/education-memory` | `@aperture/mobile` | 0.8.0 | Runtime workspace link | Supplies isolated volatile storage per Education provider. |
+| `@expo/metro-runtime` | `@aperture/mobile` | 57.0.15 | Runtime | Supplies the Expo web/Metro runtime required by the Router preview. |
+| `expo-crypto` | `@aperture/mobile` | 57.0.2 | Runtime | Supplies an Expo-compatible UUID function behind the injected ID-generator contract. |
+| `react-dom` | `@aperture/mobile` | 19.2.3 | Runtime | Supports the permitted Expo web preview. |
+| `react-native-web` | `@aperture/mobile` | 0.21.2 | Runtime | Renders React Native primitives in the Expo web inspection runtime. |
+| `react-native-safe-area-context` | `@aperture/mobile` | 5.7.x | Runtime | Supplies safe-area primitives at Expo SDK 57's expected version. |
+| `@testing-library/react-native` | `@aperture/mobile` | 14.0.1 | Development | Exercises accessible native screens with real services and memory storage. |
+| `jest-expo` | `@aperture/mobile` | 57.0.5 | Development | Supplies the Expo SDK-compatible Jest preset and React Native transforms. |
+| `@types/jest` | `@aperture/mobile` | 29.5.14 | Development | Types the mobile Jest suite at Expo SDK 57's expected version. |
+| `eslint`, `eslint-config-expo` | `@aperture/mobile` | 9.39.5, 57.0.2 | Development | Statically checks Expo, React Native, hooks, and TypeScript source. |
+
+Root `react` 19.2.3, `react-dom` 19.2.3, `react-native` 0.86.3, and `react-native-safe-area-context` 5.7.0 entries pin npm's hoisted peer graph to the Expo SDK 57-compatible set. The web React/React DOM declarations were aligned from 19.2.8 to 19.2.3; the Phase 9 Next production build remains the compatibility regression check. These root entries are peer-resolution anchors and do not add runtime application behavior.
+
+`npx expo install --check` reports dependencies up to date, and `expo-doctor` validates the monorepo dependency graph. Phase 10 adds no form, global-state, UI-framework, charting, date-picker, persistence, database, auth, analytics, notification, or deployment library. The full audit now reports 13 moderate and 0 high advisories versus the accepted 21-advisory baseline (13 moderate, 8 high), so Phase 10 adds no advisory and removes eight high transitive findings.

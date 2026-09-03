@@ -3,7 +3,8 @@
   "compilerOptions": {
     "strict": true,
     "noEmit": true,
-    "rootDir": "."
+    "rootDir": ".",
+    "jsx": "react-jsx"
   },
-  "include": ["expo-env.d.ts", "src/contracts/**/*.d.ts"]
+  "include": ["expo-env.d.ts", ".expo/types/**/*.ts", "src/**/*.ts", "src/**/*.tsx", "tests/**/*.ts", "tests/**/*.tsx"]
 }

@@ -1,4 +1,24 @@
-# Architectural decisions through Phase 9
+# Architectural decisions through Phase 10
+
+## Education mobile is a native feature boundary
+
+Thin Expo Router files compose screens exported by `apps/mobile/src/features/education`. The feature owns mobile adapters, hooks, view models, native components, navigation metadata, screens, and local styles. It imports no web presentation code, and Education packages import no Expo or React Native code.
+
+## Provider-scoped mobile composition
+
+One isolated memory repository and one real Education service are created lazily per mounted Education provider. Expo Router mounts that provider in the shared Education stack layout, preserving data during in-app navigation. App reload or document reload creates a fresh provider and intentionally loses preview data.
+
+## Mobile platform adapters remain injected
+
+The preview composition root injects a clock backed by `Date#toISOString`, an ID generator backed by `expo-crypto.randomUUID`, and one explicitly synthetic development owner UUID. Screens receive only the Education runtime through context; they do not generate domain IDs, inject ownership, or write business timestamps independently.
+
+## Mobile collections and presentation errors
+
+Potentially growing record collections use horizontally virtualized React Native `FlatList` surfaces inside vertically scrolling forms. Known Education, validation, and adapter errors are normalized to field/form messages in the mobile feature; raw objects and stack traces are never rendered. Empty attendance state is checked before calling the non-empty attendance calculator.
+
+## Expo peer versions are repository-wide
+
+React 19.2.3, React Native 0.86.3, and Safe Area Context 5.7.0 are pinned as root peer-resolution anchors because npm otherwise hoists versions incompatible with Expo SDK 57. The web workspace uses React 19.2.3 as the compatible shared monorepo version; its production build remains the regression check. These anchors do not add application behavior.
 
 ## Education web is a feature-local composition boundary
 

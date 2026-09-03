@@ -78,6 +78,6 @@ No form, state, component, charting, persistence, database, authentication, anal
 
 ## Deferred work and limitations
 
-The preview does not persist refreshes, authenticate users, provide production authorization, render Health or Finance, implement the Education mobile UI, expose an API, integrate Supabase, import/export data, notify users, integrate calendars, or deploy. Study completion uses the existing service lifecycle; because that contract does not infer an actual duration, summaries explicitly report completed sessions whose stored duration is missing. Phase 10 is not started.
+The web preview does not persist refreshes, authenticate users, provide production authorization, render Health or Finance, expose an API, integrate Supabase, import/export data, notify users, integrate calendars, or deploy. Study completion uses the existing service lifecycle; because that contract does not infer an actual duration, summaries explicitly report completed sessions whose stored duration is missing. Phase 10 adds a separate React Native/Expo Education presentation boundary without changing this web feature.
 
 The accepted dependency-audit exception remains the pre-existing Expo/React Native transitive baseline of 21 advisories (13 moderate and 8 high). Phase 9 adds no affected production web dependency and must not increase that count.

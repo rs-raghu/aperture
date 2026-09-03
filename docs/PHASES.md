@@ -66,10 +66,18 @@ The Next.js workspace now provides an Education-only local development preview. 
 
 Durable persistence, Supabase, SQL, APIs, authentication/authorization, production owner sessions, the complete Aperture shell, Education mobile UI, Health/Finance UI, import/export, backup/restore, notifications, calendar/email integrations, analytics, deployment, and Phase 10 work remain unimplemented.
 
-## Phase 10 — not started
+## Phase 10 — Education mobile preview: complete after verification
 
-Phase 10 has not been authorized or started. No additional implementation scope is implied.
+The Expo workspace now provides an Education-only React Native development preview. Eight Expo Router URLs compose mobile-native screens over the real dependency-injected Education service and isolated memory adapter. Setup, courses, assignments, exams, grades, attendance, study sessions, summaries, accessible errors, mobile navigation, and responsive phone layouts are implemented and tested.
+
+## Phase 10 exclusions
+
+Durable persistence, AsyncStorage data storage, SQLite, Supabase, SQL, APIs, authentication/authorization, production sessions, biometrics, the complete mobile shell, Health/Finance UI, synchronization, notifications, calendar integrations, deployment, store packaging, publishing, and Phase 11 work remain unimplemented.
+
+## Phase 11 — not started
+
+Phase 11 has not been authorized or started. No additional implementation scope is implied.
 
 ## Implementation status
 
-Education models, shared validation, seven calculations, the injected Education application layer, the volatile memory adapter, and the local Education web preview have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
+Education models, shared validation, seven calculations, the injected Education application layer, the volatile memory adapter, and local Education web/mobile previews have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
