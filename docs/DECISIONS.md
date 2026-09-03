@@ -1,4 +1,16 @@
-# Architectural decisions through Phase 7
+# Architectural decisions through Phase 8
+
+## Volatile Education storage is an external adapter
+
+`@aperture/education-memory` depends on `@aperture/education`, never the reverse. It implements all Education repository interfaces without changing their storage-neutral ownership. Web, mobile, Health, Finance, and platform packages do not depend on the adapter in Phase 8.
+
+## Memory isolation and cloning
+
+Every aggregate factory creates independent maps and no seed records. The aggregate and repository properties are frozen. Defensive copies use `structuredClone` before storage and on every returned value so nested caller mutation cannot reach internal state. The opt-out is explicit and disabled by default.
+
+## Memory identity, ownership, and pagination
+
+IDs are globally unique within an aggregate. Missing and cross-owner records are indistinguishable through owner-scoped reads, updates, and deletes. The adapter uses inclusive date boundaries, deterministic domain ordering with ascending ID tie-breaks, and opaque `memory:<offset>` cursors over an unchanged filtered result. These are adapter semantics, not promises about future Supabase internals.
 
 ## TypeScript-first shared domain
 

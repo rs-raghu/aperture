@@ -50,10 +50,18 @@ The dependency-injected Education application layer implements 79 owner-scoped w
 
 Production repositories, databases, SQL, Supabase, APIs, authentication, UI, navigation, notifications, synchronization, imports/exports, background jobs, Health/Finance services, and new calculations remain unimplemented.
 
-## Phase 8 — not started
+## Phase 8 — Education memory repositories: complete after verification
 
-Phase 8 has not been authorized or started. No additional implementation scope is implied.
+The isolated `@aperture/education-memory` workspace implements all fourteen Education repository interfaces with owner-scoped, defensively cloned, deterministic, process-local storage. Contract, query, aggregate, public-import, and real-service integration tests verify the adapter.
+
+## Phase 8 exclusions
+
+Durable storage, Supabase, PostgreSQL, SQL, ORM code, browser/device persistence, APIs, authentication, synchronization, import/export, backup/restore, notifications, UI, Health/Finance repositories, production seeds, and Phase 9 work remain unimplemented.
+
+## Phase 9 — not started
+
+Phase 9 has not been authorized or started. No additional implementation scope is implied.
 
 ## Implementation status
 
-Education models, shared validation, seven calculations, and the injected Education application layer have runtime implementations. Storage and all other domain/application behavior remain structural or interface-only.
+Education models, shared validation, seven calculations, the injected Education application layer, and the volatile memory adapter have runtime implementations. Durable storage and all other domain/application behavior remain structural or interface-only.

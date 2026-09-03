@@ -1,6 +1,6 @@
 # Phase 7 Education services and use cases
 
-Phase 7 implements the Education application layer through `createEducationService`. Storage remains unavailable: callers must inject implementations of the existing repository interfaces together with a clock and ID generator.
+Phase 7 implements the Education application layer through `createEducationService`. Phase 8 adds the optional, volatile `@aperture/education-memory` adapter; callers still inject repositories together with a clock and ID generator.
 
 ## Application structure
 
@@ -104,6 +104,6 @@ Archives are state transitions and retain related data. Repeated archive request
 - `AttendanceRepository.findByCourseAndSessionDate` supports duplicate-session detection.
 - Grade and Attendance repositories accept their general owner-scoped query shapes so all approved lists and summaries remain storage-neutral.
 
-## Phase 7 limitations
+## Limitations after Phase 8
 
-The package has no production repository, database, SQL, Supabase adapter, API, authentication, UI, navigation, synchronization, import/export, file access, notification, background job, or recommendation behavior. Test repositories exist only inside test files. Web and mobile remain non-runnable. Phase 8 has not started.
+The Education domain package still selects no adapter. The memory implementation is non-durable and intended for tests and future application development, not production persistence. There is no database, SQL, Supabase adapter, API, authentication, UI, navigation, synchronization, import/export, file access, notification, background job, or recommendation behavior. Web and mobile remain non-runnable. Phase 9 has not started.
