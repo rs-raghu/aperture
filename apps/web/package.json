@@ -4,13 +4,31 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "typecheck": "tsc --project tsconfig.json --noEmit"
+    "predev": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory",
+    "dev": "next dev",
+    "prebuild": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory",
+    "build": "next build",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "pretest": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory",
+    "test": "vitest run",
+    "lint": "eslint src tests --max-warnings=0"
   },
   "dependencies": {
+    "@aperture/education": "^0.7.0",
+    "@aperture/education-memory": "^0.8.0",
     "@supabase/ssr": "^0.12.5",
     "@supabase/supabase-js": "^2.114.0",
     "next": "^16.3.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.4",
+    "jsdom": "^29.0.1"
   }
 }

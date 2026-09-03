@@ -1,4 +1,16 @@
-# Architectural decisions through Phase 8
+# Architectural decisions through Phase 9
+
+## Education web is a feature-local composition boundary
+
+Thin App Router files compose screens from `apps/web/src/features/education`. The feature owns its navigation metadata, hooks, view models, forms, and presentation components without becoming a complete dashboard shell. No Education domain or service module imports React, Next.js, or browser APIs.
+
+## Provider-scoped volatile preview runtime
+
+One Education runtime is constructed per mounted provider and shared by routes beneath the Education layout. It contains the real service, a new isolated memory repository aggregate, injected browser clock/UUID adapters, and an explicit synthetic development owner. It is never created at module import time, on every render, or as a process-wide singleton. Refresh reset is intentional and disclosed.
+
+## Presentation does not duplicate domain rules
+
+React forms call existing owner-scoped service workflows, and overview/grade/attendance/study displays consume service summaries and calculator outputs. Browser strings are adapted at the feature boundary; normalized validation and application errors become field/form presentation models without altering domain error types.
 
 ## Volatile Education storage is an external adapter
 

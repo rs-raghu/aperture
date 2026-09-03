@@ -58,10 +58,18 @@ The isolated `@aperture/education-memory` workspace implements all fourteen Educ
 
 Durable storage, Supabase, PostgreSQL, SQL, ORM code, browser/device persistence, APIs, authentication, synchronization, import/export, backup/restore, notifications, UI, Health/Finance repositories, production seeds, and Phase 9 work remain unimplemented.
 
-## Phase 9 — not started
+## Phase 9 — Education web preview: complete after verification
 
-Phase 9 has not been authorized or started. No additional implementation scope is implied.
+The Next.js workspace now provides an Education-only local development preview. Eight App Router URLs compose feature-local screens over the real dependency-injected Education service and isolated memory adapter. Empty-state setup, courses, assignments, exams, grades, attendance, study sessions, summaries, accessible errors, and responsive navigation are implemented and tested.
+
+## Phase 9 exclusions
+
+Durable persistence, Supabase, SQL, APIs, authentication/authorization, production owner sessions, the complete Aperture shell, Education mobile UI, Health/Finance UI, import/export, backup/restore, notifications, calendar/email integrations, analytics, deployment, and Phase 10 work remain unimplemented.
+
+## Phase 10 — not started
+
+Phase 10 has not been authorized or started. No additional implementation scope is implied.
 
 ## Implementation status
 
-Education models, shared validation, seven calculations, the injected Education application layer, and the volatile memory adapter have runtime implementations. Durable storage and all other domain/application behavior remain structural or interface-only.
+Education models, shared validation, seven calculations, the injected Education application layer, the volatile memory adapter, and the local Education web preview have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.

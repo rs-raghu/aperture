@@ -44,3 +44,16 @@ Versions below are the direct versions resolved on 2026-09-03. The root TypeScri
 | Package | Workspace | Resolved version | Kind | Purpose |
 | --- | --- | ---: | --- | --- |
 | `decimal.js` | `@aperture/education` | 10.6.0 | Runtime | Performs all academic decimal arithmetic and explicit final rounding without binary floating-point drift. |
+
+## Phase 9 additions
+
+| Package | Workspace | Kind | Purpose |
+| --- | --- | --- | --- |
+| `@aperture/education` | `@aperture/web` | Runtime workspace link | Supplies implemented models, workflows, summaries, validation, and calculators to the Education feature. |
+| `@aperture/education-memory` | `@aperture/web` | Runtime workspace link | Supplies isolated, volatile storage for the development preview. |
+| `@types/react`, `@types/react-dom` | `@aperture/web` | Development | Type-check JSX and React DOM usage. |
+| `@testing-library/react`, `@testing-library/user-event` | `@aperture/web` | Development | Exercise accessible forms and real-service component workflows. |
+| `jsdom` | web and root test tooling | Development | Supplies a browser-like DOM; the root declaration is required because Vitest is hoisted at the workspace root. |
+| `eslint`, `eslint-config-next` | `@aperture/web` | Development | Run compatible Next.js, TypeScript, accessibility-adjacent, and React hook static checks. |
+
+No new form, state, chart, UI framework, persistence, database, authentication, API, analytics, or deployment dependency is installed. Final compatibility is verified through web tests, lint, TypeScript, and a Next.js production build. The accepted pre-existing Expo/React Native audit baseline remains 21 advisories (13 moderate and 8 high); Phase 9 introduces no additional finding.

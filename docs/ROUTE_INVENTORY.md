@@ -1,6 +1,19 @@
-# Planned route inventory
+# Route inventory
 
-These routes are metadata and directory reservations only. None has an executable page, screen, layout, handler, or navigation renderer.
+Phase 9 implements only the eight Education web routes called out below. Every other entry remains metadata and a directory reservation with no executable page, screen, handler, or navigation renderer.
+
+## Implemented Education preview routes (8)
+
+1. `/education`
+2. `/education/setup`
+3. `/education/courses`
+4. `/education/assignments`
+5. `/education/exams`
+6. `/education/grades`
+7. `/education/attendance`
+8. `/education/study-sessions`
+
+These URLs share the Education provider and local navigation. They are a volatile local preview, not production routes.
 
 ## Web routes (33)
 
@@ -8,13 +21,13 @@ These routes are metadata and directory reservations only. None has an executabl
 2. `/recover-password`
 3. `/update-password`
 4. `/today`
-5. `/education`
-6. `/education/courses`
-7. `/education/assignments`
-8. `/education/exams`
-9. `/education/grades`
-10. `/education/attendance`
-11. `/education/study`
+5. `/education` (implemented preview)
+6. `/education/courses` (implemented preview)
+7. `/education/assignments` (implemented preview)
+8. `/education/exams` (implemented preview)
+9. `/education/grades` (implemented preview)
+10. `/education/attendance` (implemented preview)
+11. `/education/study` (superseded in the preview by `/education/study-sessions`)
 12. `/health`
 13. `/health/measurements`
 14. `/health/sleep`
