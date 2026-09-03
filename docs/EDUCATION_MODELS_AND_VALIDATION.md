@@ -1,6 +1,6 @@
 # Phase 5 Education models and validation
 
-Phase 5 implemented runtime-safe Education data shapes and validation. Phase 6 now consumes that boundary for seven academic calculations; Education operations, repositories, services, applications, APIs, authentication, and persistence remain unimplemented.
+Phase 5 implemented runtime-safe Education data shapes and validation. Phase 6 consumes that boundary for seven academic calculations, and Phase 7 now consumes it for owner-scoped application workflows. Repositories, APIs, authentication, and persistence remain unimplemented.
 
 ## Implemented entity schema families
 
@@ -89,10 +89,10 @@ Education exposes codes for invalid input, unsupported status, invalid date rang
 
 Synthetic tests cover all 14 entities: valid stored/create/update/query values; required fields; owner and related UUIDs; timestamps; strict unknown-field handling; non-empty updates; and owner reassignment rejection. Targeted tests cover calendar dates, timezone offsets, decimals, negative values, ordering, statuses, text bounds, URLs, and conflicting relationships. Shared Validation tests cover result narrowing, paths, messages, output validation, and safe error normalization.
 
-## What remains declaration-only after Phase 6
+## What remains interface-only after Phase 7
 
-All 79 CRUD-style Education operation declarations, all 15 repository interfaces, and the Education service interface remain unimplemented. The seven calculations are documented separately in `EDUCATION_CALCULATIONS.md`.
+All 15 repository contracts remain interfaces. The former 79 ambient operation declarations were removed in favor of real methods created by the injected Education service factory. The seven calculations are documented separately in `EDUCATION_CALCULATIONS.md`.
 
 ## Phase 5 exclusions
 
-Phase 5 itself added no calculations. Phase 6 is limited to calculators and adds no repository, service, API, database, Supabase client, authentication, UI, web page, mobile screen, import/export, notification, synchronization, mock application data, or seed data. Phase 7 has not started.
+Models remain persistence-neutral. Phase 7 adds no repository implementation, API, database, Supabase client, authentication, UI, web page, mobile screen, import/export, notification, synchronization, application mock data, or seed data. Phase 8 has not started.

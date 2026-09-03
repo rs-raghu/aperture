@@ -1,12 +1,24 @@
-# Architectural decisions through Phase 6
+# Architectural decisions through Phase 7
 
 ## TypeScript-first shared domain
 
 Education, Health, and Finance are expressed as framework-independent TypeScript packages so future consumers can share stable domain vocabularies.
 
-## Runtime code is limited to Education models, validation, and calculations
+## Runtime code is limited to the approved Education layers
 
-Phase 5 introduced Education schemas and shared validation. Phase 6 adds exactly seven Education calculators. Education CRUD operations, repositories, and services remain ambient declarations or interfaces. Health, Finance, and application skeleton behavior remain unchanged.
+Phase 5 introduced Education schemas and shared validation. Phase 6 added seven calculators. Phase 7 adds Education workflows and summaries through an injected service. Repositories remain interfaces. Health, Finance, and application skeleton behavior remain unchanged.
+
+## Application dependencies are explicit
+
+Education workflows receive repositories, a clock, and an ID generator through `createEducationService`. They never select production adapters, read global time, generate random IDs, read environment variables, or keep mutable module state. Authentication remains deferred, but every public workflow receives an owner context and scopes repository access to it.
+
+## Lifecycle and deletion policy
+
+Archives are idempotent state transitions and never cascades. Institution archival is blocked by active programs; Program archival is blocked by an active semester. Grade, Attendance, Schedule Entry, and Certificate deletion are owner-scoped, non-idempotent hard deletes. Lifecycle methods, not repositories, enforce transitions.
+
+## Deterministic application summaries
+
+Lists and combined deadlines use stable domain-key ordering with entity ID as the tie-breaker. Course progress exposes topic and assignment completion separately. Missing study duration and grade-point data remain explicit. Academic and attendance summaries call Phase 6 calculators rather than duplicating formulas.
 
 ## Zod supplies structural validation
 
@@ -30,7 +42,7 @@ Calculator outputs retain an exact normalized value and a rounded display value.
 
 ## Runtime-safe Education exports
 
-The default and `/models` entry points expose runtime schemas and inferred types. The default and `/calculations` entries expose the seven implemented calculators. The `/contracts` entry remains types-only for ambient operations and storage/orchestration contracts. Production builds exclude ambient operation, repository, and service modules.
+The default, `/models`, `/calculations`, and `/application` entry points expose only implemented runtime values plus type contracts. Former ambient operation functions were removed. Repository and dependency contracts are type-only; no production adapter is emitted.
 
 ## ISO date strings at boundaries
 

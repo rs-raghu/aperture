@@ -1,10 +1,1 @@
-import type { IsoDateTimeString, OwnerId, PageResult } from "../education.types.js";
-import type { ScheduleStudySessionInput, StudySession, StudySessionId, StudySessionListQuery, StudySessionsByCourseQuery, UpdateStudySessionInput } from "./study-session.types.js";
 export type { ScheduleStudySessionInput, StudySessionListQuery, StudySessionsByCourseQuery, UpdateStudySessionInput } from "./study-session.types.js";
-export declare function scheduleStudySession(input: ScheduleStudySessionInput): Promise<StudySession>;
-export declare function startStudySession(id: StudySessionId, ownerId: OwnerId, startedAt: IsoDateTimeString): Promise<StudySession>;
-export declare function completeStudySession(id: StudySessionId, ownerId: OwnerId, completedAt: IsoDateTimeString): Promise<StudySession>;
-export declare function cancelStudySession(id: StudySessionId, ownerId: OwnerId): Promise<StudySession>;
-export declare function getStudySession(id: StudySessionId, ownerId: OwnerId): Promise<StudySession | null>;
-export declare function listStudySessions(query: StudySessionListQuery): Promise<PageResult<StudySession>>;
-export declare function listStudySessionsByCourse(query: StudySessionsByCourseQuery): Promise<PageResult<StudySession>>;

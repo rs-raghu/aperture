@@ -9,12 +9,12 @@ export interface ReadRepository<TEntity, TId, TFilter extends RepositoryFilter> 
   findMany(filter: TFilter): Promise<PageResult<TEntity>>;
 }
 
-export interface WriteRepository<TEntity, TId, TCreateInput, TUpdateInput> {
-  create(input: TCreateInput): Promise<TEntity>;
-  update(id: TId, input: TUpdateInput): Promise<TEntity>;
+export interface WriteRepository<TEntity, TId> {
+  create(entity: TEntity): Promise<TEntity>;
+  update(entity: TEntity): Promise<TEntity>;
   delete(id: TId, ownerId: OwnerId): Promise<void>;
 }
 
-export interface CrudRepository<TEntity, TId, TCreateInput, TUpdateInput, TFilter extends RepositoryFilter>
+export interface CrudRepository<TEntity, TId, TFilter extends RepositoryFilter>
   extends ReadRepository<TEntity, TId, TFilter>,
-    WriteRepository<TEntity, TId, TCreateInput, TUpdateInput> {}
+    WriteRepository<TEntity, TId> {}

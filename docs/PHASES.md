@@ -42,10 +42,18 @@ The seven Education calculations are implemented as validated, deterministic, de
 
 CRUD operations, repository and service implementations, Health and Finance calculations, UI, APIs, authentication, persistence, Supabase, SQL, navigation, imports, notifications, and application behavior remain unimplemented.
 
-## Phase 7 — not started
+## Phase 7 — Education services and use cases: complete after verification
 
-Phase 7 has not been authorized or started. No additional implementation scope is implied.
+The dependency-injected Education application layer implements 79 owner-scoped workflows and six high-level summaries. IDs and timestamps come from injected contracts; storage remains behind interfaces.
+
+## Phase 7 exclusions
+
+Production repositories, databases, SQL, Supabase, APIs, authentication, UI, navigation, notifications, synchronization, imports/exports, background jobs, Health/Finance services, and new calculations remain unimplemented.
+
+## Phase 8 — not started
+
+Phase 8 has not been authorized or started. No additional implementation scope is implied.
 
 ## Implementation status
 
-Only Education models, shared structural validation, and the seven Education calculations have runtime implementations. All other domain and application behavior remains structural or declaration-only.
+Education models, shared validation, seven calculations, and the injected Education application layer have runtime implementations. Storage and all other domain/application behavior remain structural or interface-only.

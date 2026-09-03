@@ -1,10 +1,1 @@
-import type { OwnerId, PageResult } from "../education.types.js";
-import type { Assignment, AssignmentId, AssignmentListQuery, CreateAssignmentInput, SubmitAssignmentInput, UpcomingAssignmentsQuery, UpdateAssignmentInput } from "./assignment.types.js";
 export type { AssignmentListQuery, CreateAssignmentInput, SubmitAssignmentInput, UpcomingAssignmentsQuery, UpdateAssignmentInput } from "./assignment.types.js";
-export declare function createAssignment(input: CreateAssignmentInput): Promise<Assignment>;
-export declare function updateAssignment(id: AssignmentId, ownerId: OwnerId, input: UpdateAssignmentInput): Promise<Assignment>;
-export declare function submitAssignment(input: SubmitAssignmentInput): Promise<Assignment>;
-export declare function markAssignmentComplete(id: AssignmentId, ownerId: OwnerId): Promise<Assignment>;
-export declare function getAssignment(id: AssignmentId, ownerId: OwnerId): Promise<Assignment | null>;
-export declare function listAssignments(query: AssignmentListQuery): Promise<PageResult<Assignment>>;
-export declare function getUpcomingAssignments(query: UpcomingAssignmentsQuery): Promise<PageResult<Assignment>>;

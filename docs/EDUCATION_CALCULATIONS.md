@@ -80,4 +80,4 @@ Purpose: completed-credit progress. Formula: `applicable completed credits / req
 
 ## Boundaries and limitations
 
-These functions are neutral calculators, not institutional policy engines. They do not select a GPA scale, convert letters, decide attendance eligibility beyond the supplied policy, persist results, verify course relationships, or provide recommendations. Repository, service, CRUD, UI, API, authentication, and database behavior remain unimplemented. Phase 7 has not started.
+These functions are neutral calculators, not institutional policy engines. They do not select a GPA scale, convert letters, decide attendance eligibility beyond the supplied policy, persist results, or provide recommendations. Phase 7 services reuse the weighted-grade, GPA, CGPA, and attendance calculators instead of duplicating their formulas. Repository, UI, API, authentication, and database behavior remain unimplemented. Phase 8 has not started.

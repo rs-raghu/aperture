@@ -11,10 +11,17 @@
     "src/index.ts",
     "src/models.ts",
     "src/calculations.ts",
+    "src/application.ts",
     "src/education.types.ts",
     "src/education.errors.ts",
     "src/**/*.types.ts",
-    "src/calculations/**/*.ts"
+    "src/calculations/**/*.ts",
+    "src/application/**/*.ts",
+    "src/services/education-service.ts",
+    "src/services/education-service.types.ts",
+    "src/services/summaries/**/*.ts",
+    "src/repositories/**/*.ts",
+    "src/**/*.repository.ts"
   ],
   "exclude": [
     "src/institutions/*.contracts.ts",
@@ -31,9 +38,7 @@
     "src/resources/*.contracts.ts",
     "src/certificates/*.contracts.ts",
     "src/goals/*.contracts.ts",
-    "src/**/*.repository.ts",
-    "src/repositories/**/*",
-    "src/services/**/*",
+    "src/services/education-service.contract.ts",
     "src/contracts.d.ts",
     "test/**/*",
     "dist/**/*"

@@ -1,6 +1,6 @@
 {
   "name": "@aperture/education",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "exports": {
@@ -16,13 +16,17 @@
       "types": "./src/calculations.ts",
       "import": "./dist/calculations.js"
     },
+    "./application": {
+      "types": "./src/application.ts",
+      "import": "./dist/application.js"
+    },
     "./contracts": {
       "types": "./src/contracts.d.ts"
     }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --noEmit",
-    "pretest": "npm run build --workspace @aperture/validation",
+    "pretest": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education",
     "test": "vitest run",
     "build": "tsc --project tsconfig.build.json"
   },

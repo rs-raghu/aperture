@@ -1,6 +1,6 @@
-# Education package inventory through Phase 6
+# Education package inventory through Phase 7
 
-The Phase 1 structure remains. Phase 5 implemented models and validation; Phase 6 implements exactly seven academic calculations. See [Education calculations](EDUCATION_CALCULATIONS.md).
+The Phase 1 structure remains. Phase 5 implemented models and validation, Phase 6 implemented seven academic calculations, and Phase 7 implements the dependency-injected application layer. See [Education services](EDUCATION_SERVICES.md).
 
 ## Package organization
 
@@ -11,9 +11,9 @@ The Phase 1 structure remains. Phase 5 implemented models and validation; Phase 
 | Fourteen `*.types.ts` entity modules | Strict stored/create/update/query schemas and inferred types. | Implemented |
 | `src/models.ts` and `src/index.ts` | Runtime-safe model exports. | Implemented |
 | `src/contracts.d.ts` | Types-only contract entry point. | Declaration only |
-| Fourteen `*.contracts.ts` modules | Existing named operation declarations and contract types. | Declaration only |
-| Fourteen `*.repository.ts` modules and aggregate repository | Storage-neutral repository interfaces. | Declaration only |
-| `src/services/education-service.contract.ts` | Education orchestration interface. | Declaration only |
+| Fourteen `*.contracts.ts` modules | Type-only compatibility exports; ghost callable declarations were removed. | Type only |
+| Fourteen `*.repository.ts` modules and aggregate repository | Storage-neutral repository interfaces consumed through dependency injection. | Interface only |
+| `src/application/` and `src/services/` | Seventy-nine workflows, six summaries, errors, dependency contracts, and service factory. | Implemented |
 | Seven `src/calculations/*.contracts.ts` modules | Validated decimal-safe calculator schemas, results, and functions. | Implemented |
 | `src/calculations.ts` and shared calculation modules | Runtime exports, rounding policy, decimal schemas/helpers, and typed errors. | Implemented |
 | `test/education-models.test.ts` | Synthetic schema conformance and boundary tests. | Test only |
@@ -39,7 +39,7 @@ Every entity has a strict stored schema, create schema, update schema, and query
 
 ## Declaration inventory retained
 
-The 79 non-calculation Education operation declarations are retained without bodies. Fifteen repository interfaces and the Education service interface remain unimplemented. The seven calculation declarations have been replaced by runtime implementations and are available from the default and `/calculations` entries.
+All 79 former non-calculation operation names are real methods on the injected Education service. The ambient callable declarations were removed. Fifteen repository interfaces remain unimplemented. The seven calculations remain available from the default and `/calculations` entries.
 
 ## Relationship inventory
 
@@ -59,7 +59,7 @@ Institution
 
 Schedule entries can reference a course. Certificates can stand alone or reference academic entities. Education goals can stand alone or reference one program, semester, or course. Identifier validation does not prove that a relationship exists or belongs to the same owner.
 
-## Phase 6 checklist
+## Phase 7 checklist
 
 - [x] Fourteen stored-entity schemas.
 - [x] Fourteen create-input schemas.
@@ -75,6 +75,8 @@ Schedule entries can reference a course. Certificates can stand alone or referen
 - [x] Synthetic model and validation tests.
 - [x] Seven calculation functions use validated decimal strings and `decimal.js` arithmetic.
 - [x] Exact and rounded results expose explicit rounding metadata.
-- [x] Repository, service, and CRUD-style operation declarations remain without implementations.
+- [x] Seventy-nine owner-scoped workflows and six high-level summaries are implemented.
+- [x] Repository, clock, and ID-generator dependencies are injected.
+- [x] Repository contracts remain interfaces without production adapters.
 - [x] No UI, API, authentication, database, or Supabase implementation.
-- [x] Phase 7 not started.
+- [x] Phase 8 not started.
