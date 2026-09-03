@@ -1,4 +1,4 @@
-# Architectural decisions through Phase 3
+# Architectural decisions through Phase 4
 
 ## TypeScript-first shared domain
 
@@ -6,7 +6,7 @@ Education, Health, and Finance are expressed as framework-independent TypeScript
 
 ## No runtime code in completed phases
 
-Phases 1 and 2 contain structural TypeScript contracts. Phase 3 strengthens this boundary by using only `.d.ts` Finance source files. All completed phases include no executable business behavior or placeholder implementations.
+Phases 1 and 2 contain structural TypeScript contracts. Phase 3 uses only `.d.ts` Finance source files, and Phase 4 uses only `.d.ts` source files for new shared packages and application contracts. All completed phases include no executable business behavior or placeholder implementations.
 
 ## ISO date strings at boundaries
 
@@ -60,9 +60,37 @@ Phase 2 contains no medical, medication, nutrition, recovery, workout, or traini
 
 Repository files define interfaces only. Repository contracts remain independent of storage, and storage-specific implementations remain outside the completed phase surfaces.
 
-## Web, mobile, and backend code remain deferred
+## Web and mobile are separate application shells
 
-The Education, Health, and Finance packages depend on no UI framework, mobile framework, server, API, authentication system, or database library. Web, mobile, backend, persistence, and external financial integrations remain deferred.
+Next.js App Router is the future web platform and Expo Router with React Native is the future mobile platform. Phase 4 registers compatible dependencies and reserves route directories but creates no executable page, screen, layout, component, hook, or handler.
+
+## Shared packages remain application-neutral
+
+Platform, data-access, validation, calculator-registry, formatting, configuration, and feature-registry contracts are framework-neutral. Application packages may consume shared contracts in future phases; shared packages must not import web or mobile code.
+
+## Public and server-only configuration are distinct
+
+Public web and mobile values are explicitly separated from server-only service-role keys, owner bootstrap settings, and integration credentials. Phase 4 example files contain variable names and comments only, and no code reads environment variables.
+
+## Authentication and personal-data ownership
+
+Supabase Auth is the planned identity provider. Public signup will eventually be disabled. Every future personal-data table must enforce owner-based Row Level Security before use. Phase 4 contains signatures only and no authentication or policy behavior.
+
+## Storage-neutral data access
+
+Generic data-access contracts do not mention Supabase. Future provider adapters will implement those contracts without leaking storage details into domain or application surfaces.
+
+## Modular monolith, not runtime plugins
+
+The feature registry describes Today, Education, Health, Finance, Calculators, and Settings through static metadata contracts. It does not scan files, load code dynamically, install plugins, or provide enterprise organization/authorization behavior.
+
+## Platform implementation remains deferred
+
+The Education, Health, and Finance packages depend on no UI framework, mobile framework, server, API, authentication system, or database library. Phase 4 dependencies belong only to their application workspaces. Web/mobile behavior, persistence, authentication, SQL, and provider integrations remain deferred.
+
+## Future Supabase boundary
+
+Supabase PostgreSQL and Auth are the planned backend. Database implementation begins no earlier than Phase 26. Phase 4 creates only documented migration, function, and test directories; it contains no executable SQL or client.
 
 ## Existing project retained as an archive
 

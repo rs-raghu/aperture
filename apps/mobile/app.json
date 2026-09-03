@@ -1,0 +1,9 @@
+{
+  "expo": {
+    "name": "Aperture Mobile (Placeholder)",
+    "slug": "aperture-mobile-placeholder",
+    "scheme": "aperture-placeholder",
+    "version": "0.4.0",
+    "orientation": "portrait"
+  }
+}
