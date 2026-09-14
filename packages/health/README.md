@@ -1,6 +1,6 @@
 # @aperture/health
 
-Phase 11 provides platform-neutral Health models and structural validation through the existing shared Validation package. All 22 principal entities have stored, create/record, and update schemas. Units, identifiers, statuses, quantities, recorded scales, and model queries are validated at runtime.
+Phase 12 provides platform-neutral Health models, structural validation, and the complete set of 11 approved Health calculations. All 22 principal entities have stored, create/record, and update schemas. Units, identifiers, statuses, quantities, recorded scales, model queries, calculation inputs, and calculation results are validated at runtime.
 
 ```ts
 import { recordHydrationInputSchema } from "@aperture/health";
@@ -13,9 +13,9 @@ const result = validateInput(recordHydrationInputSchema, {
 });
 ```
 
-Schemas preserve recorded decimal precision and units. `.parse()` throws ZodError; `.safeParse()` and shared `validateInput` return structured results. Unknown fields and null reject; omitted optional values remain optional. Validation does not compute, interpret, diagnose, recommend, generate identifiers/timestamps, access storage, or consult the current time.
+Schemas preserve recorded decimal precision and units. `.parse()` throws ZodError; `.safeParse()` and shared `validateInput` return structured results. Unknown fields and null reject; omitted optional values remain optional. Calculators use decimal arithmetic, explicit unit conversion, and a deterministic 12-place half-up output policy. They do not interpret, diagnose, recommend, generate identifiers/timestamps, access storage, or consult the current time.
 
-Root imports expose implemented schemas and public types. Deferred operation signatures remain available through the types-only `@aperture/health/contracts` entry. They cannot be called at runtime. Calculations, lifecycle/service behavior, repositories, UI, persistence, and integrations remain unimplemented.
+Root imports expose implemented schemas, calculations, and public types. Calculations also have a focused `@aperture/health/calculations` entry. Deferred lifecycle operation signatures remain available through the types-only `@aperture/health/contracts` entry and cannot be called at runtime. Service behavior, repositories, UI, persistence, and integrations remain unimplemented.
 
 From the workspace root:
 
@@ -28,4 +28,4 @@ npm run build --workspace @aperture/health
 
 The build excludes browser and Node ambient globals. Health lint checks strict TypeScript plus unused locals and parameters. Tests import only the public Health package and use synthetic fixtures.
 
-See [the complete model, declaration, and verification inventory](../../docs/HEALTH_MODELS_VALIDATION.md).
+See [the complete model, declaration, and verification inventory](../../docs/HEALTH_MODELS_VALIDATION.md) and [the formula, conversion, and safety reference](../../docs/HEALTH_CALCULATIONS.md).

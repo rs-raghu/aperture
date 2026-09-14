@@ -1,6 +1,6 @@
 import type { HydrationVolumeUnit, HydrationVolumeValue } from "../health-units.types.js";
 
-/** Input hydration volumes carry units and select an output unit. No formula is implemented in Phase 2. */
+/** Input hydration volumes carry units and select an output unit. */
 export interface HydrationSummaryInput {
   readonly volumes: readonly HydrationVolumeValue[];
   readonly outputUnit: HydrationVolumeUnit;
@@ -12,5 +12,3 @@ export interface HydrationSummaryResult {
   readonly totalVolume: HydrationVolumeValue;
   readonly isEstimate: false;
 }
-
-export declare function calculateHydrationSummary(input: HydrationSummaryInput): HydrationSummaryResult;

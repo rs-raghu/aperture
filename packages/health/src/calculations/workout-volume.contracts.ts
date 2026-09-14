@@ -5,7 +5,7 @@ export interface WorkoutVolumeSetInput {
   readonly weight: WeightValue;
 }
 
-/** Set inputs carry repetition and weight units. No formula is implemented in Phase 2. */
+/** Set inputs carry repetition and weight units. */
 export interface WorkoutVolumeInput {
   readonly sets: readonly WorkoutVolumeSetInput[];
 }
@@ -15,5 +15,3 @@ export interface WorkoutVolumeResult {
   readonly load: WorkoutLoadValue;
   readonly isEstimate: false;
 }
-
-export declare function calculateWorkoutVolume(input: WorkoutVolumeInput): WorkoutVolumeResult;

@@ -1,6 +1,6 @@
 import type { DurationUnit, DurationValue } from "../health-units.types.js";
 
-/** Input sleep durations carry units and select an output unit. No formula is implemented in Phase 2. */
+/** Input sleep durations carry units and select an output unit. */
 export interface SleepSummaryInput {
   readonly durations: readonly DurationValue[];
   readonly outputUnit: DurationUnit;
@@ -13,5 +13,3 @@ export interface SleepSummaryResult {
   readonly averageDuration?: DurationValue;
   readonly isEstimate: false;
 }
-
-export declare function calculateSleepSummary(input: SleepSummaryInput): SleepSummaryResult;

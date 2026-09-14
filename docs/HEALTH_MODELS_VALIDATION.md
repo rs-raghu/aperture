@@ -1,6 +1,6 @@
 # Health models and validation — Phase 11
 
-Phase 11 implements platform-neutral Health runtime models and structural validation only. Runtime schemas use the existing `@aperture/validation` Zod boundary. No Health calculation, lifecycle operation, service, repository implementation, UI, API, storage, integration, clinical interpretation, recommendation, or Phase 12 work is implemented.
+This document records the Phase 11 platform-neutral Health model and structural-validation gate. Runtime schemas use the existing `@aperture/validation` Zod boundary. Phase 12 subsequently implemented the approved calculations; see [Health calculations](HEALTH_CALCULATIONS.md). Lifecycle operations, services, repository implementations, UI, APIs, storage, integrations, clinical interpretation, and recommendations remain outside this Phase 11 inventory.
 
 ## Preflight and baseline
 

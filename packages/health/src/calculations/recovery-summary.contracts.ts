@@ -11,7 +11,7 @@ export interface RecoverySummaryEntryInput {
   readonly heartRateVariability?: HeartRateVariabilityValue;
 }
 
-/** Ratings use one-to-ten scales; physiological values carry units. No formula is implemented in Phase 2. */
+/** Ratings use one-to-ten scales; physiological values carry units. */
 export interface RecoverySummaryInput {
   readonly entries: readonly RecoverySummaryEntryInput[];
 }
@@ -26,5 +26,3 @@ export interface RecoverySummaryResult {
   readonly ratingScale: "one_to_ten";
   readonly isEstimate: true;
 }
-
-export declare function calculateRecoverySummary(input: RecoverySummaryInput): RecoverySummaryResult;

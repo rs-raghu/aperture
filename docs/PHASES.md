@@ -82,12 +82,16 @@ All 22 principal Health entities have runtime structural schemas, alongside iden
 
 Health calculations, lifecycle and service implementations, repositories, UI, APIs, persistence, integrations, diagnosis, recommendations, alerts, and deployment remain unimplemented.
 
-## Phase 12 — not started
+## Phase 12 — Health calculations: complete after verification
 
-Health calculations and calculation-specific validation remain declaration-only. No Phase 12 implementation has started.
+All 11 approved Health calculation declarations now have validated runtime implementations, explicit unit conversions, deterministic decimal rounding, public runtime exports, focused tests, and documented formula and medical-safety boundaries. See [the calculation reference](HEALTH_CALCULATIONS.md).
+
+## Phase 12 exclusions
+
+Undeclared calculations, diagnostic interpretation, clinical classifications, recommendations, alerts, lifecycle and service implementations, repositories, UI, APIs, persistence, integrations, and Phase 13 work remain unimplemented.
 
 ## Implementation status
 
-Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, and Health models/validation have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
+Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, Health models/validation, and 11 Health calculations have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
 
 Phase 11 verification caveat: standard workspace tests, lint, type-check, builds, and Expo web export pass. Supplemental Expo Doctor passes 20/21 checks; its SDK patch-version comparison requests newer versions of three unchanged Expo packages. See the Phase 11 report for exact versions. No unrelated dependency upgrade was applied.

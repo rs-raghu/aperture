@@ -1,17 +1,6 @@
 /** Types-only compatibility surface; these operations have no runtime implementation. */
 export { createAppointment, updateAppointment, cancelAppointment, completeAppointment, getAppointment, listAppointments, listUpcomingAppointments } from "./appointments/appointment.contracts.js";
 export { recordBodyComposition, updateBodyComposition, deleteBodyComposition, getBodyComposition, listBodyCompositionRecords } from "./body-composition/body-composition.contracts.js";
-export { calculateBmi } from "./calculations/bmi.contracts.js";
-export { calculateBmr } from "./calculations/bmr.contracts.js";
-export { calculateHeartRateZones } from "./calculations/heart-rate-zones.contracts.js";
-export { calculateHydrationSummary } from "./calculations/hydration-summary.contracts.js";
-export { estimateOneRepMax } from "./calculations/one-rep-max.contracts.js";
-export { calculateRecoverySummary } from "./calculations/recovery-summary.contracts.js";
-export { calculateRunningPace } from "./calculations/running-pace.contracts.js";
-export { calculateRunningSummary } from "./calculations/running-summary.contracts.js";
-export { calculateSleepSummary } from "./calculations/sleep-summary.contracts.js";
-export { calculateTdee } from "./calculations/tdee.contracts.js";
-export { calculateWorkoutVolume } from "./calculations/workout-volume.contracts.js";
 export { createEquipment, updateEquipment, retireEquipment, getEquipment, listEquipment, recordEquipmentUsage, getEquipmentUsageSummary } from "./equipment/equipment.contracts.js";
 export { recordExerciseSet, updateExerciseSet, deleteExerciseSet, getExerciseSet, listExerciseSetsByWorkout, listExerciseSetsByExercise } from "./exercise-sets/exercise-set.contracts.js";
 export { createExercise, updateExercise, archiveExercise, getExercise, listExercises, listExercisesByCategory } from "./exercises/exercise.contracts.js";

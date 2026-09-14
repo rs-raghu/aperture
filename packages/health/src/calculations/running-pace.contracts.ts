@@ -1,6 +1,6 @@
 import type { DistanceValue, DurationValue, PaceUnit, PaceValue } from "../health-units.types.js";
 
-/** Input units are carried by distance and duration. No formula is implemented in Phase 2. */
+/** Input units are carried by distance and duration. */
 export interface RunningPaceInput {
   readonly distance: DistanceValue;
   readonly duration: DurationValue;
@@ -12,5 +12,3 @@ export interface RunningPaceResult {
   readonly pace: PaceValue;
   readonly isEstimate: false;
 }
-
-export declare function calculateRunningPace(input: RunningPaceInput): RunningPaceResult;

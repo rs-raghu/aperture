@@ -12,6 +12,8 @@ export type { BodyCompositionRecordId, BodyCompositionRecord } from "./body-comp
 
 export type { BmiInput, BmiResult } from "./calculations/bmi.contracts.js";
 
+export * from "./calculations.js";
+
 export type { BmrSexInput, AgeValue, BmrInput, BmrResult } from "./calculations/bmr.contracts.js";
 
 export type { HeartRateZonesInput, HeartRateZoneResult, HeartRateZonesResult } from "./calculations/heart-rate-zones.contracts.js";

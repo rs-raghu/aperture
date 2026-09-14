@@ -5,7 +5,7 @@ export interface RunningSummaryActivityInput {
   readonly duration: DurationValue;
 }
 
-/** Activity input units are explicit; output distance selects a unit. No formula is implemented in Phase 2. */
+/** Activity input units are explicit; output distance selects a unit. */
 export interface RunningSummaryInput {
   readonly activities: readonly RunningSummaryActivityInput[];
   readonly outputDistanceUnit: DistanceUnit;
@@ -19,5 +19,3 @@ export interface RunningSummaryResult {
   readonly averagePace?: PaceValue;
   readonly isEstimate: false;
 }
-
-export declare function calculateRunningSummary(input: RunningSummaryInput): RunningSummaryResult;

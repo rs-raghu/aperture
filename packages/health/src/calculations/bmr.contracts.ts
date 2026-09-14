@@ -6,7 +6,7 @@ export interface AgeValue {
   readonly unit: "year";
 }
 
-/** Input units are carried by weight, height, and age. No formula is implemented in Phase 2. */
+/** Input units are carried by weight, height, and age. */
 export interface BmrInput {
   readonly weight: WeightValue;
   readonly height: HeightValue;
@@ -20,5 +20,3 @@ export interface BmrResult {
   readonly period: "day";
   readonly isEstimate: true;
 }
-
-export declare function calculateBmr(input: BmrInput): BmrResult;

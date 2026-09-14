@@ -85,3 +85,9 @@ Health adds only the existing local `@aperture/validation@0.5.0` workspace depen
 The completed Phase 11 audit on 2026-09-07 reports 13 moderate, 0 high, and 0 critical vulnerabilities, all within the accepted Expo/React Native dependency tree. The web production audit reports 0 vulnerabilities. Both advisory requests completed; neither result is an endpoint timeout. No audit fix or unrelated dependency upgrade was applied.
 
 The audits were repeated on 2026-09-14 with the same results: 13 moderate workspace findings and zero web production findings. Supplemental Expo compatibility checks now request Expo ~57.0.22, Expo Crypto ~57.0.3, and Expo Router ~57.0.21, while the unchanged installed versions are 57.0.19, 57.0.2, and 57.0.18. Expo Doctor passes 20/21 checks; only the patch-version comparison fails. Mobile tests, type-check, lint, and web export pass. These unrelated upgrades remain deferred as required by Phase 11.
+
+## Phase 12 dependency declaration
+
+| Package | Workspace | Resolved version | Kind | Purpose |
+| --- | --- | ---: | --- | --- |
+| `decimal.js` | `@aperture/health` | 10.6.0 | Runtime | Performs deterministic Health arithmetic and final rounding without binary floating-point drift. The same resolved package was already used by Education, so this adds a direct workspace declaration without adding a new external package to the lock graph. |

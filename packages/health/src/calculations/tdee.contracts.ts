@@ -6,7 +6,7 @@ export interface ActivityFactorValue {
   readonly unit: "ratio";
 }
 
-/** Input energy is per day and the factor is a ratio. No formula is implemented in Phase 2. */
+/** Input energy is per day and the factor is a ratio. */
 export interface TdeeInput {
   readonly basalEnergy: EnergyValue;
   readonly basalEnergyPeriod: "day";
@@ -19,5 +19,3 @@ export interface TdeeResult {
   readonly period: "day";
   readonly isEstimate: true;
 }
-
-export declare function calculateTdee(input: TdeeInput): TdeeResult;

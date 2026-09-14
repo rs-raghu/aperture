@@ -6,7 +6,7 @@ Health depends on the existing shared Validation package and infers readonly pub
 
 ## Deferred Health exports are types-only
 
-The Health root entry exports implemented schemas and public types. The original 137 ambient operation/calculation functions remain declarations and are accessible through a types-only `/contracts` entry, preventing module-load failures from nonexistent runtime values. Calculation-specific schemas remain Phase 12; service-only query/summary validation remains Phase 13. The production build excludes browser and Node ambient types.
+The Health root entry exports implemented schemas, public types, and the 11 calculations completed in Phase 12. The remaining 126 ambient lifecycle operations stay accessible through a types-only `/contracts` entry, preventing module-load failures from nonexistent runtime values. Service-only query/summary validation remains Phase 13. The production build excludes browser and Node ambient types.
 
 ## Health updates preserve Phase 2 mutability
 
@@ -147,6 +147,18 @@ Symptoms, vital readings, laboratory results, body measurements, and recovery en
 ## No medical recommendation logic
 
 Phase 2 contains no medical, medication, nutrition, recovery, workout, or training recommendation behavior. Calculation contracts describe inputs and outputs without formulas, thresholds, or advice.
+
+## Health calculations remain arithmetic-only
+
+Phase 12 implements only the 11 calculation contracts approved in Phase 2. Results carry their declared estimate flags and units. No calculator attaches a diagnosis, classification, warning threshold, intake target, exercise prescription, or medical recommendation.
+
+## Health decimal and conversion policy
+
+Health calculations use `decimal.js`, preserve decimal-string inputs, avoid intermediate rounding, and round decimal outputs once to at most 12 places using half-up. Heart-rate outputs retain the approved numeric representation and round to at most two places. Standard unit conversions use fixed NIST relationships; `fluid_ounce` means US fluid ounce.
+
+## Unspecified BMR contract value
+
+The declared BMR input includes `unspecified` alongside `female` and `male`. Phase 12 uses `-78`, the arithmetic midpoint of the Mifflin-St Jeor constants `-161` and `5`, for that value and documents the assumption. All BMR outputs remain estimates.
 
 ## Repository interfaces separated from implementations
 

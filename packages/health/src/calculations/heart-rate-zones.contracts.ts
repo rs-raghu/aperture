@@ -1,6 +1,6 @@
 import type { HeartRateValue, PercentageValue } from "../health-units.types.js";
 
-/** Input heart rates use beats per minute. No formula is implemented in Phase 2. */
+/** Input heart rates use beats per minute. */
 export interface HeartRateZonesInput {
   readonly restingHeartRate?: HeartRateValue;
   readonly maximumHeartRate: HeartRateValue;
@@ -18,5 +18,3 @@ export interface HeartRateZonesResult {
   readonly zones: readonly HeartRateZoneResult[];
   readonly isEstimate: true;
 }
-
-export declare function calculateHeartRateZones(input: HeartRateZonesInput): HeartRateZonesResult;

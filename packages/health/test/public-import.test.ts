@@ -1,12 +1,15 @@
 import { expect, expectTypeOf, it } from "vitest";
 import * as health from "@aperture/health";
 import type { HealthRepository, HealthService, HealthProfile, HealthProfileId, UpdateExerciseSetInput, VitalReadingValue } from "@aperture/health";
-import type { calculateBmi, createHealthProfile } from "@aperture/health/contracts";
+import type { createHealthProfile } from "@aperture/health/contracts";
 
 const expectedExports = [
+  "HealthCalculationError",
+  "activityFactorValueSchema",
   "activityRouteIdSchema",
   "activityRouteListQuerySchema",
   "activityRouteSchema",
+  "ageValueSchema",
   "appointmentIdSchema",
   "appointmentListQuerySchema",
   "appointmentSchema",
@@ -18,6 +21,21 @@ const expectedExports = [
   "bodyCompositionListQuerySchema",
   "bodyCompositionRecordIdSchema",
   "bodyCompositionRecordSchema",
+  "bmiInputSchema",
+  "bmiResultSchema",
+  "bmrInputSchema",
+  "bmrResultSchema",
+  "bmrSexInputSchema",
+  "calculateBmi",
+  "calculateBmr",
+  "calculateHeartRateZones",
+  "calculateHydrationSummary",
+  "calculateRecoverySummary",
+  "calculateRunningPace",
+  "calculateRunningSummary",
+  "calculateSleepSummary",
+  "calculateTdee",
+  "calculateWorkoutVolume",
   "createActivityRouteInputSchema",
   "createAppointmentInputSchema",
   "createEquipmentInputSchema",
@@ -68,6 +86,9 @@ const expectedExports = [
   "healthProfileStatusSchema",
   "heartRateUnitSchema",
   "heartRateValueSchema",
+  "heartRateZoneResultSchema",
+  "heartRateZonesInputSchema",
+  "heartRateZonesResultSchema",
   "heartRateVariabilityUnitSchema",
   "heartRateVariabilityValueSchema",
   "heightUnitSchema",
@@ -78,6 +99,8 @@ const expectedExports = [
   "hydrationEntrySchema",
   "hydrationVolumeUnitSchema",
   "hydrationVolumeValueSchema",
+  "hydrationSummaryInputSchema",
+  "hydrationSummaryResultSchema",
   "identifierSchema",
   "isoDateSchema",
   "isoDateStringSchema",
@@ -107,6 +130,8 @@ const expectedExports = [
   "ownerQuerySchema",
   "oxygenSaturationUnitSchema",
   "oxygenSaturationValueSchema",
+  "oneRepMaxInputSchema",
+  "oneRepMaxResultSchema",
   "paceUnitSchema",
   "paceValueSchema",
   "pageRequestSchema",
@@ -136,6 +161,9 @@ const expectedExports = [
   "recoveryEntryListQuerySchema",
   "recoveryEntrySchema",
   "recoveryRatingSchema",
+  "recoverySummaryEntryInputSchema",
+  "recoverySummaryInputSchema",
+  "recoverySummaryResultSchema",
   "repetitionCountSchema",
   "repetitionUnitSchema",
   "repositoryFilterSchema",
@@ -148,11 +176,18 @@ const expectedExports = [
   "runningSplitListQuerySchema",
   "runningSplitSchema",
   "runningSplitsByActivityQuerySchema",
+  "runningPaceInputSchema",
+  "runningPaceResultSchema",
+  "runningSummaryActivityInputSchema",
+  "runningSummaryInputSchema",
+  "runningSummaryResultSchema",
   "sleepQualitySchema",
   "sleepRecordIdSchema",
   "sleepRecordListQuerySchema",
   "sleepRecordSchema",
   "sleepRecordsByDateRangeQuerySchema",
+  "sleepSummaryInputSchema",
+  "sleepSummaryResultSchema",
   "speedUnitSchema",
   "speedValueSchema",
   "symptomEntryIdSchema",
@@ -161,6 +196,8 @@ const expectedExports = [
   "symptomSeveritySchema",
   "temperatureUnitSchema",
   "temperatureValueSchema",
+  "tdeeInputSchema",
+  "tdeeResultSchema",
   "upcomingAppointmentsQuerySchema",
   "updateActivityRouteInputSchema",
   "updateAppointmentInputSchema",
@@ -193,6 +230,10 @@ const expectedExports = [
   "vitalReadingsByTypeQuerySchema",
   "weightUnitSchema",
   "weightValueSchema",
+  "workoutVolumeInputSchema",
+  "workoutVolumeResultSchema",
+  "workoutVolumeSetInputSchema",
+  "estimateOneRepMax",
   "workoutLoadUnitSchema",
   "workoutLoadValueSchema",
   "workoutPlanIdSchema",
@@ -206,7 +247,7 @@ const expectedExports = [
   "workoutSessionsByDateRangeQuerySchema"
 ] as const;
 
-it("exposes the complete Phase 11 surface through the built package", () => {
+it("exposes the complete Phase 12 surface through the built package", () => {
   expect(Object.keys(health).sort()).toEqual([...expectedExports].sort());
   for (const key of expectedExports) expect(health[key]).toBeDefined();
 });
@@ -218,7 +259,7 @@ it("retains inferred and deferred public types", () => {
   expectTypeOf<UpdateExerciseSetInput>().not.toHaveProperty("exerciseId");
   expectTypeOf<HealthRepository>().toHaveProperty("profiles");
   expectTypeOf<HealthService>().toHaveProperty("getHealthOverview");
-  expectTypeOf<typeof calculateBmi>().toBeFunction();
+  expectTypeOf<typeof health.calculateBmi>().toBeFunction();
   expectTypeOf<typeof createHealthProfile>().toBeFunction();
   const reading: VitalReadingValue = health.vitalReadingValueSchema.parse({ type: "blood_pressure", value: { systolic: 1, diastolic: 1, unit: "millimeters_of_mercury" } });
   if (reading.type === "blood_pressure") expectTypeOf(reading.value.systolic).toEqualTypeOf<number>();

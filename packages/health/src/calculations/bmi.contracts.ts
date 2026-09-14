@@ -1,7 +1,7 @@
 import type { DecimalString } from "../health.types.js";
 import type { HeightValue, WeightValue } from "../health-units.types.js";
 
-/** Input units are carried by weight and height. No formula is implemented in Phase 2. */
+/** Input units are carried by weight and height. */
 export interface BmiInput {
   readonly weight: WeightValue;
   readonly height: HeightValue;
@@ -13,5 +13,3 @@ export interface BmiResult {
   readonly unit: "kilograms_per_square_meter";
   readonly isEstimate: false;
 }
-
-export declare function calculateBmi(input: BmiInput): BmiResult;

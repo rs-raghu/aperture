@@ -2,13 +2,13 @@
 
 Aperture v2 is being built incrementally as a new, independent project.
 
-Phase 5 implements runtime Education models and validation, Phase 6 implements seven academic calculators, Phase 7 implements dependency-injected Education services, Phase 8 provides an isolated Education in-memory repository adapter, Phase 9 adds an Education-only Next.js preview, and Phase 10 adds an Education-only Expo/React Native preview. Phase 11 adds Health runtime models and structural validation. Finance remains declaration-only.
+Phase 5 implements runtime Education models and validation, Phase 6 implements seven academic calculators, Phase 7 implements dependency-injected Education services, Phase 8 provides an isolated Education in-memory repository adapter, Phase 9 adds an Education-only Next.js preview, and Phase 10 adds an Education-only Expo/React Native preview. Phase 11 adds Health runtime models and structural validation, and Phase 12 implements all 11 declared Health calculations. Finance remains declaration-only.
 
 Education objects can be parsed with strict Zod schemas; calculators and owner-scoped workflows power responsive web and mobile previews through the volatile `@aperture/education-memory` adapter. Preview data disappears on browser/app reload and is not the future Supabase repository. Aperture is not a complete or production-ready application. There is no authentication, database client, synchronization, API, durable storage, Health UI, or Finance UI.
 
 Do not enter personal or financial data. The existing Aperture project is retained separately and is not imported into this project.
 
-Phase 11 implements Health models and validation only. Health calculations, services, repository implementations, and UI remain deferred. Phase 12 has not started.
+Phase 12 implements Health calculations with validated inputs/results, explicit unit conversion, decimal arithmetic, and documented safety boundaries. Health services, repository implementations, and UI remain deferred to later phases.
 
 ## Structural verification
 
