@@ -1,21 +1,48 @@
-import type { EntityMetadata, IsoDateTimeString } from "../health.types.js";
-import type { DistanceValue, DurationValue, PaceValue, RepetitionCount, WeightValue } from "../health-units.types.js";
-import type { ExerciseId } from "../exercises/exercise.types.js";
-import type { RunningActivityId } from "../running/running-activity.types.js";
+import { z } from "@aperture/validation";
+import { exerciseIdSchema } from "../exercises/exercise.types.js";
+import { distanceValueSchema, durationValueSchema, paceValueSchema, repetitionCountSchema, weightValueSchema } from "../health-units.types.js";
+import { isoDateTimeStringSchema, ownerIdSchema } from "../health.types.js";
+import { textSchema } from "../internal/primitives.js";
+import { orderedInstants } from "../internal/validation.helpers.js";
+import { runningActivityIdSchema } from "../running/running-activity.types.js";
 
-export type PersonalRecordId = string;
-export type PersonalRecordMetric =
-  | { readonly type: "distance"; readonly value: DistanceValue }
-  | { readonly type: "duration"; readonly value: DurationValue }
-  | { readonly type: "pace"; readonly value: PaceValue }
-  | { readonly type: "repetitions"; readonly value: RepetitionCount }
-  | { readonly type: "weight"; readonly value: WeightValue };
+export const personalRecordIdSchema = ownerIdSchema;
+export type PersonalRecordId = Readonly<z.infer<typeof personalRecordIdSchema>>;
 
-export interface PersonalRecord extends EntityMetadata {
-  readonly id: PersonalRecordId;
-  readonly exerciseId?: ExerciseId;
-  readonly runningActivityId?: RunningActivityId;
-  readonly title: string;
-  readonly metric: PersonalRecordMetric;
-  readonly achievedAt: IsoDateTimeString;
-}
+export const personalRecordMetricSchema = z.discriminatedUnion("type", [
+  z.strictObject({
+    type: z.literal("distance"),
+    value: distanceValueSchema,
+  }),
+  z.strictObject({
+    type: z.literal("duration"),
+    value: durationValueSchema,
+  }),
+  z.strictObject({
+    type: z.literal("pace"),
+    value: paceValueSchema,
+  }),
+  z.strictObject({
+    type: z.literal("repetitions"),
+    value: repetitionCountSchema,
+  }),
+  z.strictObject({
+    type: z.literal("weight"),
+    value: weightValueSchema,
+  })
+]).readonly();
+export type PersonalRecordMetric = Readonly<z.infer<typeof personalRecordMetricSchema>>;
+
+export const personalRecordSchema = z.strictObject({
+  ownerId: ownerIdSchema,
+  createdAt: isoDateTimeStringSchema,
+  updatedAt: isoDateTimeStringSchema,
+  id: personalRecordIdSchema,
+  exerciseId: exerciseIdSchema.optional(),
+  runningActivityId: runningActivityIdSchema.optional(),
+  title: textSchema,
+  metric: personalRecordMetricSchema,
+  achievedAt: isoDateTimeStringSchema,
+})
+  .refine((value) => orderedInstants(value.createdAt, value.updatedAt), { message: "Update time must not be earlier than creation time.", path: ["updatedAt"] }).readonly();
+export type PersonalRecord = Readonly<z.infer<typeof personalRecordSchema>>;

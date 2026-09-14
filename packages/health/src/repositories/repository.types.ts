@@ -1,8 +1,8 @@
-import type { OwnerId, PageRequest, PageResult } from "../health.types.js";
+import { ownerQuerySchema } from "../health.types.js";
+import type { OwnerId, OwnerQuery, PageResult } from "../health.types.js";
 
-export interface RepositoryFilter extends PageRequest {
-  readonly ownerId: OwnerId;
-}
+export const repositoryFilterSchema = ownerQuerySchema;
+export type RepositoryFilter = OwnerQuery;
 
 export interface ReadRepository<TEntity, TId, TFilter extends RepositoryFilter> {
   findById(id: TId, ownerId: OwnerId): Promise<TEntity | null>;

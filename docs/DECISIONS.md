@@ -1,4 +1,16 @@
-# Architectural decisions through Phase 10
+# Architectural decisions through Phase 11
+
+## Health validation preserves recording contracts
+
+Health depends on the existing shared Validation package and infers readonly public types from runtime schemas. Phase 2 IDs remain opaque strings, with a documented stable-token syntax rather than a new UUID-only or branded constraint. Decimal quantities retain all caller digits and their original unit; digit-based structural checks avoid floating-point rounding and underflow. Validation performs no unit conversion or clinical interpretation.
+
+## Deferred Health exports are types-only
+
+The Health root entry exports implemented schemas and public types. The original 137 ambient operation/calculation functions remain declarations and are accessible through a types-only `/contracts` entry, preventing module-load failures from nonexistent runtime values. Calculation-specific schemas remain Phase 12; service-only query/summary validation remains Phase 13. The production build excludes browser and Node ambient types.
+
+## Health updates preserve Phase 2 mutability
+
+Health update inputs exclude owner and entity ID because operations already receive those separately. Declared immutable relationships stay excluded; explicitly mutable references stay permitted. Every update requires a defined field, while body-composition updates retain required observation time. Schemas check only supplied local values; stored-state merge, relationship ownership, and lifecycle enforcement remain future service responsibilities.
 
 ## Education mobile is a native feature boundary
 

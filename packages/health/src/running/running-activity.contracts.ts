@@ -1,32 +1,51 @@
-import type { DateRange, IsoDateTimeString, OwnerId, OwnerQuery, PageResult } from "../health.types.js";
-import type { DistanceValue, DurationValue } from "../health-units.types.js";
-import type { EquipmentId } from "../equipment/equipment.types.js";
-import type { ActivityRouteId } from "../routes/activity-route.types.js";
-import type { WorkoutSessionId } from "../workouts/workout-session.types.js";
+import { z } from "@aperture/validation";
+import { equipmentIdSchema } from "../equipment/equipment.types.js";
+import { distanceValueSchema, durationValueSchema } from "../health-units.types.js";
+import { dateRangeSchema, isoDateTimeStringSchema, ownerIdSchema, pageRequestSchema } from "../health.types.js";
+import { textSchema } from "../internal/primitives.js";
+import { hasDefinedUpdate, orderedInstants } from "../internal/validation.helpers.js";
+import { activityRouteIdSchema } from "../routes/activity-route.types.js";
+import { workoutSessionIdSchema } from "../workouts/workout-session.types.js";
+import type { IsoDateTimeString, OwnerId, PageResult } from "../health.types.js";
 import type { RunningActivity, RunningActivityId } from "./running-activity.types.js";
 
-export interface CreateRunningActivityInput {
-  readonly ownerId: OwnerId;
-  readonly workoutSessionId?: WorkoutSessionId;
-  readonly routeId?: ActivityRouteId;
-  readonly equipmentIds?: readonly EquipmentId[];
-  readonly title: string;
-  readonly startedAt: IsoDateTimeString;
-}
-export interface UpdateRunningActivityInput {
-  readonly routeId?: ActivityRouteId;
-  readonly equipmentIds?: readonly EquipmentId[];
-  readonly title?: string;
-  readonly startedAt?: IsoDateTimeString;
-  readonly endedAt?: IsoDateTimeString;
-  readonly distance?: DistanceValue;
-  readonly duration?: DurationValue;
-}
-export interface RunningActivityListQuery extends OwnerQuery {}
-export interface RunningActivitiesByDateRangeQuery extends OwnerQuery {
-  readonly range: DateRange;
-}
+export const createRunningActivityInputSchema = z.strictObject({
+  ownerId: ownerIdSchema,
+  workoutSessionId: workoutSessionIdSchema.optional(),
+  routeId: activityRouteIdSchema.optional(),
+  equipmentIds: z.array(equipmentIdSchema).readonly().optional(),
+  title: textSchema,
+  startedAt: isoDateTimeStringSchema,
+}).readonly();
+export type CreateRunningActivityInput = Readonly<z.infer<typeof createRunningActivityInputSchema>>;
 
+export const updateRunningActivityInputSchema = z.strictObject({
+  routeId: activityRouteIdSchema.optional(),
+  equipmentIds: z.array(equipmentIdSchema).readonly().optional(),
+  title: textSchema.optional(),
+  startedAt: isoDateTimeStringSchema.optional(),
+  endedAt: isoDateTimeStringSchema.optional(),
+  distance: distanceValueSchema.optional(),
+  duration: durationValueSchema.optional(),
+})
+  .refine((value) => orderedInstants(value.startedAt, value.endedAt), { message: "End time must not be earlier than start time.", path: ["endedAt"] })
+  .refine(hasDefinedUpdate, "At least one mutable field is required.").readonly();
+export type UpdateRunningActivityInput = Readonly<z.infer<typeof updateRunningActivityInputSchema>>;
+
+export const runningActivityListQuerySchema = z.strictObject({
+  ...pageRequestSchema.unwrap().shape,
+  ownerId: ownerIdSchema,
+}).readonly();
+export type RunningActivityListQuery = Readonly<z.infer<typeof runningActivityListQuerySchema>>;
+
+export const runningActivitiesByDateRangeQuerySchema = z.strictObject({
+  ...pageRequestSchema.unwrap().shape,
+  ownerId: ownerIdSchema,
+  range: dateRangeSchema,
+}).readonly();
+export type RunningActivitiesByDateRangeQuery = Readonly<z.infer<typeof runningActivitiesByDateRangeQuerySchema>>;
+
+// Lifecycle operations remain declaration-only until Phase 13.
 export declare function createRunningActivity(input: CreateRunningActivityInput): Promise<RunningActivity>;
 export declare function updateRunningActivity(id: RunningActivityId, ownerId: OwnerId, input: UpdateRunningActivityInput): Promise<RunningActivity>;
 export declare function completeRunningActivity(id: RunningActivityId, ownerId: OwnerId, completedAt: IsoDateTimeString): Promise<RunningActivity>;

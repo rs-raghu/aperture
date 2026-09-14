@@ -74,10 +74,20 @@ The Expo workspace now provides an Education-only React Native development previ
 
 Durable persistence, AsyncStorage data storage, SQLite, Supabase, SQL, APIs, authentication/authorization, production sessions, biometrics, the complete mobile shell, Health/Finance UI, synchronization, notifications, calendar integrations, deployment, store packaging, publishing, and Phase 11 work remain unimplemented.
 
-## Phase 11 — not started
+## Phase 11 — Health models and validation: complete after verification
 
-Phase 11 has not been authorized or started. No additional implementation scope is implied.
+All 22 principal Health entities have runtime structural schemas, alongside identifiers, model units/quantities, enums/statuses, create/record inputs, updates, and queries. The package uses shared Validation, preserves recorded decimal precision and units, and provides runtime-safe public exports. See [the complete Phase 11 inventory and verification](HEALTH_MODELS_VALIDATION.md).
+
+## Phase 11 exclusions
+
+Health calculations, lifecycle and service implementations, repositories, UI, APIs, persistence, integrations, diagnosis, recommendations, alerts, and deployment remain unimplemented.
+
+## Phase 12 — not started
+
+Health calculations and calculation-specific validation remain declaration-only. No Phase 12 implementation has started.
 
 ## Implementation status
 
-Education models, shared validation, seven calculations, the injected Education application layer, the volatile memory adapter, and local Education web/mobile previews have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
+Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, and Health models/validation have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
+
+Phase 11 verification caveat: standard workspace tests, lint, type-check, builds, and Expo web export pass. Supplemental Expo Doctor passes 20/21 checks; its SDK patch-version comparison requests newer versions of three unchanged Expo packages. See the Phase 11 report for exact versions. No unrelated dependency upgrade was applied.

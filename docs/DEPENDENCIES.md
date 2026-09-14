@@ -77,3 +77,11 @@ No new form, state, chart, UI framework, persistence, database, authentication, 
 Root `react` 19.2.3, `react-dom` 19.2.3, `react-native` 0.86.3, and `react-native-safe-area-context` 5.7.0 entries pin npm's hoisted peer graph to the Expo SDK 57-compatible set. The web React/React DOM declarations were aligned from 19.2.8 to 19.2.3; the Phase 9 Next production build remains the compatibility regression check. These root entries are peer-resolution anchors and do not add runtime application behavior.
 
 `npx expo install --check` reports dependencies up to date, and `expo-doctor` validates the monorepo dependency graph. Phase 10 adds no form, global-state, UI-framework, charting, date-picker, persistence, database, auth, analytics, notification, or deployment library. The full audit now reports 13 moderate and 0 high advisories versus the accepted 21-advisory baseline (13 moderate, 8 high), so Phase 10 adds no advisory and removes eight high transitive findings.
+
+## Phase 11 dependency boundary
+
+Health adds only the existing local `@aperture/validation@0.5.0` workspace dependency. No external package, resolved version, application manifest, or transitive dependency record changes. The lockfile diff contains only that workspace link.
+
+The completed Phase 11 audit on 2026-09-07 reports 13 moderate, 0 high, and 0 critical vulnerabilities, all within the accepted Expo/React Native dependency tree. The web production audit reports 0 vulnerabilities. Both advisory requests completed; neither result is an endpoint timeout. No audit fix or unrelated dependency upgrade was applied.
+
+The audits were repeated on 2026-09-14 with the same results: 13 moderate workspace findings and zero web production findings. Supplemental Expo compatibility checks now request Expo ~57.0.22, Expo Crypto ~57.0.3, and Expo Router ~57.0.21, while the unchanged installed versions are 57.0.19, 57.0.2, and 57.0.18. Expo Doctor passes 20/21 checks; only the patch-version comparison fails. Mobile tests, type-check, lint, and web export pass. These unrelated upgrades remain deferred as required by Phase 11.

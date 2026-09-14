@@ -1,32 +1,61 @@
-import type { OwnerId, OwnerQuery, PageResult } from "../health.types.js";
-import type { DistanceValue, DurationValue, RepetitionCount, WeightValue } from "../health-units.types.js";
-import type { ExerciseId } from "../exercises/exercise.types.js";
-import type { WorkoutSessionId } from "../workouts/workout-session.types.js";
-import type { ExerciseSet, ExerciseSetId, PerceivedEffort } from "./exercise-set.types.js";
+import { z } from "@aperture/validation";
+import { exerciseIdSchema } from "../exercises/exercise.types.js";
+import { distanceValueSchema, durationValueSchema, repetitionCountSchema, weightValueSchema } from "../health-units.types.js";
+import { ownerIdSchema, pageRequestSchema } from "../health.types.js";
+import { sequenceSchema } from "../internal/primitives.js";
+import { hasDefinedUpdate } from "../internal/validation.helpers.js";
+import { workoutSessionIdSchema } from "../workouts/workout-session.types.js";
+import { perceivedEffortSchema } from "./exercise-set.types.js";
+import type { OwnerId, PageResult } from "../health.types.js";
+import type { ExerciseSet, ExerciseSetId } from "./exercise-set.types.js";
 
-export interface RecordExerciseSetInput {
-  readonly ownerId: OwnerId;
-  readonly workoutSessionId: WorkoutSessionId;
-  readonly exerciseId: ExerciseId;
-  readonly sequence: number;
-  readonly repetitions?: RepetitionCount;
-  readonly weight?: WeightValue;
-  readonly duration?: DurationValue;
-  readonly distance?: DistanceValue;
-  readonly perceivedEffort?: PerceivedEffort;
-}
-export type UpdateExerciseSetInput = Partial<Omit<RecordExerciseSetInput, "ownerId" | "workoutSessionId" | "exerciseId">>;
-export interface ExerciseSetListQuery extends OwnerQuery {
-  readonly workoutSessionId?: WorkoutSessionId;
-  readonly exerciseId?: ExerciseId;
-}
-export interface ExerciseSetsByWorkoutQuery extends OwnerQuery {
-  readonly workoutSessionId: WorkoutSessionId;
-}
-export interface ExerciseSetsByExerciseQuery extends OwnerQuery {
-  readonly exerciseId: ExerciseId;
-}
+export const recordExerciseSetInputSchema = z.strictObject({
+  ownerId: ownerIdSchema,
+  workoutSessionId: workoutSessionIdSchema,
+  exerciseId: exerciseIdSchema,
+  sequence: sequenceSchema,
+  repetitions: repetitionCountSchema.optional(),
+  weight: weightValueSchema.optional(),
+  duration: durationValueSchema.optional(),
+  distance: distanceValueSchema.optional(),
+  perceivedEffort: perceivedEffortSchema.optional(),
+}).readonly();
+export type RecordExerciseSetInput = Readonly<z.infer<typeof recordExerciseSetInputSchema>>;
 
+export const updateExerciseSetInputSchema = z.strictObject({
+  sequence: sequenceSchema.optional(),
+  repetitions: repetitionCountSchema.optional(),
+  weight: weightValueSchema.optional(),
+  duration: durationValueSchema.optional(),
+  distance: distanceValueSchema.optional(),
+  perceivedEffort: perceivedEffortSchema.optional(),
+})
+  .refine(hasDefinedUpdate, "At least one mutable field is required.").readonly();
+export type UpdateExerciseSetInput = Readonly<z.infer<typeof updateExerciseSetInputSchema>>;
+
+export const exerciseSetListQuerySchema = z.strictObject({
+  ...pageRequestSchema.unwrap().shape,
+  ownerId: ownerIdSchema,
+  workoutSessionId: workoutSessionIdSchema.optional(),
+  exerciseId: exerciseIdSchema.optional(),
+}).readonly();
+export type ExerciseSetListQuery = Readonly<z.infer<typeof exerciseSetListQuerySchema>>;
+
+export const exerciseSetsByWorkoutQuerySchema = z.strictObject({
+  ...pageRequestSchema.unwrap().shape,
+  ownerId: ownerIdSchema,
+  workoutSessionId: workoutSessionIdSchema,
+}).readonly();
+export type ExerciseSetsByWorkoutQuery = Readonly<z.infer<typeof exerciseSetsByWorkoutQuerySchema>>;
+
+export const exerciseSetsByExerciseQuerySchema = z.strictObject({
+  ...pageRequestSchema.unwrap().shape,
+  ownerId: ownerIdSchema,
+  exerciseId: exerciseIdSchema,
+}).readonly();
+export type ExerciseSetsByExerciseQuery = Readonly<z.infer<typeof exerciseSetsByExerciseQuerySchema>>;
+
+// Lifecycle operations remain declaration-only until Phase 13.
 export declare function recordExerciseSet(input: RecordExerciseSetInput): Promise<ExerciseSet>;
 export declare function updateExerciseSet(id: ExerciseSetId, ownerId: OwnerId, input: UpdateExerciseSetInput): Promise<ExerciseSet>;
 export declare function deleteExerciseSet(id: ExerciseSetId, ownerId: OwnerId): Promise<void>;

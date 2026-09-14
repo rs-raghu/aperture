@@ -1,4 +1,3 @@
-import type { DecimalString } from "../health.types.js";
 import type { EnergyValue, HeightValue, WeightValue } from "../health-units.types.js";
 
 export type BmrSexInput = "female" | "male" | "unspecified";

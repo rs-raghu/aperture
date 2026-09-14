@@ -1,15 +1,23 @@
-import type { EntityMetadata, IsoDateTimeString } from "../health.types.js";
-import type { DistanceValue, HeightValue, PercentageValue, WeightValue } from "../health-units.types.js";
+import { z } from "@aperture/validation";
+import { distanceValueSchema, heightValueSchema, percentageValueSchema, weightValueSchema } from "../health-units.types.js";
+import { isoDateTimeStringSchema, ownerIdSchema } from "../health.types.js";
+import { orderedInstants } from "../internal/validation.helpers.js";
 
-export type BodyCompositionRecordId = string;
+export const bodyCompositionRecordIdSchema = ownerIdSchema;
+export type BodyCompositionRecordId = Readonly<z.infer<typeof bodyCompositionRecordIdSchema>>;
 
-export interface BodyCompositionRecord extends EntityMetadata {
-  readonly id: BodyCompositionRecordId;
-  readonly observedAt: IsoDateTimeString;
-  readonly weight?: WeightValue;
-  readonly height?: HeightValue;
-  readonly bodyFat?: PercentageValue;
-  readonly waist?: DistanceValue;
-  readonly hip?: DistanceValue;
-  readonly muscleMass?: WeightValue;
-}
+export const bodyCompositionRecordSchema = z.strictObject({
+  ownerId: ownerIdSchema,
+  createdAt: isoDateTimeStringSchema,
+  updatedAt: isoDateTimeStringSchema,
+  id: bodyCompositionRecordIdSchema,
+  observedAt: isoDateTimeStringSchema,
+  weight: weightValueSchema.optional(),
+  height: heightValueSchema.optional(),
+  bodyFat: percentageValueSchema.optional(),
+  waist: distanceValueSchema.optional(),
+  hip: distanceValueSchema.optional(),
+  muscleMass: weightValueSchema.optional(),
+})
+  .refine((value) => orderedInstants(value.createdAt, value.updatedAt), { message: "Update time must not be earlier than creation time.", path: ["updatedAt"] }).readonly();
+export type BodyCompositionRecord = Readonly<z.infer<typeof bodyCompositionRecordSchema>>;
