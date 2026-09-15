@@ -1,0 +1,17 @@
+import { useCallback, useMemo, useState } from "react";
+import type { MealType } from "@aperture/health";
+import { ActionButton, ChoiceField, EmptyState, ErrorBanner, LoadingState, PageHeader, Panel, PreviewNotice, RecordCard, RecordList, Screen, TextField } from "../components/ui";
+import { useHealthAction } from "../hooks/use-health-action";
+import { useHealthQuery } from "../hooks/use-health-query";
+import { useHealth } from "../providers/health-provider";
+import { formatHealthDateTime, formatHealthQuantity, toHealthIsoTimestamp } from "../view-models/formatting";
+
+const mealTypes: readonly MealType[] = ["breakfast", "lunch", "dinner", "snack", "other"];
+
+export function NutritionScreen() {
+  const { service, context } = useHealth(); const action = useHealthAction();
+  const [title, setTitle] = useState(""); const [mealType, setMealType] = useState<MealType>("breakfast"); const [consumedAt, setConsumedAt] = useState(""); const [energy, setEnergy] = useState(""); const [filter, setFilter] = useState<MealType | "all">("all");
+  const load = useCallback(async () => (await service.listNutritionEntries(context)).items, [service, context]); const query = useHealthQuery(load); const visible = useMemo(() => (query.data ?? []).filter((item) => filter === "all" || item.mealType === filter), [query.data, filter]);
+  const submit = () => void action.execute(() => service.createNutritionEntry(context, { title, mealType, consumedAt: toHealthIsoTimestamp(consumedAt), ...(energy ? { energy: { value: energy, unit: "kilocalorie" as const } } : {}) })).then((saved) => { if (saved) { setTitle(""); setConsumedAt(""); setEnergy(""); } });
+  return <Screen testID="health-nutrition-screen"><PageHeader title="Nutrition" description="Keep factual meal and energy records without food scoring or diet recommendations." /><PreviewNotice /><Panel title="Add nutrition entry"><TextField name="nutritionTitle" label="Nutrition title" required value={title} onChangeText={setTitle} error={action.error?.fieldErrors.title} /><ChoiceField label="Meal type" value={mealType} options={mealTypes.map((value) => ({ value, label: value }))} onChange={setMealType} /><TextField name="consumedAt" label="Consumed at" required value={consumedAt} onChangeText={setConsumedAt} placeholder="YYYY-MM-DDTHH:mm:ssZ" error={action.error?.fieldErrors.consumedAt} /><TextField name="energy" label="Energy in kilocalories" value={energy} onChangeText={setEnergy} keyboardType="decimal-pad" /><ErrorBanner error={action.error} /><ActionButton label="Add nutrition entry" pending={action.pending} onPress={submit} /></Panel><Panel title="Nutrition history"><ChoiceField label="Meal filter" value={filter} options={[{ value: "all", label: "All" }, ...mealTypes.map((value) => ({ value, label: value }))]} onChange={setFilter} />{query.loading ? <LoadingState /> : !visible.length ? <EmptyState title="No nutrition entries found" description="Add an entry or change the filter." /> : <RecordList items={visible} keyExtractor={(item) => item.id} accessibilityLabel="Nutrition records" renderItem={(item) => <RecordCard title={item.title} details={[`${item.mealType} · ${formatHealthDateTime(item.consumedAt)}`, formatHealthQuantity(item.energy)]}><ActionButton label={`Delete nutrition ${item.title}`} tone="danger" pending={action.pending} onPress={() => void action.execute(() => service.deleteNutritionEntry(context, item.id))} /></RecordCard>} />}<ErrorBanner error={query.error} /></Panel></Screen>;
+}

@@ -80,6 +80,18 @@ The `/health/goals` route records achieved personal records and recovery observa
 
 The preview displays user-supplied records, lifecycle states, and arithmetic totals. It does not classify values, diagnose conditions, set intake or exercise targets, or produce medical, nutrition, recovery, or training recommendations.
 
+## Health mobile shares domain behavior, not presentation code
+
+The Phase 16 Expo feature composes the same public Health service and memory adapter used by the web preview. React Native screens own mobile input adaptation, safe-area layout, keyboard handling, navigation, accessibility, and list rendering. They do not import web components or copy domain formulas, lifecycle rules, ownership checks, or aggregate calculations.
+
+## Health mobile runtime identity and lifetime
+
+The Health Expo Router layout mounts one provider above all ten Health routes. Its lazy initializer creates one service and one isolated repository aggregate using an injected clock and `expo-crypto` UUID adapter. State persists across in-app Health navigation and resets on provider remount or full app reload. The fixed development owner scopes preview data but is not authentication.
+
+## Mobile Health controls communicate state in text
+
+Health mobile actions expose accessible roles and labels, forms remain reachable through safe-area and keyboard-aware scroll containers, and growing record collections use `FlatList` with stable IDs. Status badges always include literal status text; color is supplementary. Long content wraps within bounded cards rather than relying on truncation for meaning.
+
 ## Presentation does not duplicate domain rules
 
 React forms call existing owner-scoped service workflows, and overview/grade/attendance/study displays consume service summaries and calculator outputs. Browser strings are adapted at the feature boundary; normalized validation and application errors become field/form presentation models without altering domain error types.

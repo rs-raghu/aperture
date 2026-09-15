@@ -114,8 +114,16 @@ The Next.js workspace provides ten Health routes through a feature-local boundar
 
 Durable persistence, browser storage, Supabase, SQL, APIs, real authentication, synchronization, import/export, backup/restore, notifications, background jobs, diagnosis, clinical interpretation, medical or training recommendations, Health mobile UI, Finance UI, and Phase 16 work remain unimplemented.
 
+## Phase 16 — Health mobile preview: complete after verification
+
+The Expo workspace provides ten Health routes through a feature-local React Native boundary and one provider-scoped runtime. The preview uses the real owner-scoped Health service and isolated memory adapter for profile editing, observations, workouts and sets, running, sleep, nutrition, hydration, achieved personal records, recovery, filters, deletion, summaries, accessible keyboard-aware forms, safe-area layouts, and virtualized record collections. See [the Health mobile reference](HEALTH_MOBILE.md).
+
+## Phase 16 exclusions
+
+Durable persistence, AsyncStorage health storage, SQLite, Supabase, SQL, APIs, real authentication, synchronization, import/export, backup/restore, notifications, background jobs, diagnosis, clinical interpretation, medical or training recommendations, Finance UI, native store packaging, deployment, and Phase 17 work remain unimplemented.
+
 ## Implementation status
 
-Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, Health models/validation, 11 Health calculations, the injected Health application layer, the volatile Health memory adapter, and the local Health web preview have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
+Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, Health models/validation, 11 Health calculations, the injected Health application layer, the volatile Health memory adapter, and local Health web/mobile previews have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
 
 Phase 11 verification caveat: standard workspace tests, lint, type-check, builds, and Expo web export pass. Supplemental Expo Doctor passes 20/21 checks; its SDK patch-version comparison requests newer versions of three unchanged Expo packages. See the Phase 11 report for exact versions. No unrelated dependency upgrade was applied.

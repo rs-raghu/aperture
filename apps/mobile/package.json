@@ -5,14 +5,14 @@
   "type": "module",
   "main": "expo-router/entry",
   "scripts": {
-    "prestart": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory",
+    "prestart": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "preexport": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory",
+    "preexport": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory",
     "export": "expo export",
-    "pretest": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory",
+    "pretest": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory",
     "test": "jest --runInBand",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "lint": "eslint src tests --max-warnings=0"
@@ -20,6 +20,8 @@
   "dependencies": {
     "@aperture/education": "^0.7.0",
     "@aperture/education-memory": "^0.8.0",
+    "@aperture/health": "^0.4.0",
+    "@aperture/health-memory": "^0.5.0",
     "@expo/metro-runtime": "~57.0.15",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@supabase/supabase-js": "^2.114.0",
