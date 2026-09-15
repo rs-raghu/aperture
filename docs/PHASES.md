@@ -92,7 +92,7 @@ Undeclared calculations, diagnostic interpretation, clinical classifications, re
 
 ## Phase 13 — Health services: complete after verification
 
-The dependency-injected Health application layer implements all 126 lifecycle declarations and 11 service summaries as 136 unique runtime methods. It validates inputs and repository outputs, enforces owner and relationship boundaries, uses injected time and identifiers, applies explicit lifecycle transitions, and orchestrates Phase 12 calculations. See [the service reference](HEALTH_SERVICES.md).
+The dependency-injected Health application layer implements the complete lifecycle and service-summary inventory as 137 distinct runtime methods. It validates inputs and repository outputs, enforces owner and relationship boundaries, uses injected time and identifiers, applies explicit lifecycle transitions, and orchestrates Phase 12 calculations. See [the service reference](HEALTH_SERVICES.md).
 
 ## Phase 13 exclusions
 
@@ -122,8 +122,16 @@ The Expo workspace provides ten Health routes through a feature-local React Nati
 
 Durable persistence, AsyncStorage health storage, SQLite, Supabase, SQL, APIs, real authentication, synchronization, import/export, backup/restore, notifications, background jobs, diagnosis, clinical interpretation, medical or training recommendations, Finance UI, native store packaging, deployment, and Phase 17 work remain unimplemented.
 
+## Phase 17 — Health integration hardening: complete after verification
+
+The complete Health vertical slice has been audited across models and validation, all 11 calculations, the 137-method application service, all 22 memory repositories, web/mobile behavior, units and decimal precision, absolute time comparison, ownership, errors, accessibility, responsive behavior, Expo compatibility, dependency direction, and medical-safety language. Hardening fixes make offset timestamp ordering and filtering instant-correct through nanosecond precision, keep workout duration exact, move the web hydration total to the shared service, align safe repository error messages, and strengthen status and mobile error accessibility. See [the complete vertical-slice report](HEALTH_VERTICAL_SLICE.md).
+
+## Phase 17 exclusions
+
+Durable storage, PostgreSQL, Supabase, SQL, migrations, Row Level Security, real authentication, cross-device synchronization, imports/exports, notifications, background jobs, external health integrations, diagnosis, clinical interpretation, recommendations, deployment, and Phase 18 work remain unimplemented.
+
 ## Implementation status
 
-Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, Health models/validation, 11 Health calculations, the injected Health application layer, the volatile Health memory adapter, and local Health web/mobile previews have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
+Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, and the complete hardened Health domain, service, memory, web, and mobile vertical slice have runtime implementations. Finance and durable platform behavior remain structural or interface-only.
 
 Phase 11 verification caveat: standard workspace tests, lint, type-check, builds, and Expo web export pass. Supplemental Expo Doctor passes 20/21 checks; its SDK patch-version comparison requests newer versions of three unchanged Expo packages. See the Phase 11 report for exact versions. No unrelated dependency upgrade was applied.

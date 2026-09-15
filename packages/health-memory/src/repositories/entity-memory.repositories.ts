@@ -92,6 +92,7 @@ import {
   type MemoryEntity,
   type MemoryQuery,
 } from "../store/entity-collection.js";
+import { compareIsoTimestamps, timestampInRange } from "../store/iso-timestamp.js";
 
 interface RuntimeHealthQuery extends MemoryQuery {
   readonly status?: string;
@@ -135,7 +136,7 @@ export function createMemoryCrud<
 
 function matchesRange(query: RuntimeHealthQuery, timestamp: string): boolean {
   return query.range === undefined ||
-    (timestamp >= query.range.startsAt && timestamp <= query.range.endsAt);
+    timestampInRange(timestamp, query.range.startsAt, query.range.endsAt);
 }
 
 function matchesDate(query: RuntimeHealthQuery, timestamp: string): boolean {
@@ -147,8 +148,8 @@ export function createAppointmentMemoryRepository(collection: EntityCollection<A
     collection,
     (entity, query) =>
       (query.status === undefined || entity.status === query.status) &&
-      (query.startsBefore === undefined || entity.startsAt <= query.startsBefore),
-    (left, right) => compareText(left.startsAt, right.startsAt),
+      (query.startsBefore === undefined || compareIsoTimestamps(entity.startsAt, query.startsBefore) <= 0),
+    (left, right) => compareIsoTimestamps(left.startsAt, right.startsAt),
   );
 }
 
@@ -156,7 +157,7 @@ export function createBodyCompositionMemoryRepository(collection: EntityCollecti
   return createMemoryCrud<BodyCompositionRecord, BodyCompositionRecordId, BodyCompositionListQuery>(
     collection,
     () => true,
-    (left, right) => compareText(left.observedAt, right.observedAt),
+    (left, right) => compareIsoTimestamps(left.observedAt, right.observedAt),
   );
 }
 
@@ -184,7 +185,7 @@ export function createHydrationEntryMemoryRepository(collection: EntityCollectio
   return createMemoryCrud<HydrationEntry, HydrationEntryId, HydrationEntryListQuery>(
     collection,
     (entity, query) => matchesDate(query, entity.consumedAt),
-    (left, right) => compareText(left.consumedAt, right.consumedAt),
+    (left, right) => compareIsoTimestamps(left.consumedAt, right.consumedAt),
   );
 }
 
@@ -192,7 +193,7 @@ export function createLaboratoryResultMemoryRepository(collection: EntityCollect
   return createMemoryCrud<LaboratoryResult, LaboratoryResultId, LaboratoryResultListQuery>(
     collection,
     () => true,
-    (left, right) => compareText(left.collectedAt, right.collectedAt),
+    (left, right) => compareIsoTimestamps(left.collectedAt, right.collectedAt),
   );
 }
 
@@ -201,7 +202,7 @@ export function createHealthMeasurementMemoryRepository(collection: EntityCollec
     collection,
     (entity, query) =>
       (query.type === undefined || entity.type === query.type) && matchesRange(query, entity.observedAt),
-    (left, right) => compareText(left.observedAt, right.observedAt),
+    (left, right) => compareIsoTimestamps(left.observedAt, right.observedAt),
   );
 }
 
@@ -217,7 +218,7 @@ export function createMedicationLogMemoryRepository(collection: EntityCollection
   return createMemoryCrud<MedicationLog, MedicationLogId, MedicationLogListQuery>(
     collection,
     (entity, query) => query.medicationId === undefined || entity.medicationId === query.medicationId,
-    (left, right) => compareText(left.recordedAt, right.recordedAt),
+    (left, right) => compareIsoTimestamps(left.recordedAt, right.recordedAt),
   );
 }
 
@@ -225,7 +226,7 @@ export function createNutritionEntryMemoryRepository(collection: EntityCollectio
   return createMemoryCrud<NutritionEntry, NutritionEntryId, NutritionEntryListQuery>(
     collection,
     (entity, query) => matchesDate(query, entity.consumedAt),
-    (left, right) => compareText(left.consumedAt, right.consumedAt),
+    (left, right) => compareIsoTimestamps(left.consumedAt, right.consumedAt),
   );
 }
 
@@ -233,7 +234,7 @@ export function createPersonalRecordMemoryRepository(collection: EntityCollectio
   return createMemoryCrud<PersonalRecord, PersonalRecordId, PersonalRecordListQuery>(
     collection,
     (entity, query) => query.exerciseId === undefined || entity.exerciseId === query.exerciseId,
-    (left, right) => compareText(left.achievedAt, right.achievedAt),
+    (left, right) => compareIsoTimestamps(left.achievedAt, right.achievedAt),
   );
 }
 
@@ -241,7 +242,7 @@ export function createRecoveryEntryMemoryRepository(collection: EntityCollection
   return createMemoryCrud<RecoveryEntry, RecoveryEntryId, RecoveryEntryListQuery>(
     collection,
     () => true,
-    (left, right) => compareText(left.observedAt, right.observedAt),
+    (left, right) => compareIsoTimestamps(left.observedAt, right.observedAt),
   );
 }
 
@@ -265,7 +266,7 @@ export function createRunningActivityMemoryRepository(collection: EntityCollecti
   return createMemoryCrud<RunningActivity, RunningActivityId, RunningActivityListQuery>(
     collection,
     (entity, query) => matchesRange(query, entity.startedAt),
-    (left, right) => compareText(left.startedAt, right.startedAt),
+    (left, right) => compareIsoTimestamps(left.startedAt, right.startedAt),
   );
 }
 
@@ -273,7 +274,7 @@ export function createSleepRecordMemoryRepository(collection: EntityCollection<S
   return createMemoryCrud<SleepRecord, SleepRecordId, SleepRecordListQuery>(
     collection,
     (entity, query) => matchesRange(query, entity.startedAt),
-    (left, right) => compareText(left.startedAt, right.startedAt),
+    (left, right) => compareIsoTimestamps(left.startedAt, right.startedAt),
   );
 }
 
@@ -281,7 +282,7 @@ export function createSymptomEntryMemoryRepository(collection: EntityCollection<
   return createMemoryCrud<SymptomEntry, SymptomEntryId, SymptomEntryListQuery>(
     collection,
     () => true,
-    (left, right) => compareText(left.observedAt, right.observedAt),
+    (left, right) => compareIsoTimestamps(left.observedAt, right.observedAt),
   );
 }
 
@@ -290,7 +291,7 @@ export function createVitalReadingMemoryRepository(collection: EntityCollection<
     collection,
     (entity, query) =>
       (query.type === undefined || entity.reading.type === query.type) && matchesRange(query, entity.observedAt),
-    (left, right) => compareText(left.observedAt, right.observedAt),
+    (left, right) => compareIsoTimestamps(left.observedAt, right.observedAt),
   );
 }
 
@@ -306,7 +307,7 @@ export function createWorkoutSessionMemoryRepository(collection: EntityCollectio
   return createMemoryCrud<WorkoutSession, WorkoutSessionId, WorkoutSessionListQuery>(
     collection,
     (entity, query) => matchesRange(query, entity.scheduledAt ?? entity.startedAt ?? entity.createdAt),
-    (left, right) => compareText(
+    (left, right) => compareIsoTimestamps(
       left.scheduledAt ?? left.startedAt ?? left.createdAt,
       right.scheduledAt ?? right.startedAt ?? right.createdAt,
     ),

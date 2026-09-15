@@ -92,6 +92,14 @@ The Health Expo Router layout mounts one provider above all ten Health routes. I
 
 Health mobile actions expose accessible roles and labels, forms remain reachable through safe-area and keyboard-aware scroll containers, and growing record collections use `FlatList` with stable IDs. Status badges always include literal status text; color is supplementary. Long content wraps within bounded cards rather than relying on truncation for meaning.
 
+## Health time comparisons use absolute instants
+
+Health RFC 3339 timestamps retain explicit offsets and up to nine fractional-second digits at the boundary. Service summaries and the memory adapter compare their absolute instants rather than their source text, including upcoming checks, inclusive ranges, newest-record selection, deterministic timestamp ordering, and workout duration. Date-only nutrition and hydration queries remain distinct: they match the `YYYY-MM-DD` prefix recorded by the caller because those contracts ask for a calendar date rather than an instant range.
+
+## Health presentation totals come from the application service
+
+Both Health previews display hydration aggregation from `getHydrationSummary`. Presentation code may filter visible cards, format quantities, and adapt inputs, but it does not sum records or convert their units. This keeps decimal precision and mixed-unit behavior in the tested calculation and service layers.
+
 ## Presentation does not duplicate domain rules
 
 React forms call existing owner-scoped service workflows, and overview/grade/attendance/study displays consume service summaries and calculator outputs. Browser strings are adapted at the feature boundary; normalized validation and application errors become field/form presentation models without altering domain error types.

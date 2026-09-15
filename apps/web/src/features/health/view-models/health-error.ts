@@ -34,7 +34,7 @@ export function normalizeHealthUiError(error: unknown): HealthUiError {
   }
   if (error instanceof HealthApplicationError) return { message: error.message, fieldErrors: {} };
   if (error instanceof HealthMemoryRepositoryError) {
-    return { message: "The local Health preview could not save that change. Refresh the page and try again.", fieldErrors: {} };
+    return { message: "The local Health preview could not save that change. Reload and try again.", fieldErrors: {} };
   }
   return { message: "An unexpected Health error occurred.", fieldErrors: {} };
 }

@@ -45,6 +45,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .health-main .grid > .panel { margin-top: 0; }
 .health-footer { padding: 20px 5vw; color: #b8cbc8; background: #10333b; text-align: center; font-size: .8rem; }
 .health-record-gap { margin-top: 18px; }
+.health-onboarding { display: flex; flex-wrap: wrap; gap: 5px 10px; margin-bottom: 20px; padding: 14px 16px; color: #28434a; background: #edf7f4; border: 1px solid #bddbd4; border-radius: 12px; line-height: 1.5; }
 .text-button { padding: 0; color: #087f72; background: transparent; border: 0; cursor: pointer; text-decoration: underline; }
 
 .page-header { display: flex; justify-content: space-between; gap: 28px; align-items: flex-end; margin-bottom: 28px; }
@@ -122,5 +123,6 @@ th { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-s
   .grid-2, .grid-3, .form-grid { grid-template-columns: 1fr; }
   .record-card { grid-template-columns: 1fr; }
   .record-actions { justify-content: flex-start; }
+  .health-onboarding { flex-direction: column; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; } }

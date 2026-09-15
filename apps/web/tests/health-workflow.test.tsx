@@ -150,7 +150,7 @@ describe("Health web workflows", () => {
     fireEvent.change(screen.getByLabelText("Consumed at *"), { target: { value: "2040-01-01T07:30" } });
     await user.click(screen.getByRole("button", { name: "Record hydration" }));
     await screen.findByRole("heading", { name: "350 milliliter" });
-    expect(document.body.textContent).toContain("350 ml across the visible records");
+    expect(document.body.textContent).toContain("0.35 liter across all stored records");
 
     view.rerender(<HealthProvider ownerId={OWNER} createRuntime={createRuntime}><GoalsScreen /></HealthProvider>);
     await user.type(await screen.findByLabelText("Milestone title *"), "Synthetic 5K");

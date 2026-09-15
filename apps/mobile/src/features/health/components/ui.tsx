@@ -35,7 +35,7 @@ export interface TextFieldProps {
 }
 
 export function TextField({ label, value, onChangeText, name, error, hint, required, ...props }: TextFieldProps) {
-  return <View style={styles.field}><Text style={styles.label}>{label}{required ? " *" : ""}</Text><TextInput {...props} value={value} onChangeText={onChangeText} style={[styles.input, props.multiline ? styles.textArea : null, error ? styles.inputError : null]} accessibilityLabel={label} accessibilityHint={hint} testID={`health-field-${name}`} autoCapitalize="sentences" placeholderTextColor="#78908d" />{error || hint ? <Text style={error ? styles.fieldError : styles.hint}>{error ?? hint}</Text> : null}</View>;
+  return <View style={styles.field}><Text style={styles.label}>{label}{required ? " *" : ""}</Text><TextInput {...props} value={value} onChangeText={onChangeText} style={[styles.input, props.multiline ? styles.textArea : null, error ? styles.inputError : null]} accessibilityLabel={label} accessibilityHint={error ?? hint} testID={`health-field-${name}`} autoCapitalize="sentences" placeholderTextColor="#78908d" />{error || hint ? <Text style={error ? styles.fieldError : styles.hint}>{error ?? hint}</Text> : null}</View>;
 }
 
 export interface ChoiceOption<TValue extends string> { readonly value: TValue; readonly label: string }
@@ -50,7 +50,7 @@ export function ActionButton({ label, onPress, pending = false, disabled = false
 }
 
 export function ErrorBanner({ error }: { readonly error: HealthMobileError | null }) {
-  return error ? <View style={styles.errorBanner} accessibilityRole="alert"><Text style={styles.errorTitle}>Unable to continue</Text><Text style={styles.errorText}>{error.message}</Text></View> : null;
+  return error ? <View style={styles.errorBanner} accessible accessibilityRole="alert" accessibilityLiveRegion="assertive" accessibilityLabel={`Unable to continue. ${error.message}`}><Text style={styles.errorTitle}>Unable to continue</Text><Text style={styles.errorText}>{error.message}</Text></View> : null;
 }
 
 export function LoadingState() {

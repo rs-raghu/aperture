@@ -21,6 +21,7 @@ import {
   calculateSleepSummary,
 } from "../calculations.js";
 import { isoDateStringSchema, isoDateTimeStringSchema } from "../health.types.js";
+import { compareInstants, instantParts } from "../internal/validation.helpers.js";
 import * as appointmentContracts from "../appointments/appointment.contracts.js";
 import * as appointmentTypes from "../appointments/appointment.types.js";
 import * as bodyCompositionContracts from "../body-composition/body-composition.contracts.js";
@@ -83,10 +84,12 @@ import type { DateRangeSummaryQuery, HealthService, UpcomingItemsQuery, WorkoutS
 
 function durationBetween(startedAt?: string, endedAt?: string): DurationValue | undefined {
   if (startedAt === undefined || endedAt === undefined) return undefined;
-  const seconds = (Date.parse(endedAt) - Date.parse(startedAt)) / 1000;
-  return Number.isFinite(seconds) && seconds >= 0
-    ? { value: String(seconds), unit: "second" }
-    : undefined;
+  if (compareInstants(startedAt, endedAt) > 0) return undefined;
+  const [startSecond, startFraction] = instantParts(startedAt);
+  const [endSecond, endFraction] = instantParts(endedAt);
+  const seconds = new Decimal(endSecond).minus(startSecond).dividedBy(1000)
+    .plus(new Decimal(`0.${endFraction}`).minus(`0.${startFraction}`));
+  return { value: seconds.toFixed(), unit: "second" };
 }
 
 function rejectDirectStatusUpdate(input: { readonly status?: string | undefined }, entityType: string): void {
@@ -569,14 +572,14 @@ export function createHealthService(dependencies: HealthServiceDependencies) {
       return parseApplicationInput(healthOverviewSchema, {
         latestMeasurementCount: latestTypes.size,
         recentWorkoutCount: workoutItems.length,
-        upcomingAppointmentCount: appointmentItems.filter((item) => item.startsAt >= now).length,
+        upcomingAppointmentCount: appointmentItems.filter((item) => compareInstants(item.startsAt, now) >= 0).length,
       });
     },
 
     async getLatestMeasurements(ownerId: OwnerId) {
       const items = await collectOwned(repositories.measurements, { ownerId }, {}, measurementContracts.healthMeasurementListQuerySchema, measurementTypes.healthMeasurementSchema);
       const latest = new Map<string, measurementTypes.HealthMeasurement>();
-      for (const item of [...items].sort((left, right) => right.observedAt.localeCompare(left.observedAt))) {
+      for (const item of [...items].sort((left, right) => compareInstants(right.observedAt, left.observedAt))) {
         if (!latest.has(item.type)) latest.set(item.type, item);
       }
       return parseApplicationInput(latestMeasurementsResultSchema, [...latest.values()]);
@@ -611,7 +614,7 @@ export function createHealthService(dependencies: HealthServiceDependencies) {
       const parsed = parseApplicationInput(dateRangeSummaryQuerySchema, query);
       const items = await collectOwned(repositories.hydrationEntries, { ownerId: parsed.ownerId }, {}, hydrationContracts.hydrationEntryListQuerySchema, hydrationTypes.hydrationEntrySchema);
       const volumes = items
-        .filter((entry) => entry.consumedAt >= parsed.range.startsAt && entry.consumedAt <= parsed.range.endsAt)
+        .filter((entry) => compareInstants(entry.consumedAt, parsed.range.startsAt) >= 0 && compareInstants(entry.consumedAt, parsed.range.endsAt) <= 0)
         .map((entry) => entry.volume);
       return calculateHydrationSummary({ volumes, outputUnit: "liter" });
     },
@@ -663,7 +666,7 @@ export function createHealthService(dependencies: HealthServiceDependencies) {
       const parsed = parseApplicationInput(dateRangeSummaryQuerySchema, query);
       const items = await collectOwned(repositories.recoveryEntries, { ownerId: parsed.ownerId }, {}, recoveryContracts.recoveryEntryListQuerySchema, recoveryTypes.recoveryEntrySchema);
       const entries = items
-        .filter((entry) => entry.observedAt >= parsed.range.startsAt && entry.observedAt <= parsed.range.endsAt)
+        .filter((entry) => compareInstants(entry.observedAt, parsed.range.startsAt) >= 0 && compareInstants(entry.observedAt, parsed.range.endsAt) <= 0)
         .map((entry) => ({
           ...(entry.energy === undefined ? {} : { energy: entry.energy }),
           ...(entry.soreness === undefined ? {} : { soreness: entry.soreness }),
@@ -691,7 +694,7 @@ export function createHealthService(dependencies: HealthServiceDependencies) {
         appointmentTypes.appointmentSchema,
       );
       return parseApplicationInput(upcomingAppointmentsResultSchema, items
-        .filter((appointment) => appointment.status === "scheduled" && appointment.startsAt >= dependencies.clock.now())
+        .filter((appointment) => appointment.status === "scheduled" && compareInstants(appointment.startsAt, dependencies.clock.now()) >= 0)
         .slice(0, parsed.limit ?? 50));
     },
   } satisfies HealthService & Record<string, unknown>;

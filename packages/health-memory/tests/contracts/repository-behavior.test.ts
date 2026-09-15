@@ -193,6 +193,31 @@ describe("Health memory query filters", () => {
     await repository.exercises.create(buildExercise({ id: "alpha", name: "Alpha" }));
     expect((await repository.exercises.findMany({ ownerId: OWNER_A })).items.map((item) => item.name)).toEqual(["Alpha", "Zulu"]);
   });
+
+  it("compares offset timestamps as absolute instants through nanosecond precision", async () => {
+    const repository = createHealthMemoryRepository();
+    await repository.appointments.create(buildAppointment({ id: "fraction-later", startsAt: "2040-01-01T00:00:00.123456789Z" }));
+    await repository.appointments.create(buildAppointment({ id: "offset-earlier", startsAt: "2040-01-01T01:00:00.123456788+01:00" }));
+    await repository.appointments.create(buildAppointment({ id: "absolute-later", startsAt: "2039-12-31T20:00:00-05:00" }));
+
+    const appointments = await runtimeList(repository.appointments).findMany({
+      ownerId: OWNER_A,
+      startsBefore: "2040-01-01T00:00:00.123456789Z",
+    });
+    expect(appointments.items.map((item) => item.id)).toEqual(["offset-earlier", "fraction-later"]);
+
+    await repository.measurements.create(buildHealthMeasurement({
+      id: "offset-measurement",
+      observedAt: "2040-01-01T05:30:00.000000001+05:30",
+    }));
+    expect((await runtimeList(repository.measurements).findMany({
+      ownerId: OWNER_A,
+      range: {
+        startsAt: "2040-01-01T00:00:00.000000001Z",
+        endsAt: "2040-01-01T00:00:00.000000001Z",
+      },
+    })).items.map((item) => item.id)).toEqual(["offset-measurement"]);
+  });
 });
 
 describe("Equipment usage memory repository", () => {

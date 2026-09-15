@@ -1,6 +1,6 @@
 # Health services
 
-Phase 13 turns the Health operation declarations into a platform-neutral application service. `createHealthService` exposes 136 unique runtime methods: all 126 lifecycle declarations and all 11 summary declarations, with `getEquipmentUsageSummary` shared by both inventories.
+Phase 13 turns the Health operation declarations into a platform-neutral application service. `createHealthService` exposes 137 distinct runtime methods covering the complete lifecycle and summary inventory.
 
 ## Composition
 
@@ -51,7 +51,7 @@ Normal update methods do not accept status changes for entities with explicit li
 
 Summary methods validate their queries and results. Sleep, hydration, running, and recovery summaries call the Phase 12 calculation functions. Workout duration aggregation uses decimal arithmetic. Aggregate reads follow every repository cursor and reject repeated cursors, so results are not limited to the first page.
 
-`getDailyHealthSummary` treats the requested ISO date as the complete UTC day. `getUpcomingAppointments` filters scheduled appointments against the injected clock. `getLatestMeasurements` returns the newest observation for each stored measurement type.
+`getDailyHealthSummary` treats the requested ISO date as the complete UTC day for range-based measurements and vital readings. Date-specific hydration and nutrition queries use the calendar prefix recorded in each timestamp. Range filters, upcoming-appointment checks, latest-measurement selection, and workout-duration differences compare absolute instants through all nine supported fractional-second digits, regardless of the recorded offset.
 
 The Phase 2 medication model records a medication name, lifecycle dates, and status, but it has no dosage schedule, recurrence, time-of-day, or reminder entity. `getUpcomingMedicationReminders` therefore returns a validated empty list. Generating reminder times from missing data would create medical behavior outside the approved model.
 

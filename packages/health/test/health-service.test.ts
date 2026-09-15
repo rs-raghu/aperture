@@ -172,7 +172,7 @@ const expectedMethods = [
 type DynamicService = Record<string, (...arguments_: unknown[]) => Promise<unknown>>;
 
 describe("Health service public inventory", () => {
-  it("implements every one of the 126 lifecycle declarations and 11 summary declarations", () => {
+  it("implements the exact 137-method lifecycle and summary inventory", () => {
     const { dependencies } = createTestDependencies();
     const service = createHealthService(dependencies);
     expect(Object.keys(service).sort()).toEqual([...expectedMethods].sort());
@@ -343,6 +343,61 @@ describe("Specialized queries and calculation orchestration", () => {
     expect(await service.getEquipmentUsageSummary(OWNER, "synthetic-id-1")).toMatchObject({ equipmentId: "synthetic-id-1" });
     expect(await service.getUpcomingMedicationReminders({ ownerId: OWNER })).toEqual([]);
     expect(await service.getUpcomingAppointments({ ownerId: OWNER })).toEqual([]);
+  });
+
+  it("uses absolute instants and nanosecond precision in summaries", async () => {
+    const { dependencies, fakes } = createTestDependencies();
+    const measurement = structuredClone(fakes.measurements.rows[0]!);
+    fakes.measurements.rows.splice(0,
+      Infinity,
+      { ...measurement, id: "offset-earlier", observedAt: "2040-01-01T01:00:00.123456788+01:00" },
+      { ...measurement, id: "fraction-later", observedAt: "2040-01-01T00:00:00.123456789Z" },
+    );
+
+    const hydration = structuredClone(fakes.hydrationEntries.rows[0]!);
+    fakes.hydrationEntries.rows.splice(0,
+      Infinity,
+      { ...hydration, id: "in-range", consumedAt: "2040-01-01T05:30:00.000000001+05:30" },
+      { ...hydration, id: "out-of-range", consumedAt: "2039-12-31T20:00:00-05:00" },
+    );
+
+    const recovery = structuredClone(fakes.recoveryEntries.rows[0]!);
+    fakes.recoveryEntries.rows.splice(0,
+      Infinity,
+      { ...recovery, id: "in-range", observedAt: "2040-01-01T05:30:00.000000001+05:30" },
+      { ...recovery, id: "out-of-range", observedAt: "2039-12-31T20:00:00-05:00" },
+    );
+
+    const appointment = structuredClone(fakes.appointments.rows[0]!);
+    fakes.appointments.rows.splice(0,
+      Infinity,
+      { ...appointment, id: "already-past", status: "scheduled", startsAt: "2040-03-01T05:00:00+05:30", endsAt: "2040-03-01T06:00:00+05:30" },
+      { ...appointment, id: "still-upcoming", status: "scheduled", startsAt: "2040-02-29T20:00:00-05:00", endsAt: "2040-02-29T21:00:00-05:00" },
+    );
+
+    const workout = structuredClone(fakes.workoutSessions.rows[0]!);
+    fakes.workoutSessions.rows.splice(0, Infinity, {
+      ...workout,
+      status: "completed",
+      scheduledAt: "2040-01-01T00:00:00Z",
+      startedAt: "2040-03-01T00:00:00.000000001Z",
+      endedAt: "2040-03-01T01:00:00.000000002+01:00",
+    });
+
+    const service = createHealthService(dependencies);
+    const instantRange = {
+      startsAt: "2040-01-01T00:00:00.000000001Z",
+      endsAt: "2040-01-01T00:00:00.000000001Z",
+    };
+    expect((await service.getLatestMeasurements(OWNER))[0]?.id).toBe("fraction-later");
+    expect((await service.getHydrationSummary({ ownerId: OWNER, range: instantRange })).entryCount).toBe(1);
+    expect((await service.getRecoverySummary({ ownerId: OWNER, range: instantRange })).entryCount).toBe(1);
+    expect(await service.getHealthOverview(OWNER)).toMatchObject({ upcomingAppointmentCount: 1 });
+    expect((await service.getUpcomingAppointments({ ownerId: OWNER })).map((item) => item.id)).toEqual(["still-upcoming"]);
+    expect((await service.getWorkoutSummary({
+      ownerId: OWNER,
+      range: { startsAt: "2040-01-01T00:00:00Z", endsAt: "2040-04-01T00:00:00Z" },
+    })).totalDuration).toEqual({ value: "0.000000001", unit: "second" });
   });
 
   it("follows repository cursors when producing aggregate summaries", async () => {

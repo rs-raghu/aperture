@@ -4,11 +4,11 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 16 — Health mobile feature
-- Current phase status: implementation and focused verification complete; ready to commit
+- Current phase: 17 — Health integration hardening
+- Current phase status: implementation and Phase 16–17 pair gate complete; ready to commit
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: `aa4eac4` for Phase 15; Phase 16 pending
-- Last successfully completed command: Expo web export after successful Android and iOS exports
+- Ending commit: `2f12da3` for Phase 16; Phase 17 pending
+- Last successfully completed command: workspace and web-production dependency audits after the full Phase 16–17 gate
 - Last push: `aa4eac4` pushed to `origin/codex/aperture-v2`; local and upstream matched after the Phase 14–15 pair
 - Unresolved concern: supplemental Expo compatibility metadata requests patch updates to Expo, Expo Crypto, and Expo Router; the standard mobile checks pass and unrelated upgrades remain deferred until required by an applicable phase.
 
@@ -17,11 +17,11 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | Phase | Status | Commit | Focused verification | Full regression / pair gate | Dependencies / migrations | Known limitations and deferred work |
 | ---: | --- | --- | --- | --- | --- | --- |
 | 12 | Complete | `1c60ba7` | 4,115 tests / 5 files; lint, type-check, build pass | 4,639 tests / 26 suites or files; workspace type-check/lint/builds, Next production build, and Expo web export pass; Expo Doctor 20/21 at accepted patch-version baseline | Direct declaration of existing `decimal.js@10.6.0` / none | 11/11 declared calculations implemented; clinical interpretation and undeclared calculations excluded |
-| 13 | Complete | `fdb2c32` | 4,150 tests / 6 files; strict lint, type-check, and build pass | 4,639 tests / 26 suites or files; workspace type-check/lint/builds, Next production build, and Expo web export pass; Expo Doctor 20/21 at accepted patch-version baseline; pushed | No new dependency / none | 126 lifecycle declarations and 11 summaries implemented as 136 unique methods; repository adapters and UI deferred |
+| 13 | Complete | `fdb2c32` | 4,150 tests / 6 files; strict lint, type-check, and build pass | 4,639 tests / 26 suites or files; workspace type-check/lint/builds, Next production build, and Expo web export pass; Expo Doctor 20/21 at accepted patch-version baseline; pushed | No new dependency / none | Complete lifecycle and summary inventory implemented as 137 distinct methods; repository adapters and UI deferred |
 | 14 | Complete | `78dad26` | 294 tests / 4 files; strict lint, type-check, and build pass | 4,940 tests / 33 suites or files; workspace type-check/lint/builds, 21-page Next production build, and Expo web export pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/health@0.4.0` only / none | All 22 repository interfaces implemented; volatile storage only |
 | 15 | Complete | `aa4eac4` | 15 tests / 7 files; web lint, type-check, and 21-page production build pass | 4,940 tests / 33 suites or files; workspace type-check/lint/builds, Next production build, and Expo web export pass; Expo Doctor 20/21 at accepted patch baseline; pushed | Local `@aperture/health@0.4.0` and `@aperture/health-memory@0.5.0` links / none | Volatile synthetic-owner web preview; no authentication or persistence |
-| 16 | Ready to commit | Pending | 31 mobile tests / 11 suites; mobile lint and type-check pass; Android, iOS, and web exports pass; Expo Doctor 20/21 at accepted patch baseline | Pending Phase 16–17 pair gate | Local `@aperture/health@0.4.0` and `@aperture/health-memory@0.5.0` links / none | Volatile synthetic-owner mobile preview; no Android runtime available, so native execution remains unverified |
-| 17 | Not started | — | — | — | — | Health vertical-slice hardening |
+| 16 | Complete | `2f12da3` | 31 mobile tests / 11 suites; mobile lint and type-check pass; Android, iOS, and web exports pass; Expo Doctor 20/21 at accepted patch baseline | 4,963 tests / 40 suites or files; workspace type-check/lint/builds, 21-page Next production build, and Expo all-platform export pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/health@0.4.0` and `@aperture/health-memory@0.5.0` links / none | Volatile synthetic-owner mobile preview; no Android runtime available, so native execution remains unverified |
+| 17 | Ready to commit | Pending | 4,500 tests across Health, Health Memory, web, and mobile suites; applicable lint, type-check, and builds pass | 4,963 tests / 40 suites or files; workspace type-check/lint/builds, 21-page Next production build, and Expo Android/iOS/web export pass; Expo Doctor 20/21 at accepted patch baseline | No new dependency / none | Durable storage, authentication, native device execution, and integrations remain deferred |
 | 18 | Not started | — | — | — | — | Finance models and validation |
 | 19 | Not started | — | — | — | — | Finance calculation foundation |
 | 20 | Not started | — | — | — | — | Investment and wealth calculators |
@@ -47,13 +47,13 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Current phase details
 
-- Files changed: Health mobile runtime/provider, hooks, navigation, shared native UI, ten screens, ten Expo Router entries plus layout, real-service mobile tests, package metadata, and documentation
-- Dependencies added: local `@aperture/health@0.4.0` and `@aperture/health-memory@0.5.0` mobile workspace links only; existing Expo and React Native tooling is reused
+- Files changed: absolute-instant comparison and duration precision, memory timestamp ordering/ranges, service-backed web hydration total, cross-platform error/status accessibility, hardening tests, and Health vertical-slice documentation
+- Dependencies added: none
 - Database migrations added: none
-- Tests added: Health mobile error normalization, provider stability/isolation, Expo-compatible runtime injection, form validation and preservation, service-backed measurement, sleep, hydration, workout, running, nutrition, recovery, and overview navigation workflows
-- Focused verification result: 31 tests in 11 mobile suites pass; mobile lint and type-check pass; Expo Android, iOS, and web exports pass
-- Full regression result: pending the Phase 16–17 pair gate
-- Audit result: pending the Phase 16–17 pair gate; Phase 15 baseline was 13 moderate and 0 high/critical workspace findings and 0 web production findings
+- Tests added: offset and nanosecond ordering/range/summary regression, exact workout duration, service-backed hydration parity, cross-platform repository-error normalization, explicit-zone input normalization, web route and control accessibility, mobile control announcement, virtualized list, and long-text coverage
+- Focused verification result: Health 4,151 tests / 6 files, Health Memory 295 / 4, web 19 / 8, and mobile 35 / 12 pass; applicable lint, type-check, and builds pass
+- Full regression result: 4,963 tests in 40 suites or files pass; all workspace type-checks and lint checks pass; applicable package builds and the 21-page Next production build pass; Expo Android, iOS, and web exports pass; Expo Doctor remains 20/21 only because of three documented patch-version mismatches
+- Audit result: 13 moderate and 0 high/critical workspace findings in the accepted Expo dependency tree; web production audit reports 0 vulnerabilities. Neither audit timed out, and no forced dependency rewrite was applied.
 - Known limitations: ADB is unavailable and native iOS execution is unavailable on Windows; Android and iOS results are JavaScript export checks, not native runs. Expo Doctor remains 20/21 only because of the three documented patch-version mismatches.
-- Deferred work: Health integration hardening, durable repositories, persistence, authentication, integrations, and Phases 17–39
-- Next phase: 17 after the Phase 16 commit
+- Deferred work: Finance runtime implementation, durable repositories, persistence, authentication, integrations, and Phases 18–39
+- Next phase: 18 after the Phase 16–17 pair gate, commit, and push

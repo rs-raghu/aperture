@@ -19,12 +19,12 @@ Every list has a deterministic ascending primary order and uses the entity ID as
 | Equipment | name | category and status |
 | Exercise sets | sequence | workout and exercise |
 | Exercises | name | category and status |
-| Hydration | consumption time | exact UTC calendar-date prefix |
+| Hydration | consumption time | exact recorded calendar-date prefix |
 | Laboratory results | collection time | owner |
 | Measurements | observation time | type and inclusive range |
 | Medications | name | status |
 | Medication logs | recorded time | medication |
-| Nutrition | consumption time | exact UTC calendar-date prefix |
+| Nutrition | consumption time | exact recorded calendar-date prefix |
 | Personal records | achievement time | exercise |
 | Recovery | observation time | owner |
 | Routes | title | owner |
@@ -36,7 +36,7 @@ Every list has a deterministic ascending primary order and uses the entity ID as
 | Workout plans | start date, then title | status |
 | Workout sessions | scheduled, started, or creation time | inclusive range |
 
-Multiple supplied filters use AND semantics. Date and time boundaries are inclusive. Specialized Phase 13 queries use the same storage-neutral `findMany` repository method and are recognized by the adapter at runtime.
+Multiple supplied filters use AND semantics. Date and time boundaries are inclusive. Timestamp ranges, `startsBefore`, and timestamp ordering compare absolute instants across explicit offsets and preserve the domain's supported nanosecond precision. Date-only hydration and nutrition filters deliberately match the timestamp's recorded `YYYY-MM-DD` prefix. Specialized Phase 13 queries use the same storage-neutral `findMany` repository method and are recognized by the adapter at runtime.
 
 ## Pagination
 

@@ -13,7 +13,7 @@ export function HealthShell({ children }: { readonly children: ReactNode }) {
         <Link className="health-brand" href="/health" aria-label="Aperture Health home">
           <span className="health-brand-mark">A</span><span>Aperture <strong>Health</strong></span>
         </Link>
-        <span className="preview-chip">Phase 15 preview</span>
+        <span className="preview-chip">Health preview</span>
       </header>
       <nav className="health-nav" aria-label="Health">
         {healthNavigation.map((item) => {

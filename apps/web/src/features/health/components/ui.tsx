@@ -37,7 +37,8 @@ export function EmptyState({ title, description }: { readonly title: string; rea
 }
 
 export function StatusBadge({ value }: { readonly value: string }) {
-  return <span className={`status-badge status-${value.replaceAll("_", "-")}`}>{value.replaceAll("_", " ")}</span>;
+  const label = value.replaceAll("_", " ");
+  return <span className={`status-badge status-${value.replaceAll("_", "-")}`} aria-label={`Status: ${label}`}>{label}</span>;
 }
 
 export function SubmitButton({ pending, children }: { readonly pending: boolean; readonly children: ReactNode }) {

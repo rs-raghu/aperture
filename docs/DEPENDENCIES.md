@@ -107,3 +107,7 @@ The existing `@aperture/web@0.4.0` workspace now declares local runtime links to
 ## Phase 16 dependency boundary
 
 The existing `@aperture/mobile@0.4.0` workspace now declares local runtime links to `@aperture/health@0.4.0` and `@aperture/health-memory@0.5.0`. The Health mobile preview reuses the Expo SDK 57, Expo Router, React Native, Safe Area Context, `expo-crypto`, Jest Expo, React Native Testing Library, and ESLint dependencies already installed for Education mobile. No new external or transitive package, form or state library, UI framework, charting library, persistence client, medical library, or native module is added.
+
+## Phase 17 dependency boundary
+
+Health hardening adds no package and changes no dependency or lockfile entry. Absolute timestamp comparison uses the platform date parser for whole seconds plus the existing decimal arithmetic for exact fractional duration; UI regression tests reuse the installed web and React Native testing libraries.
