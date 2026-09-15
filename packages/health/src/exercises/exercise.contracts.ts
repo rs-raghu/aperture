@@ -3,8 +3,6 @@ import { ownerIdSchema, pageRequestSchema } from "../health.types.js";
 import { textSchema } from "../internal/primitives.js";
 import { hasDefinedUpdate } from "../internal/validation.helpers.js";
 import { exerciseCategorySchema, exerciseStatusSchema } from "./exercise.types.js";
-import type { OwnerId, PageResult } from "../health.types.js";
-import type { Exercise, ExerciseId } from "./exercise.types.js";
 
 export const createExerciseInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
@@ -35,11 +33,3 @@ export const exercisesByCategoryQuerySchema = z.strictObject({
   category: exerciseCategorySchema,
 }).readonly();
 export type ExercisesByCategoryQuery = Readonly<z.infer<typeof exercisesByCategoryQuerySchema>>;
-
-// Lifecycle operations remain declaration-only until Phase 13.
-export declare function createExercise(input: CreateExerciseInput): Promise<Exercise>;
-export declare function updateExercise(id: ExerciseId, ownerId: OwnerId, input: UpdateExerciseInput): Promise<Exercise>;
-export declare function archiveExercise(id: ExerciseId, ownerId: OwnerId): Promise<Exercise>;
-export declare function getExercise(id: ExerciseId, ownerId: OwnerId): Promise<Exercise | null>;
-export declare function listExercises(query: ExerciseListQuery): Promise<PageResult<Exercise>>;
-export declare function listExercisesByCategory(query: ExercisesByCategoryQuery): Promise<PageResult<Exercise>>;

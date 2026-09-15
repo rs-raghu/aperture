@@ -4,8 +4,6 @@ import { isoDateStringSchema, isoDateTimeStringSchema, ownerIdSchema, pageReques
 import { textSchema } from "../internal/primitives.js";
 import { hasDefinedUpdate } from "../internal/validation.helpers.js";
 import { mealTypeSchema } from "./nutrition-entry.types.js";
-import type { OwnerId, PageResult } from "../health.types.js";
-import type { NutritionEntry, NutritionEntryId } from "./nutrition-entry.types.js";
 
 export const createNutritionEntryInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
@@ -43,11 +41,3 @@ export const nutritionEntriesByDateQuerySchema = z.strictObject({
   date: isoDateStringSchema,
 }).readonly();
 export type NutritionEntriesByDateQuery = Readonly<z.infer<typeof nutritionEntriesByDateQuerySchema>>;
-
-// Lifecycle operations remain declaration-only until Phase 13.
-export declare function createNutritionEntry(input: CreateNutritionEntryInput): Promise<NutritionEntry>;
-export declare function updateNutritionEntry(id: NutritionEntryId, ownerId: OwnerId, input: UpdateNutritionEntryInput): Promise<NutritionEntry>;
-export declare function deleteNutritionEntry(id: NutritionEntryId, ownerId: OwnerId): Promise<void>;
-export declare function getNutritionEntry(id: NutritionEntryId, ownerId: OwnerId): Promise<NutritionEntry | null>;
-export declare function listNutritionEntries(query: NutritionEntryListQuery): Promise<PageResult<NutritionEntry>>;
-export declare function listNutritionEntriesByDate(query: NutritionEntriesByDateQuery): Promise<PageResult<NutritionEntry>>;

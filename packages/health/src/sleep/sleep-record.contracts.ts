@@ -3,8 +3,6 @@ import { durationValueSchema } from "../health-units.types.js";
 import { dateRangeSchema, isoDateTimeStringSchema, ownerIdSchema, pageRequestSchema } from "../health.types.js";
 import { hasDefinedUpdate, orderedInstants } from "../internal/validation.helpers.js";
 import { sleepQualitySchema } from "./sleep-record.types.js";
-import type { OwnerId, PageResult } from "../health.types.js";
-import type { SleepRecord, SleepRecordId } from "./sleep-record.types.js";
 
 export const recordSleepInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
@@ -38,11 +36,3 @@ export const sleepRecordsByDateRangeQuerySchema = z.strictObject({
   range: dateRangeSchema,
 }).readonly();
 export type SleepRecordsByDateRangeQuery = Readonly<z.infer<typeof sleepRecordsByDateRangeQuerySchema>>;
-
-// Lifecycle operations remain declaration-only until Phase 13.
-export declare function recordSleep(input: RecordSleepInput): Promise<SleepRecord>;
-export declare function updateSleep(id: SleepRecordId, ownerId: OwnerId, input: UpdateSleepInput): Promise<SleepRecord>;
-export declare function deleteSleep(id: SleepRecordId, ownerId: OwnerId): Promise<void>;
-export declare function getSleepRecord(id: SleepRecordId, ownerId: OwnerId): Promise<SleepRecord | null>;
-export declare function listSleepRecords(query: SleepRecordListQuery): Promise<PageResult<SleepRecord>>;
-export declare function listSleepRecordsByDateRange(query: SleepRecordsByDateRangeQuery): Promise<PageResult<SleepRecord>>;

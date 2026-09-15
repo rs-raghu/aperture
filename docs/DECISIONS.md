@@ -1,16 +1,24 @@
-# Architectural decisions through Phase 11
+# Architectural decisions through Phase 13
 
 ## Health validation preserves recording contracts
 
 Health depends on the existing shared Validation package and infers readonly public types from runtime schemas. Phase 2 IDs remain opaque strings, with a documented stable-token syntax rather than a new UUID-only or branded constraint. Decimal quantities retain all caller digits and their original unit; digit-based structural checks avoid floating-point rounding and underflow. Validation performs no unit conversion or clinical interpretation.
 
-## Deferred Health exports are types-only
+## Health operations are runtime services
 
-The Health root entry exports implemented schemas, public types, and the 11 calculations completed in Phase 12. The remaining 126 ambient lifecycle operations stay accessible through a types-only `/contracts` entry, preventing module-load failures from nonexistent runtime values. Service-only query/summary validation remains Phase 13. The production build excludes browser and Node ambient types.
+The Health root entry exports implemented schemas, public types, all 11 Phase 12 calculations, and the Phase 13 service factory. The former ambient lifecycle declarations have concrete methods on `HealthApplicationService`; the types-only `/contracts` entry is now only a compatibility alias for implemented public types. Service composition also has an `/application` entry. The production build excludes browser and Node ambient types.
 
 ## Health updates preserve Phase 2 mutability
 
-Health update inputs exclude owner and entity ID because operations already receive those separately. Declared immutable relationships stay excluded; explicitly mutable references stay permitted. Every update requires a defined field, while body-composition updates retain required observation time. Schemas check only supplied local values; stored-state merge, relationship ownership, and lifecycle enforcement remain future service responsibilities.
+Health update inputs exclude owner and entity ID because operations already receive those separately. Declared immutable relationships stay excluded; explicitly mutable references stay permitted. Every update requires a defined field, while body-composition updates retain required observation time. Schemas check supplied local values. Phase 13 services merge updates with stored entities, preserve immutable fields, verify relationship ownership before mutation, and restrict status changes to explicit lifecycle operations.
+
+## Health services trust an explicit owner context
+
+Health operations receive `ownerId` through `HealthOperationContext`, which represents the trusted identity supplied by a future application boundary. Payloads cannot assign or reassign an owner. Repository reads include the owner, and returned data is revalidated for both ownership and identity. Authentication remains deferred; future callers must derive the context from the authenticated session rather than user-controlled input.
+
+## Health summaries follow repository pagination
+
+Aggregate Health service methods traverse validated repository cursors and reject repeated cursors. Phase 12 calculators perform sleep, hydration, running, and recovery arithmetic; workout duration totals use the same decimal dependency. The Phase 2 medication model contains no schedule from which to derive reminders, so the reminder summary returns an empty validated list. Pause and resume times are validated but cannot be persisted because the approved workout-session schema has no corresponding fields.
 
 ## Education mobile is a native feature boundary
 

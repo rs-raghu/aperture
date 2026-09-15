@@ -5,8 +5,6 @@ import { textSchema } from "../internal/primitives.js";
 import { hasDefinedUpdate } from "../internal/validation.helpers.js";
 import { runningActivityIdSchema } from "../running/running-activity.types.js";
 import { personalRecordMetricSchema } from "./personal-record.types.js";
-import type { OwnerId, PageResult } from "../health.types.js";
-import type { PersonalRecord, PersonalRecordId } from "./personal-record.types.js";
 
 export const recordPersonalRecordInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
@@ -32,10 +30,3 @@ export const personalRecordListQuerySchema = z.strictObject({
   exerciseId: exerciseIdSchema.optional(),
 }).readonly();
 export type PersonalRecordListQuery = Readonly<z.infer<typeof personalRecordListQuerySchema>>;
-
-// Lifecycle operations remain declaration-only until Phase 13.
-export declare function recordPersonalRecord(input: RecordPersonalRecordInput): Promise<PersonalRecord>;
-export declare function updatePersonalRecord(id: PersonalRecordId, ownerId: OwnerId, input: UpdatePersonalRecordInput): Promise<PersonalRecord>;
-export declare function deletePersonalRecord(id: PersonalRecordId, ownerId: OwnerId): Promise<void>;
-export declare function getPersonalRecord(id: PersonalRecordId, ownerId: OwnerId): Promise<PersonalRecord | null>;
-export declare function listPersonalRecords(query: PersonalRecordListQuery): Promise<PageResult<PersonalRecord>>;

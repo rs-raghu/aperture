@@ -3,8 +3,6 @@ import { distanceValueSchema, heightValueSchema, weightValueSchema } from "../he
 import { dateRangeSchema, isoDateTimeStringSchema, ownerIdSchema, pageRequestSchema } from "../health.types.js";
 import { hasDefinedUpdate } from "../internal/validation.helpers.js";
 import { healthMeasurementTypeSchema, healthMeasurementValueSchema } from "./health-measurement.types.js";
-import type { OwnerId, PageResult } from "../health.types.js";
-import type { HealthMeasurement, HealthMeasurementId } from "./health-measurement.types.js";
 
 export const recordHealthMeasurementInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
@@ -45,12 +43,3 @@ export const healthMeasurementsByDateRangeQuerySchema = z.strictObject({
   range: dateRangeSchema,
 }).readonly();
 export type HealthMeasurementsByDateRangeQuery = Readonly<z.infer<typeof healthMeasurementsByDateRangeQuerySchema>>;
-
-// Lifecycle operations remain declaration-only until Phase 13.
-export declare function recordHealthMeasurement(input: RecordHealthMeasurementInput): Promise<HealthMeasurement>;
-export declare function updateHealthMeasurement(id: HealthMeasurementId, ownerId: OwnerId, input: UpdateHealthMeasurementInput): Promise<HealthMeasurement>;
-export declare function deleteHealthMeasurement(id: HealthMeasurementId, ownerId: OwnerId): Promise<void>;
-export declare function getHealthMeasurement(id: HealthMeasurementId, ownerId: OwnerId): Promise<HealthMeasurement | null>;
-export declare function listHealthMeasurements(query: HealthMeasurementListQuery): Promise<PageResult<HealthMeasurement>>;
-export declare function listHealthMeasurementsByType(query: HealthMeasurementsByTypeQuery): Promise<PageResult<HealthMeasurement>>;
-export declare function listHealthMeasurementsByDateRange(query: HealthMeasurementsByDateRangeQuery): Promise<PageResult<HealthMeasurement>>;

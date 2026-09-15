@@ -3,9 +3,6 @@ import { isoDateStringSchema, isoDateTimeStringSchema, ownerIdSchema, pageReques
 import { textSchema } from "../internal/primitives.js";
 import { hasDefinedUpdate, orderedDates } from "../internal/validation.helpers.js";
 import { medicationIdSchema, medicationStatusSchema } from "./medication.types.js";
-import type { OwnerId, PageResult } from "../health.types.js";
-import type { MedicationLog, MedicationLogId } from "./medication-log.types.js";
-import type { Medication, MedicationId } from "./medication.types.js";
 
 export const createMedicationInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
@@ -54,14 +51,3 @@ export const medicationLogListQuerySchema = z.strictObject({
   medicationId: medicationIdSchema.optional(),
 }).readonly();
 export type MedicationLogListQuery = Readonly<z.infer<typeof medicationLogListQuerySchema>>;
-
-// Lifecycle operations remain declaration-only until Phase 13.
-export declare function createMedication(input: CreateMedicationInput): Promise<Medication>;
-export declare function updateMedication(id: MedicationId, ownerId: OwnerId, input: UpdateMedicationInput): Promise<Medication>;
-export declare function archiveMedication(id: MedicationId, ownerId: OwnerId): Promise<Medication>;
-export declare function getMedication(id: MedicationId, ownerId: OwnerId): Promise<Medication | null>;
-export declare function listMedications(query: MedicationListQuery): Promise<PageResult<Medication>>;
-export declare function recordMedicationTaken(input: RecordMedicationLogInput): Promise<MedicationLog>;
-export declare function recordMedicationSkipped(input: RecordMedicationLogInput): Promise<MedicationLog>;
-export declare function updateMedicationLog(id: MedicationLogId, ownerId: OwnerId, input: UpdateMedicationLogInput): Promise<MedicationLog>;
-export declare function listMedicationLogs(query: MedicationLogListQuery): Promise<PageResult<MedicationLog>>;

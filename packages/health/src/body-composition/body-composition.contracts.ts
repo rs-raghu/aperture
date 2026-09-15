@@ -2,8 +2,6 @@ import { z } from "@aperture/validation";
 import { distanceValueSchema, heightValueSchema, percentageValueSchema, weightValueSchema } from "../health-units.types.js";
 import { isoDateTimeStringSchema, ownerIdSchema, pageRequestSchema } from "../health.types.js";
 import { hasDefinedUpdate } from "../internal/validation.helpers.js";
-import type { OwnerId, PageResult } from "../health.types.js";
-import type { BodyCompositionRecord, BodyCompositionRecordId } from "./body-composition.types.js";
 
 export const recordBodyCompositionInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
@@ -34,10 +32,3 @@ export const bodyCompositionListQuerySchema = z.strictObject({
   ownerId: ownerIdSchema,
 }).readonly();
 export type BodyCompositionListQuery = Readonly<z.infer<typeof bodyCompositionListQuerySchema>>;
-
-// Lifecycle operations remain declaration-only until Phase 13.
-export declare function recordBodyComposition(input: RecordBodyCompositionInput): Promise<BodyCompositionRecord>;
-export declare function updateBodyComposition(id: BodyCompositionRecordId, ownerId: OwnerId, input: UpdateBodyCompositionInput): Promise<BodyCompositionRecord>;
-export declare function deleteBodyComposition(id: BodyCompositionRecordId, ownerId: OwnerId): Promise<void>;
-export declare function getBodyComposition(id: BodyCompositionRecordId, ownerId: OwnerId): Promise<BodyCompositionRecord | null>;
-export declare function listBodyCompositionRecords(query: BodyCompositionListQuery): Promise<PageResult<BodyCompositionRecord>>;

@@ -4,8 +4,6 @@ import { ownerIdSchema, pageRequestSchema } from "../health.types.js";
 import { sequenceSchema } from "../internal/primitives.js";
 import { hasDefinedUpdate } from "../internal/validation.helpers.js";
 import { runningActivityIdSchema } from "../running/running-activity.types.js";
-import type { OwnerId, PageResult } from "../health.types.js";
-import type { RunningSplit, RunningSplitId } from "./running-split.types.js";
 
 export const recordRunningSplitInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
@@ -37,9 +35,3 @@ export const runningSplitsByActivityQuerySchema = z.strictObject({
   runningActivityId: runningActivityIdSchema,
 }).readonly();
 export type RunningSplitsByActivityQuery = Readonly<z.infer<typeof runningSplitsByActivityQuerySchema>>;
-
-// Lifecycle operations remain declaration-only until Phase 13.
-export declare function recordRunningSplit(input: RecordRunningSplitInput): Promise<RunningSplit>;
-export declare function updateRunningSplit(id: RunningSplitId, ownerId: OwnerId, input: UpdateRunningSplitInput): Promise<RunningSplit>;
-export declare function deleteRunningSplit(id: RunningSplitId, ownerId: OwnerId): Promise<void>;
-export declare function listRunningSplitsByActivity(query: RunningSplitsByActivityQuery): Promise<PageResult<RunningSplit>>;

@@ -91,3 +91,7 @@ The audits were repeated on 2026-09-14 with the same results: 13 moderate worksp
 | Package | Workspace | Resolved version | Kind | Purpose |
 | --- | --- | ---: | --- | --- |
 | `decimal.js` | `@aperture/health` | 10.6.0 | Runtime | Performs deterministic Health arithmetic and final rounding without binary floating-point drift. The same resolved package was already used by Education, so this adds a direct workspace declaration without adding a new external package to the lock graph. |
+
+## Phase 13 dependency boundary
+
+Phase 13 adds no package. The Health service uses the existing `@aperture/validation` schemas and the `decimal.js` dependency declared directly in Phase 12. Repository, clock, and identifier capabilities remain injected TypeScript interfaces; no database, UUID, date, framework, state, transport, authentication, or medical library is added.

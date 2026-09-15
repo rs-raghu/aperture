@@ -6,8 +6,6 @@ import { textSchema } from "../internal/primitives.js";
 import { hasDefinedUpdate, orderedInstants } from "../internal/validation.helpers.js";
 import { activityRouteIdSchema } from "../routes/activity-route.types.js";
 import { workoutSessionIdSchema } from "../workouts/workout-session.types.js";
-import type { IsoDateTimeString, OwnerId, PageResult } from "../health.types.js";
-import type { RunningActivity, RunningActivityId } from "./running-activity.types.js";
 
 export const createRunningActivityInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
@@ -44,12 +42,3 @@ export const runningActivitiesByDateRangeQuerySchema = z.strictObject({
   range: dateRangeSchema,
 }).readonly();
 export type RunningActivitiesByDateRangeQuery = Readonly<z.infer<typeof runningActivitiesByDateRangeQuerySchema>>;
-
-// Lifecycle operations remain declaration-only until Phase 13.
-export declare function createRunningActivity(input: CreateRunningActivityInput): Promise<RunningActivity>;
-export declare function updateRunningActivity(id: RunningActivityId, ownerId: OwnerId, input: UpdateRunningActivityInput): Promise<RunningActivity>;
-export declare function completeRunningActivity(id: RunningActivityId, ownerId: OwnerId, completedAt: IsoDateTimeString): Promise<RunningActivity>;
-export declare function deleteRunningActivity(id: RunningActivityId, ownerId: OwnerId): Promise<void>;
-export declare function getRunningActivity(id: RunningActivityId, ownerId: OwnerId): Promise<RunningActivity | null>;
-export declare function listRunningActivities(query: RunningActivityListQuery): Promise<PageResult<RunningActivity>>;
-export declare function listRunningActivitiesByDateRange(query: RunningActivitiesByDateRangeQuery): Promise<PageResult<RunningActivity>>;

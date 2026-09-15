@@ -6,8 +6,6 @@ import { sequenceSchema } from "../internal/primitives.js";
 import { hasDefinedUpdate } from "../internal/validation.helpers.js";
 import { workoutSessionIdSchema } from "../workouts/workout-session.types.js";
 import { perceivedEffortSchema } from "./exercise-set.types.js";
-import type { OwnerId, PageResult } from "../health.types.js";
-import type { ExerciseSet, ExerciseSetId } from "./exercise-set.types.js";
 
 export const recordExerciseSetInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
@@ -54,11 +52,3 @@ export const exerciseSetsByExerciseQuerySchema = z.strictObject({
   exerciseId: exerciseIdSchema,
 }).readonly();
 export type ExerciseSetsByExerciseQuery = Readonly<z.infer<typeof exerciseSetsByExerciseQuerySchema>>;
-
-// Lifecycle operations remain declaration-only until Phase 13.
-export declare function recordExerciseSet(input: RecordExerciseSetInput): Promise<ExerciseSet>;
-export declare function updateExerciseSet(id: ExerciseSetId, ownerId: OwnerId, input: UpdateExerciseSetInput): Promise<ExerciseSet>;
-export declare function deleteExerciseSet(id: ExerciseSetId, ownerId: OwnerId): Promise<void>;
-export declare function getExerciseSet(id: ExerciseSetId, ownerId: OwnerId): Promise<ExerciseSet | null>;
-export declare function listExerciseSetsByWorkout(query: ExerciseSetsByWorkoutQuery): Promise<PageResult<ExerciseSet>>;
-export declare function listExerciseSetsByExercise(query: ExerciseSetsByExerciseQuery): Promise<PageResult<ExerciseSet>>;

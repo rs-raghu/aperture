@@ -2,8 +2,6 @@ import { z } from "@aperture/validation";
 import { hydrationVolumeValueSchema } from "../health-units.types.js";
 import { isoDateStringSchema, isoDateTimeStringSchema, ownerIdSchema, pageRequestSchema } from "../health.types.js";
 import { hasDefinedUpdate } from "../internal/validation.helpers.js";
-import type { OwnerId, PageResult } from "../health.types.js";
-import type { HydrationEntry, HydrationEntryId } from "./hydration-entry.types.js";
 
 export const recordHydrationInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
@@ -31,11 +29,3 @@ export const hydrationEntriesByDateQuerySchema = z.strictObject({
   date: isoDateStringSchema,
 }).readonly();
 export type HydrationEntriesByDateQuery = Readonly<z.infer<typeof hydrationEntriesByDateQuerySchema>>;
-
-// Lifecycle operations remain declaration-only until Phase 13.
-export declare function recordHydration(input: RecordHydrationInput): Promise<HydrationEntry>;
-export declare function updateHydrationEntry(id: HydrationEntryId, ownerId: OwnerId, input: UpdateHydrationEntryInput): Promise<HydrationEntry>;
-export declare function deleteHydrationEntry(id: HydrationEntryId, ownerId: OwnerId): Promise<void>;
-export declare function getHydrationEntry(id: HydrationEntryId, ownerId: OwnerId): Promise<HydrationEntry | null>;
-export declare function listHydrationEntries(query: HydrationEntryListQuery): Promise<PageResult<HydrationEntry>>;
-export declare function listHydrationEntriesByDate(query: HydrationEntriesByDateQuery): Promise<PageResult<HydrationEntry>>;

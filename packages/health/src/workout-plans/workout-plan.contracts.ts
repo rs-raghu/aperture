@@ -3,8 +3,6 @@ import { isoDateStringSchema, ownerIdSchema, pageRequestSchema } from "../health
 import { textSchema } from "../internal/primitives.js";
 import { hasDefinedUpdate, orderedDates } from "../internal/validation.helpers.js";
 import { workoutPlanStatusSchema } from "./workout-plan.types.js";
-import type { OwnerId, PageResult } from "../health.types.js";
-import type { WorkoutPlan, WorkoutPlanId } from "./workout-plan.types.js";
 
 export const createWorkoutPlanInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
@@ -31,11 +29,3 @@ export const workoutPlanListQuerySchema = z.strictObject({
   status: workoutPlanStatusSchema.optional(),
 }).readonly();
 export type WorkoutPlanListQuery = Readonly<z.infer<typeof workoutPlanListQuerySchema>>;
-
-// Lifecycle operations remain declaration-only until Phase 13.
-export declare function createWorkoutPlan(input: CreateWorkoutPlanInput): Promise<WorkoutPlan>;
-export declare function updateWorkoutPlan(id: WorkoutPlanId, ownerId: OwnerId, input: UpdateWorkoutPlanInput): Promise<WorkoutPlan>;
-export declare function archiveWorkoutPlan(id: WorkoutPlanId, ownerId: OwnerId): Promise<WorkoutPlan>;
-export declare function activateWorkoutPlan(id: WorkoutPlanId, ownerId: OwnerId): Promise<WorkoutPlan>;
-export declare function getWorkoutPlan(id: WorkoutPlanId, ownerId: OwnerId): Promise<WorkoutPlan | null>;
-export declare function listWorkoutPlans(query: WorkoutPlanListQuery): Promise<PageResult<WorkoutPlan>>;

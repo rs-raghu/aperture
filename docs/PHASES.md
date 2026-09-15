@@ -90,8 +90,16 @@ All 11 approved Health calculation declarations now have validated runtime imple
 
 Undeclared calculations, diagnostic interpretation, clinical classifications, recommendations, alerts, lifecycle and service implementations, repositories, UI, APIs, persistence, integrations, and Phase 13 work remain unimplemented.
 
+## Phase 13 — Health services: complete after verification
+
+The dependency-injected Health application layer implements all 126 lifecycle declarations and 11 service summaries as 136 unique runtime methods. It validates inputs and repository outputs, enforces owner and relationship boundaries, uses injected time and identifiers, applies explicit lifecycle transitions, and orchestrates Phase 12 calculations. See [the service reference](HEALTH_SERVICES.md).
+
+## Phase 13 exclusions
+
+Production or memory repository implementations, databases, SQL, Supabase, APIs, authentication, UI, navigation, synchronization, imports/exports, background scheduling, notifications, integrations, diagnosis, clinical interpretation, medical recommendations, and Phase 14 work remain unimplemented.
+
 ## Implementation status
 
-Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, Health models/validation, and 11 Health calculations have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
+Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, Health models/validation, 11 Health calculations, and the injected Health application layer have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
 
 Phase 11 verification caveat: standard workspace tests, lint, type-check, builds, and Expo web export pass. Supplemental Expo Doctor passes 20/21 checks; its SDK patch-version comparison requests newer versions of three unchanged Expo packages. See the Phase 11 report for exact versions. No unrelated dependency upgrade was applied.

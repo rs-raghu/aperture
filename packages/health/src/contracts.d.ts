@@ -1,23 +1,2 @@
-/** Types-only compatibility surface; these operations have no runtime implementation. */
-export { createAppointment, updateAppointment, cancelAppointment, completeAppointment, getAppointment, listAppointments, listUpcomingAppointments } from "./appointments/appointment.contracts.js";
-export { recordBodyComposition, updateBodyComposition, deleteBodyComposition, getBodyComposition, listBodyCompositionRecords } from "./body-composition/body-composition.contracts.js";
-export { createEquipment, updateEquipment, retireEquipment, getEquipment, listEquipment, recordEquipmentUsage, getEquipmentUsageSummary } from "./equipment/equipment.contracts.js";
-export { recordExerciseSet, updateExerciseSet, deleteExerciseSet, getExerciseSet, listExerciseSetsByWorkout, listExerciseSetsByExercise } from "./exercise-sets/exercise-set.contracts.js";
-export { createExercise, updateExercise, archiveExercise, getExercise, listExercises, listExercisesByCategory } from "./exercises/exercise.contracts.js";
-export { recordHydration, updateHydrationEntry, deleteHydrationEntry, getHydrationEntry, listHydrationEntries, listHydrationEntriesByDate } from "./hydration/hydration-entry.contracts.js";
-export { recordLaboratoryResult, updateLaboratoryResult, deleteLaboratoryResult, getLaboratoryResult, listLaboratoryResults } from "./laboratory-results/laboratory-result.contracts.js";
-export { recordHealthMeasurement, updateHealthMeasurement, deleteHealthMeasurement, getHealthMeasurement, listHealthMeasurements, listHealthMeasurementsByType, listHealthMeasurementsByDateRange } from "./measurements/health-measurement.contracts.js";
-export { createMedication, updateMedication, archiveMedication, getMedication, listMedications, recordMedicationTaken, recordMedicationSkipped, updateMedicationLog, listMedicationLogs } from "./medications/medication.contracts.js";
-export { createNutritionEntry, updateNutritionEntry, deleteNutritionEntry, getNutritionEntry, listNutritionEntries, listNutritionEntriesByDate } from "./nutrition/nutrition-entry.contracts.js";
-export { recordPersonalRecord, updatePersonalRecord, deletePersonalRecord, getPersonalRecord, listPersonalRecords } from "./personal-records/personal-record.contracts.js";
-export { createHealthProfile, updateHealthProfile, getHealthProfile } from "./profiles/health-profile.contracts.js";
-export { recordRecoveryEntry, updateRecoveryEntry, deleteRecoveryEntry, getRecoveryEntry, listRecoveryEntries } from "./recovery/recovery-entry.contracts.js";
-export { createActivityRoute, updateActivityRoute, deleteActivityRoute, getActivityRoute, listActivityRoutes } from "./routes/activity-route.contracts.js";
-export { createRunningActivity, updateRunningActivity, completeRunningActivity, deleteRunningActivity, getRunningActivity, listRunningActivities, listRunningActivitiesByDateRange } from "./running/running-activity.contracts.js";
-export { recordRunningSplit, updateRunningSplit, deleteRunningSplit, listRunningSplitsByActivity } from "./running-splits/running-split.contracts.js";
-export { recordSleep, updateSleep, deleteSleep, getSleepRecord, listSleepRecords, listSleepRecordsByDateRange } from "./sleep/sleep-record.contracts.js";
-export { recordSymptom, updateSymptomEntry, deleteSymptomEntry, getSymptomEntry, listSymptomEntries } from "./symptoms/symptom-entry.contracts.js";
-export { recordVitalReading, updateVitalReading, deleteVitalReading, getVitalReading, listVitalReadings, listVitalReadingsByType, listVitalReadingsByDateRange } from "./vitals/vital-reading.contracts.js";
-export { createWorkoutPlan, updateWorkoutPlan, archiveWorkoutPlan, activateWorkoutPlan, getWorkoutPlan, listWorkoutPlans } from "./workout-plans/workout-plan.contracts.js";
-export { createWorkoutSession, startWorkout, pauseWorkout, resumeWorkout, completeWorkout, cancelWorkout, getWorkoutSession, listWorkoutSessions, listWorkoutSessionsByDateRange } from "./workouts/workout-session.contracts.js";
+/** Types-only compatibility surface for the implemented public package types. */
 export type * from "./index.js";
