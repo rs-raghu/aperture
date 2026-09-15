@@ -33,6 +33,20 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .education-main { width: min(1180px, 90vw); margin: 0 auto; padding: 44px 0 70px; }
 .education-footer { padding: 20px 5vw; color: #b8cbc8; background: var(--navy); text-align: center; font-size: .8rem; }
 
+.health-shell { min-height: 100vh; display: grid; grid-template-rows: auto auto auto 1fr auto; background: radial-gradient(circle at 95% 3%, #daf4ee 0, transparent 27rem), #f4f7f5; }
+.health-header { min-height: 76px; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; color: white; background: #10333b; }
+.health-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; letter-spacing: .01em; }
+.health-brand-mark { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.42); border-radius: 50%; background: #0b766c; font-family: Georgia, serif; font-size: 23px; }
+.health-nav { display: flex; gap: 3px; padding: 9px 5vw; overflow-x: auto; background: #17414a; scrollbar-width: thin; }
+.health-nav a { flex: 0 0 auto; padding: 8px 12px; color: #d5e9e6; text-decoration: none; border-radius: 8px; font-size: .9rem; font-weight: 650; }
+.health-nav a:hover, .health-nav a[aria-current="page"] { color: white; background: rgba(255,255,255,.14); }
+.health-preview-notice { padding: 10px 5vw; color: #694411; background: #fff4dc; border-bottom: 1px solid #f0d7a6; font-size: .87rem; }
+.health-main { width: min(1180px, 90vw); margin: 0 auto; padding: 44px 0 70px; }
+.health-main .grid > .panel { margin-top: 0; }
+.health-footer { padding: 20px 5vw; color: #b8cbc8; background: #10333b; text-align: center; font-size: .8rem; }
+.health-record-gap { margin-top: 18px; }
+.text-button { padding: 0; color: #087f72; background: transparent; border: 0; cursor: pointer; text-decoration: underline; }
+
 .page-header { display: flex; justify-content: space-between; gap: 28px; align-items: flex-end; margin-bottom: 28px; }
 .page-header h1 { margin: 4px 0 8px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.15rem, 5vw, 3.45rem); line-height: 1.02; letter-spacing: -.035em; }
 .page-header p:not(.eyebrow) { max-width: 720px; margin: 0; color: var(--muted); line-height: 1.65; }
@@ -101,9 +115,9 @@ th { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-s
 
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (max-width: 780px) {
-  .education-header { min-height: 66px; }
+  .education-header, .health-header { min-height: 66px; }
   .preview-chip { display: none; }
-  .education-main { width: min(92vw, 680px); padding-top: 30px; }
+  .education-main, .health-main { width: min(92vw, 680px); padding-top: 30px; }
   .page-header { align-items: flex-start; flex-direction: column; }
   .grid-2, .grid-3, .form-grid { grid-template-columns: 1fr; }
   .record-card { grid-template-columns: 1fr; }

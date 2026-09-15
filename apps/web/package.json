@@ -4,18 +4,20 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory",
+    "predev": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory",
     "dev": "next dev",
-    "prebuild": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory",
+    "prebuild": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory",
     "build": "next build",
     "typecheck": "tsc --project tsconfig.json --noEmit",
-    "pretest": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory",
+    "pretest": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory",
     "test": "vitest run",
     "lint": "eslint src tests --max-warnings=0"
   },
   "dependencies": {
     "@aperture/education": "^0.7.0",
     "@aperture/education-memory": "^0.8.0",
+    "@aperture/health": "^0.4.0",
+    "@aperture/health-memory": "^0.5.0",
     "@supabase/ssr": "^0.12.5",
     "@supabase/supabase-js": "^2.114.0",
     "next": "^16.3.4",

@@ -60,6 +60,26 @@ Thin App Router files compose screens from `apps/web/src/features/education`. Th
 
 One Education runtime is constructed per mounted provider and shared by routes beneath the Education layout. It contains the real service, a new isolated memory repository aggregate, injected browser clock/UUID adapters, and an explicit synthetic development owner. It is never created at module import time, on every render, or as a process-wide singleton. Refresh reset is intentional and disclosed.
 
+## Health web is a feature-local composition boundary
+
+Thin App Router files compose screens from `apps/web/src/features/health`. Health owns its navigation, provider, adapters, hooks, view models, forms, and screen components. The shared Health and Health memory packages do not import React, Next.js, or browser APIs.
+
+## Health preview runtime lifetime and identity
+
+One Health runtime is constructed when the Health layout provider mounts and remains stable across route navigation and rerenders. It contains the real Health service, a new isolated memory repository aggregate, injected clock and UUID adapters, and a visible synthetic development owner. Full refresh creates a new empty runtime. The synthetic owner is explicitly disclosed as a test identity and does not represent authentication.
+
+## Health web presentation boundary
+
+Forms adapt browser values to the existing owner-scoped service inputs and never reimplement validation or lifecycle rules. Application and adapter failures are normalized into readable UI errors; raw validation values, stack traces, and object stringification are not rendered.
+
+## Health progress route uses implemented contracts
+
+The `/health/goals` route records achieved personal records and recovery observations because the approved Health package has no target or goal entity. The screen labels these values as completed milestones and observations, and does not imply that target-setting is persisted.
+
+## Health web remains observational
+
+The preview displays user-supplied records, lifecycle states, and arithmetic totals. It does not classify values, diagnose conditions, set intake or exercise targets, or produce medical, nutrition, recovery, or training recommendations.
+
 ## Presentation does not duplicate domain rules
 
 React forms call existing owner-scoped service workflows, and overview/grade/attendance/study displays consume service summaries and calculator outputs. Browser strings are adapted at the feature boundary; normalized validation and application errors become field/form presentation models without altering domain error types.

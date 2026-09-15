@@ -99,3 +99,7 @@ Phase 13 adds no package. The Health service uses the existing `@aperture/valida
 ## Phase 14 dependency boundary
 
 `@aperture/health-memory@0.5.0` adds only a local runtime dependency on `@aperture/health@0.4.0`. It reuses Health validation and calculation behavior and adds no external or transitive dependency. The lockfile change registers the new workspace and its local link only.
+
+## Phase 15 dependency boundary
+
+The existing `@aperture/web@0.4.0` workspace now declares local runtime links to `@aperture/health@0.4.0` and `@aperture/health-memory@0.5.0`. The Health preview reuses the installed React, Next.js, Testing Library, jsdom, and CSS toolchain. It adds no external package, charting library, form library, global state library, persistence client, medical library, or transitive dependency.

@@ -4,11 +4,11 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 14 — Health memory repositories
-- Current phase status: implementation and focused gate complete; ready to commit
+- Current phase: 15 — Health web feature
+- Current phase status: implementation and Phase 14–15 pair gate complete; ready to commit
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: pending
-- Last successfully completed command: Health memory tests and strict lint
+- Ending commit: `78dad26` for Phase 14; Phase 15 pending
+- Last successfully completed command: remote fetch and upstream divergence check after the full Phase 14–15 gate
 - Last push: `fdb2c32` pushed to `origin/codex/aperture-v2`; local and upstream matched before Phase 14
 - Unresolved concern: supplemental Expo compatibility metadata requests patch updates to Expo, Expo Crypto, and Expo Router; the standard mobile checks pass and unrelated upgrades remain deferred until required by an applicable phase.
 
@@ -18,8 +18,8 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | ---: | --- | --- | --- | --- | --- | --- |
 | 12 | Complete | `1c60ba7` | 4,115 tests / 5 files; lint, type-check, build pass | 4,639 tests / 26 suites or files; workspace type-check/lint/builds, Next production build, and Expo web export pass; Expo Doctor 20/21 at accepted patch-version baseline | Direct declaration of existing `decimal.js@10.6.0` / none | 11/11 declared calculations implemented; clinical interpretation and undeclared calculations excluded |
 | 13 | Complete | `fdb2c32` | 4,150 tests / 6 files; strict lint, type-check, and build pass | 4,639 tests / 26 suites or files; workspace type-check/lint/builds, Next production build, and Expo web export pass; Expo Doctor 20/21 at accepted patch-version baseline; pushed | No new dependency / none | 126 lifecycle declarations and 11 summaries implemented as 136 unique methods; repository adapters and UI deferred |
-| 14 | Ready to commit | Pending | 294 tests / 4 files; strict lint, type-check, and build pass | Pending with Phase 15 | Local `@aperture/health@0.4.0` only / none | All 22 repository interfaces implemented; volatile storage only; web UI deferred |
-| 15 | Not started | — | — | — | — | Health web feature |
+| 14 | Complete | `78dad26` | 294 tests / 4 files; strict lint, type-check, and build pass | 4,940 tests / 33 suites or files; workspace type-check/lint/builds, 21-page Next production build, and Expo web export pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/health@0.4.0` only / none | All 22 repository interfaces implemented; volatile storage only |
+| 15 | Ready to commit | Pending | 15 tests / 7 files; web lint, type-check, and 21-page production build pass | 4,940 tests / 33 suites or files; workspace type-check/lint/builds, Next production build, and Expo web export pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/health@0.4.0` and `@aperture/health-memory@0.5.0` links / none | Volatile synthetic-owner web preview; no authentication or persistence |
 | 16 | Not started | — | — | — | — | Health mobile feature |
 | 17 | Not started | — | — | — | — | Health vertical-slice hardening |
 | 18 | Not started | — | — | — | — | Finance models and validation |
@@ -47,13 +47,13 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Current phase details
 
-- Files changed: new Health memory workspace, 22 collection/repository implementations, query-bound cursor store, equipment usage aggregate, reusable contract suite, deterministic fixtures, public and real-service integration tests, package metadata and documentation
-- Dependencies added: local `@aperture/health@0.4.0` workspace link only
+- Files changed: Health feature runtime/provider, hooks, navigation, shared UI, ten screens, ten App Router entries plus layout, responsive CSS, real-service component tests, package metadata and documentation
+- Dependencies added: local `@aperture/health@0.4.0` and `@aperture/health-memory@0.5.0` web workspace links only
 - Database migrations added: none
-- Tests added: 273 reusable CRUD repository contracts plus aggregate, profile, every filter, pagination, equipment usage, public API, defensive-copy, and real-service integration coverage
-- Focused verification result: 294 tests in 4 files pass; Health memory strict lint, type-check, and build pass
-- Full regression result: pending with Phase 15
-- Audit result: Phase 12–13 pair baseline remains 13 moderate, 0 high/critical; web production audit reports 0 vulnerabilities
+- Tests added: Health error normalization, provider stability/isolation, profile and observation workflows, workout/running lifecycle workflows, sleep, nutrition, hydration, personal-record, and recovery workflows
+- Focused verification result: 15 tests in 7 web test files pass; web lint, type-check, and 21-page Next production build pass
+- Full regression result: 4,940 tests in 33 suites or files pass; all workspace type-checks, lint checks, applicable builds, Next production build, and Expo web export pass; Expo Doctor remains 20/21 only because of three documented patch-version mismatches
+- Audit result: 13 moderate and 0 high/critical workspace findings in the accepted Expo dependency tree; web production audit reports 0 vulnerabilities
 - Known limitations: native iOS execution is unavailable on Windows; claims will distinguish export checks from native runs
-- Deferred work: durable repositories, UI, persistence, integrations, and Phases 15–39
-- Next phase: 15 after the Phase 14 commit
+- Deferred work: Health mobile, durable repositories, persistence, authentication, integrations, and Phases 16–39
+- Next phase: 16 after the Phase 14–15 pair gate, commit, and push

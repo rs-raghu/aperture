@@ -106,8 +106,16 @@ The isolated `@aperture/health-memory` workspace implements the complete Health 
 
 Durable persistence, PostgreSQL, Supabase, SQL, browser or device storage, authentication, Row Level Security, APIs, synchronization, imports/exports, backup/restore, notifications, background jobs, UI, production seeds, and Phase 15 work remain unimplemented.
 
+## Phase 15 — Health web preview: complete after verification
+
+The Next.js workspace provides ten Health routes through a feature-local boundary and one provider-scoped runtime. The preview uses the real owner-scoped Health service and isolated memory adapter for profile editing, observations, workouts and sets, running, sleep, nutrition, hydration, achieved personal records, recovery, filters, deletion, summaries, accessible forms, and normalized errors. See [the Health web reference](HEALTH_WEB.md).
+
+## Phase 15 exclusions
+
+Durable persistence, browser storage, Supabase, SQL, APIs, real authentication, synchronization, import/export, backup/restore, notifications, background jobs, diagnosis, clinical interpretation, medical or training recommendations, Health mobile UI, Finance UI, and Phase 16 work remain unimplemented.
+
 ## Implementation status
 
-Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, Health models/validation, 11 Health calculations, the injected Health application layer, and the volatile Health memory adapter have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
+Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, Health models/validation, 11 Health calculations, the injected Health application layer, the volatile Health memory adapter, and the local Health web preview have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
 
 Phase 11 verification caveat: standard workspace tests, lint, type-check, builds, and Expo web export pass. Supplemental Expo Doctor passes 20/21 checks; its SDK patch-version comparison requests newer versions of three unchanged Expo packages. See the Phase 11 report for exact versions. No unrelated dependency upgrade was applied.
