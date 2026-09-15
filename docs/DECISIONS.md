@@ -1,4 +1,4 @@
-# Architectural decisions through Phase 13
+# Architectural decisions through Phase 14
 
 ## Health validation preserves recording contracts
 
@@ -19,6 +19,18 @@ Health operations receive `ownerId` through `HealthOperationContext`, which repr
 ## Health summaries follow repository pagination
 
 Aggregate Health service methods traverse validated repository cursors and reject repeated cursors. Phase 12 calculators perform sleep, hydration, running, and recovery arithmetic; workout duration totals use the same decimal dependency. The Phase 2 medication model contains no schedule from which to derive reminders, so the reminder summary returns an empty validated list. Pause and resume times are validated but cannot be persisted because the approved workout-session schema has no corresponding fields.
+
+## Health memory is an isolated adapter
+
+`@aperture/health-memory` depends on `@aperture/health`, never the reverse. Each factory creates empty, process-local collections and freezes the exposed aggregate. Defensive deep copies are enabled by default. This adapter is for previews and contract tests; it does not imply a persistence or synchronization strategy.
+
+## Health memory cursors bind to query state
+
+Memory cursors are opaque handles bound to their collection, owner, filters, and collection revision. Any mutation makes earlier cursors stale. Rejecting stale or cross-query cursors is preferable to silently applying an offset to a changed result set. Natural domain fields define ascending order, with ascending entity IDs resolving ties.
+
+## Equipment usage is child state of equipment
+
+The approved repository interface exposes equipment usage as record-and-summary methods without a public usage entity. The memory adapter therefore keeps usage records private to the equipment repository, validates ownership through the equipment record, and deletes usage with its equipment. Summaries use kilometers and seconds as deterministic canonical units and reuse Health calculation conversion rules.
 
 ## Education mobile is a native feature boundary
 

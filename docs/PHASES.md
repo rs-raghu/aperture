@@ -98,8 +98,16 @@ The dependency-injected Health application layer implements all 126 lifecycle de
 
 Production or memory repository implementations, databases, SQL, Supabase, APIs, authentication, UI, navigation, synchronization, imports/exports, background scheduling, notifications, integrations, diagnosis, clinical interpretation, medical recommendations, and Phase 14 work remain unimplemented.
 
+## Phase 14 — Health memory repositories: complete after verification
+
+The isolated `@aperture/health-memory` workspace implements the complete Health repository aggregate with empty per-factory state, owner scoping, defensive cloning, deterministic ordering, AND filters, inclusive ranges, query-bound cursors, explicit deletion, private equipment-usage aggregation, reusable repository contracts, and real-service integration tests. See [the adapter reference](HEALTH_MEMORY_REPOSITORY.md).
+
+## Phase 14 exclusions
+
+Durable persistence, PostgreSQL, Supabase, SQL, browser or device storage, authentication, Row Level Security, APIs, synchronization, imports/exports, backup/restore, notifications, background jobs, UI, production seeds, and Phase 15 work remain unimplemented.
+
 ## Implementation status
 
-Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, Health models/validation, 11 Health calculations, and the injected Health application layer have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
+Education models, shared validation, seven Education calculations, the injected Education application layer, the volatile Education memory adapter, local Education web/mobile previews, Health models/validation, 11 Health calculations, the injected Health application layer, and the volatile Health memory adapter have runtime implementations. Durable storage and other domain/application behavior remain structural or interface-only.
 
 Phase 11 verification caveat: standard workspace tests, lint, type-check, builds, and Expo web export pass. Supplemental Expo Doctor passes 20/21 checks; its SDK patch-version comparison requests newer versions of three unchanged Expo packages. See the Phase 11 report for exact versions. No unrelated dependency upgrade was applied.

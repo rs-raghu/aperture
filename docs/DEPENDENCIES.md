@@ -95,3 +95,7 @@ The audits were repeated on 2026-09-14 with the same results: 13 moderate worksp
 ## Phase 13 dependency boundary
 
 Phase 13 adds no package. The Health service uses the existing `@aperture/validation` schemas and the `decimal.js` dependency declared directly in Phase 12. Repository, clock, and identifier capabilities remain injected TypeScript interfaces; no database, UUID, date, framework, state, transport, authentication, or medical library is added.
+
+## Phase 14 dependency boundary
+
+`@aperture/health-memory@0.5.0` adds only a local runtime dependency on `@aperture/health@0.4.0`. It reuses Health validation and calculation behavior and adds no external or transitive dependency. The lockfile change registers the new workspace and its local link only.
