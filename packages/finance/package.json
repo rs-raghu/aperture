@@ -22,6 +22,7 @@
     "lint": "npm run check:generated && tsc --project tsconfig.json --noEmit --noUnusedLocals --noUnusedParameters"
   },
   "dependencies": {
-    "@aperture/validation": "0.5.0"
+    "@aperture/validation": "0.5.0",
+    "decimal.js": "^10.6.0"
   }
 }

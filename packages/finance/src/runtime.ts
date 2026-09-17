@@ -2,6 +2,7 @@ import { z } from "@aperture/validation";
 
 export type * from "./index.js";
 export * from "./generated/finance.schemas.js";
+export * from "./calculators/foundation/index.js";
 
 export function pageResultSchema<TEntity>(itemSchema: z.ZodType<TEntity>) {
   return z.strictObject({
