@@ -5,6 +5,7 @@ export * from "./generated/finance.schemas.js";
 export * from "./calculators/foundation/index.js";
 export * from "./calculators/investments/plugin.types.js";
 export * from "./calculators/regulated-plugin.types.js";
+export * from "./calculators/retirement/retirement-plugin.types.js";
 export * from "./calculators/calculator.registry.generated.js";
 
 export function pageResultSchema<TEntity>(itemSchema: z.ZodType<TEntity>) {

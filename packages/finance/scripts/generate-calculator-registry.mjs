@@ -38,6 +38,7 @@ export const investmentCalculatorPlugins = Object.freeze(allFinanceCalculatorPlu
 export const loanCalculatorPlugins = Object.freeze(allFinanceCalculatorPlugins.filter((plugin) => plugin.manifest.category === "loan"));
 export const incomeTaxCalculatorPlugins = Object.freeze(allFinanceCalculatorPlugins.filter((plugin) => plugin.manifest.category === "income_tax"));
 export const economicCalculatorPlugins = Object.freeze(allFinanceCalculatorPlugins.filter((plugin) => plugin.manifest.category === "economic"));
+export const retirementCalculatorPlugins = Object.freeze(allFinanceCalculatorPlugins.filter((plugin) => plugin.manifest.category === "retirement"));
 
 export function getFinanceCalculatorPlugin(id: string) {
   return allFinanceCalculatorPlugins.find((plugin) => plugin.manifest.id === id);
@@ -45,6 +46,10 @@ export function getFinanceCalculatorPlugin(id: string) {
 
 export function getInvestmentCalculatorPlugin(id: string) {
   return investmentCalculatorPlugins.find((plugin) => plugin.manifest.id === id);
+}
+
+export function getRetirementCalculatorPlugin(id: string) {
+  return retirementCalculatorPlugins.find((plugin) => plugin.manifest.id === id);
 }
 `;
 

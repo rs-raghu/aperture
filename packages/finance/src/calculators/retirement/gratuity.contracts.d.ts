@@ -8,6 +8,8 @@ export interface GratuityInput extends CalculatorInputContext {
   readonly eligibleSalary: Money;
   readonly yearsOfService: number;
   readonly benefitFactor: Percentage;
+  readonly ruleVersion: string;
+  readonly ruleEffectiveOn: IsoDate;
 }
 
 export interface GratuityResult {
@@ -15,5 +17,5 @@ export interface GratuityResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; factor is a human percentage; years are integral. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** The plug-in estimates gratuity using an explicit benefit factor and effective-dated caller rule. */
 export declare function calculateGratuity(input: GratuityInput): GratuityResult;

@@ -29,6 +29,12 @@ import { emiPlugin } from "./loans/emi.plugin.js";
 import { flatVsReducingRatePlugin } from "./loans/flat-vs-reducing-rate.plugin.js";
 import { homeLoanEmiPlugin } from "./loans/home-loan-emi.plugin.js";
 import { simpleInterestPlugin } from "./loans/simple-interest.plugin.js";
+import { apyPlugin } from "./retirement/apy.plugin.js";
+import { epfPlugin } from "./retirement/epf.plugin.js";
+import { firePlugin } from "./retirement/fire.plugin.js";
+import { gratuityPlugin } from "./retirement/gratuity.plugin.js";
+import { npsPlugin } from "./retirement/nps.plugin.js";
+import { retirementCorpusPlugin } from "./retirement/retirement-corpus.plugin.js";
 
 export * from "./economic/inflation-adjustment.plugin.js";
 export * from "./income-tax/gst.plugin.js";
@@ -60,6 +66,12 @@ export * from "./loans/emi.plugin.js";
 export * from "./loans/flat-vs-reducing-rate.plugin.js";
 export * from "./loans/home-loan-emi.plugin.js";
 export * from "./loans/simple-interest.plugin.js";
+export * from "./retirement/apy.plugin.js";
+export * from "./retirement/epf.plugin.js";
+export * from "./retirement/fire.plugin.js";
+export * from "./retirement/gratuity.plugin.js";
+export * from "./retirement/nps.plugin.js";
+export * from "./retirement/retirement-corpus.plugin.js";
 
 export const allFinanceCalculatorPlugins = Object.freeze([
   inflationAdjustedValuePlugin,
@@ -92,6 +104,12 @@ export const allFinanceCalculatorPlugins = Object.freeze([
   flatVsReducingRatePlugin,
   homeLoanEmiPlugin,
   simpleInterestPlugin,
+  apyPlugin,
+  epfPlugin,
+  firePlugin,
+  gratuityPlugin,
+  npsPlugin,
+  retirementCorpusPlugin,
 ]);
 
 const calculatorIds = new Set(allFinanceCalculatorPlugins.map((plugin) => plugin.manifest.id));
@@ -101,6 +119,7 @@ export const investmentCalculatorPlugins = Object.freeze(allFinanceCalculatorPlu
 export const loanCalculatorPlugins = Object.freeze(allFinanceCalculatorPlugins.filter((plugin) => plugin.manifest.category === "loan"));
 export const incomeTaxCalculatorPlugins = Object.freeze(allFinanceCalculatorPlugins.filter((plugin) => plugin.manifest.category === "income_tax"));
 export const economicCalculatorPlugins = Object.freeze(allFinanceCalculatorPlugins.filter((plugin) => plugin.manifest.category === "economic"));
+export const retirementCalculatorPlugins = Object.freeze(allFinanceCalculatorPlugins.filter((plugin) => plugin.manifest.category === "retirement"));
 
 export function getFinanceCalculatorPlugin(id: string) {
   return allFinanceCalculatorPlugins.find((plugin) => plugin.manifest.id === id);
@@ -108,4 +127,8 @@ export function getFinanceCalculatorPlugin(id: string) {
 
 export function getInvestmentCalculatorPlugin(id: string) {
   return investmentCalculatorPlugins.find((plugin) => plugin.manifest.id === id);
+}
+
+export function getRetirementCalculatorPlugin(id: string) {
+  return retirementCalculatorPlugins.find((plugin) => plugin.manifest.id === id);
 }

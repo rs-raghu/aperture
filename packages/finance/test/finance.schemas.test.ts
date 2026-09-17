@@ -21,7 +21,7 @@ import { financeSchemaFixtures } from "./generated/finance.fixtures.js";
 
 describe("generated Finance declaration schemas", () => {
   it("accepts a generated valid fixture for every declared runtime model", () => {
-    expect(Object.keys(financeSchemas)).toHaveLength(281);
+    expect(Object.keys(financeSchemas)).toHaveLength(283);
     expect(Object.keys(financeSchemaFixtures).sort()).toEqual(Object.keys(financeSchemas).sort());
 
     for (const [name, schema] of Object.entries(financeSchemas)) {
@@ -35,7 +35,7 @@ describe("generated Finance declaration schemas", () => {
   it("keeps the generated declaration inventory complete and unique", () => {
     expect(financeDeclarationInventory.repositories).toHaveLength(30);
     expect(financeDeclarationInventory.operations).toHaveLength(183);
-    expect(new Set(financeDeclarationInventory.schemas)).toHaveLength(281);
+    expect(new Set(financeDeclarationInventory.schemas)).toHaveLength(283);
     expect(new Set(financeDeclarationInventory.repositories.map(({ name }) => name))).toHaveLength(30);
     expect(new Set(financeDeclarationInventory.operations.map(({ name }) => name))).toHaveLength(183);
   });

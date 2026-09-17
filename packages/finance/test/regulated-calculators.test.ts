@@ -27,12 +27,12 @@ const context = { version: "1.0.0", assumptions: [], sourceReferences: [] } as c
 const zeroAnnual = { value: "0", representation: "human_percentage", period: "year", compoundingFrequency: "monthly" } as const;
 
 describe("Phase 21 plug-in registry", () => {
-  it("discovers 30 calculators including all 12 regulated modules", () => {
-    expect(allFinanceCalculatorPlugins).toHaveLength(30);
+  it("keeps all 12 regulated modules in the global registry", () => {
+    expect(allFinanceCalculatorPlugins).toHaveLength(36);
     expect(loanCalculatorPlugins).toHaveLength(6);
     expect(incomeTaxCalculatorPlugins).toHaveLength(5);
     expect(economicCalculatorPlugins).toHaveLength(1);
-    expect(new Set(allFinanceCalculatorPlugins.map(({ manifest }) => manifest.id))).toHaveLength(30);
+    expect(new Set(allFinanceCalculatorPlugins.map(({ manifest }) => manifest.id))).toHaveLength(36);
     for (const plugin of allFinanceCalculatorPlugins) expect(getFinanceCalculatorPlugin(plugin.manifest.id)).toBe(plugin);
   });
 

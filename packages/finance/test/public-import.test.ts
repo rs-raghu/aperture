@@ -9,7 +9,7 @@ function schemaVariable(name: string): string {
 
 it("exposes every generated schema through the built package", () => {
   const publicExports: Readonly<Record<string, unknown>> = finance;
-  expect(Object.keys(finance.financeSchemas)).toHaveLength(281);
+  expect(Object.keys(finance.financeSchemas)).toHaveLength(283);
   for (const [name, schema] of Object.entries(finance.financeSchemas)) {
     expect(publicExports[schemaVariable(name)], `${name} schema is not public`).toBe(schema);
   }

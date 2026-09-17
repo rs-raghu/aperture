@@ -25,14 +25,18 @@ export const apyInputSchema = z.strictObject({
   "version": z.lazy(() => calculatorVersionSchema),
   "assumptions": z.array(z.lazy(() => calculatorAssumptionSchema)).readonly(),
   "sourceReferences": z.array(z.lazy(() => calculatorSourceReferenceSchema)).readonly(),
+  "currentBalance": z.lazy(() => moneySchema),
   "periodicContribution": z.lazy(() => moneySchema),
   "contributionCount": financePositiveIntegerSchema,
   "assumedRate": z.lazy(() => interestRateSchema),
   "contributionTiming": z.lazy(() => cashFlowTimingSchema),
+  "ruleVersion": financeVersionSchema,
+  "ruleEffectiveOn": z.lazy(() => isoDateSchema),
 }).readonly();
 
 export const apyResultSchema = z.strictObject({
   "estimatedPensionValue": z.lazy(() => moneySchema),
+  "totalContributions": z.lazy(() => moneySchema),
   "metadata": z.lazy(() => calculatorResultMetadataSchema),
 }).readonly();
 
@@ -493,13 +497,18 @@ export const epfInputSchema = z.strictObject({
   "sourceReferences": z.array(z.lazy(() => calculatorSourceReferenceSchema)).readonly(),
   "currentBalance": z.lazy(() => moneySchema),
   "periodicContribution": z.lazy(() => moneySchema),
+  "employerContribution": z.lazy(() => moneySchema),
   "expectedRate": z.lazy(() => interestRateSchema),
   "contributionCount": financePositiveIntegerSchema,
   "contributionTiming": z.lazy(() => cashFlowTimingSchema),
+  "ruleVersion": financeVersionSchema,
+  "ruleEffectiveOn": z.lazy(() => isoDateSchema),
 }).readonly();
 
 export const epfResultSchema = z.strictObject({
   "estimatedBalance": z.lazy(() => moneySchema),
+  "totalEmployeeContributions": z.lazy(() => moneySchema),
+  "totalEmployerContributions": z.lazy(() => moneySchema),
   "metadata": z.lazy(() => calculatorResultMetadataSchema),
 }).readonly();
 
@@ -696,11 +705,21 @@ export const fireInputSchema = z.strictObject({
   "assumptions": z.array(z.lazy(() => calculatorAssumptionSchema)).readonly(),
   "sourceReferences": z.array(z.lazy(() => calculatorSourceReferenceSchema)).readonly(),
   "annualExpenses": z.lazy(() => moneySchema),
-  "withdrawalRate": z.lazy(() => percentageSchema),
+  "currentAge": financeNonNegativeIntegerSchema,
+  "retirementAge": financeNonNegativeIntegerSchema,
+  "longevityAge": financeNonNegativeIntegerSchema,
+  "existingCorpus": z.lazy(() => moneySchema),
+  "annualContribution": z.lazy(() => moneySchema),
+  "contributionTiming": z.enum(["beginning_of_period", "end_of_period"]),
+  "scenarios": z.array(z.lazy(() => retirementProjectionScenarioSchema)).readonly(),
 }).readonly();
 
 export const fireResultSchema = z.strictObject({
   "targetCorpus": z.lazy(() => moneySchema),
+  "inflationAdjustedAnnualExpenses": z.lazy(() => moneySchema),
+  "projectedCorpus": z.lazy(() => moneySchema),
+  "fundingGap": z.lazy(() => moneySchema),
+  "scenarios": z.array(z.lazy(() => retirementScenarioResultSchema)).readonly(),
   "metadata": z.lazy(() => calculatorResultMetadataSchema),
 }).readonly();
 
@@ -732,6 +751,8 @@ export const gratuityInputSchema = z.strictObject({
   "eligibleSalary": z.lazy(() => moneySchema),
   "yearsOfService": financePositiveIntegerSchema,
   "benefitFactor": z.lazy(() => percentageSchema),
+  "ruleVersion": financeVersionSchema,
+  "ruleEffectiveOn": z.lazy(() => isoDateSchema),
 }).readonly();
 
 export const gratuityResultSchema = z.strictObject({
@@ -1155,14 +1176,25 @@ export const npsInputSchema = z.strictObject({
   "version": z.lazy(() => calculatorVersionSchema),
   "assumptions": z.array(z.lazy(() => calculatorAssumptionSchema)).readonly(),
   "sourceReferences": z.array(z.lazy(() => calculatorSourceReferenceSchema)).readonly(),
+  "currentBalance": z.lazy(() => moneySchema),
   "contribution": z.lazy(() => moneySchema),
+  "employerContribution": z.lazy(() => moneySchema),
   "expectedReturn": z.lazy(() => interestRateSchema),
   "contributionCount": financePositiveIntegerSchema,
   "contributionTiming": z.lazy(() => cashFlowTimingSchema),
+  "annuityAllocation": z.lazy(() => percentageSchema),
+  "assumedAnnuityRate": z.lazy(() => percentageSchema),
+  "ruleVersion": financeVersionSchema,
+  "ruleEffectiveOn": z.lazy(() => isoDateSchema),
 }).readonly();
 
 export const npsResultSchema = z.strictObject({
   "estimatedCorpus": z.lazy(() => moneySchema),
+  "totalEmployeeContributions": z.lazy(() => moneySchema),
+  "totalEmployerContributions": z.lazy(() => moneySchema),
+  "estimatedAnnuityPurchase": z.lazy(() => moneySchema),
+  "estimatedLumpSum": z.lazy(() => moneySchema),
+  "estimatedAnnualPension": z.lazy(() => moneySchema),
   "metadata": z.lazy(() => calculatorResultMetadataSchema),
 }).readonly();
 
@@ -1327,15 +1359,41 @@ export const retirementCorpusInputSchema = z.strictObject({
   "assumptions": z.array(z.lazy(() => calculatorAssumptionSchema)).readonly(),
   "sourceReferences": z.array(z.lazy(() => calculatorSourceReferenceSchema)).readonly(),
   "currentSavings": z.lazy(() => moneySchema),
+  "annualContribution": z.lazy(() => moneySchema),
+  "contributionTiming": z.enum(["beginning_of_period", "end_of_period"]),
   "desiredAnnualIncome": z.lazy(() => moneySchema),
-  "expectedReturn": z.lazy(() => interestRateSchema),
-  "inflationRate": z.lazy(() => percentageSchema),
-  "years": financePositiveIntegerSchema,
+  "currentAge": financeNonNegativeIntegerSchema,
+  "retirementAge": financeNonNegativeIntegerSchema,
+  "longevityAge": financeNonNegativeIntegerSchema,
+  "scenarios": z.array(z.lazy(() => retirementProjectionScenarioSchema)).readonly(),
 }).readonly();
 
 export const retirementCorpusResultSchema = z.strictObject({
   "estimatedCorpus": z.lazy(() => moneySchema),
+  "projectedSavings": z.lazy(() => moneySchema),
+  "fundingGap": z.lazy(() => moneySchema),
+  "scenarios": z.array(z.lazy(() => retirementScenarioResultSchema)).readonly(),
   "metadata": z.lazy(() => calculatorResultMetadataSchema),
+}).readonly();
+
+export const retirementProjectionScenarioSchema = z.strictObject({
+  "name": financeTextSchema,
+  "inflationRate": z.lazy(() => percentageSchema),
+  "preRetirementReturn": z.lazy(() => interestRateSchema),
+  "preRetirementRateKind": z.enum(["nominal", "effective"]),
+  "postRetirementReturn": z.lazy(() => interestRateSchema),
+  "postRetirementRateKind": z.enum(["nominal", "effective"]),
+  "withdrawalRate": z.lazy(() => percentageSchema),
+}).readonly();
+
+export const retirementScenarioResultSchema = z.strictObject({
+  "name": financeTextSchema,
+  "inflationAdjustedAnnualNeed": z.lazy(() => moneySchema),
+  "withdrawalRateTarget": z.lazy(() => moneySchema),
+  "longevityTarget": z.lazy(() => moneySchema),
+  "targetCorpus": z.lazy(() => moneySchema),
+  "projectedCorpus": z.lazy(() => moneySchema),
+  "fundingGap": z.lazy(() => moneySchema),
 }).readonly();
 
 export const roiInputSchema = z.strictObject({
@@ -2092,6 +2150,8 @@ export const financeSchemas = {
   "RepositoryFilter": repositoryFilterSchema,
   "RetirementCorpusInput": retirementCorpusInputSchema,
   "RetirementCorpusResult": retirementCorpusResultSchema,
+  "RetirementProjectionScenario": retirementProjectionScenarioSchema,
+  "RetirementScenarioResult": retirementScenarioResultSchema,
   "RoiInput": roiInputSchema,
   "RoiResult": roiResultSchema,
   "SavedCalculatorScenario": savedCalculatorScenarioSchema,

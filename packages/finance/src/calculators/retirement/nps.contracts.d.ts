@@ -5,16 +5,27 @@ import type { Percentage } from "../../percentage.types.js";
 import type { CalculatorInputContext, CalculatorResultMetadata } from "../calculator.types.js";
 
 export interface NpsInput extends CalculatorInputContext {
+  readonly currentBalance: Money;
   readonly contribution: Money;
+  readonly employerContribution: Money;
   readonly expectedReturn: InterestRate;
   readonly contributionCount: number;
   readonly contributionTiming: CashFlowTiming;
+  readonly annuityAllocation: Percentage;
+  readonly assumedAnnuityRate: Percentage;
+  readonly ruleVersion: string;
+  readonly ruleEffectiveOn: IsoDate;
 }
 
 export interface NpsResult {
   readonly estimatedCorpus: Money;
+  readonly totalEmployeeContributions: Money;
+  readonly totalEmployerContributions: Money;
+  readonly estimatedAnnuityPurchase: Money;
+  readonly estimatedLumpSum: Money;
+  readonly estimatedAnnualPension: Money;
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; rates use human percentages; count is integral. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** The plug-in projects NPS values from explicit contributions, allocation, rates, and effective-dated caller rules. */
 export declare function calculateNps(input: NpsInput): NpsResult;

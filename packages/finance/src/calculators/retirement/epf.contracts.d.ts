@@ -7,15 +7,20 @@ import type { CalculatorInputContext, CalculatorResultMetadata } from "../calcul
 export interface EpfInput extends CalculatorInputContext {
   readonly currentBalance: Money;
   readonly periodicContribution: Money;
+  readonly employerContribution: Money;
   readonly expectedRate: InterestRate;
   readonly contributionCount: number;
   readonly contributionTiming: CashFlowTiming;
+  readonly ruleVersion: string;
+  readonly ruleEffectiveOn: IsoDate;
 }
 
 export interface EpfResult {
   readonly estimatedBalance: Money;
+  readonly totalEmployeeContributions: Money;
+  readonly totalEmployerContributions: Money;
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; rates use human percentages; count is integral. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** The plug-in projects EPF from separate employee and employer contributions and an effective-dated caller rule. */
 export declare function calculateEpf(input: EpfInput): EpfResult;

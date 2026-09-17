@@ -3,19 +3,26 @@ import type { InterestRate } from "../../interest-rate.types.js";
 import type { Money } from "../../money.types.js";
 import type { Percentage } from "../../percentage.types.js";
 import type { CalculatorInputContext, CalculatorResultMetadata } from "../calculator.types.js";
+import type { RetirementProjectionScenario, RetirementScenarioResult } from "./retirement-scenario.contracts.js";
 
 export interface RetirementCorpusInput extends CalculatorInputContext {
   readonly currentSavings: Money;
+  readonly annualContribution: Money;
+  readonly contributionTiming: "beginning_of_period" | "end_of_period";
   readonly desiredAnnualIncome: Money;
-  readonly expectedReturn: InterestRate;
-  readonly inflationRate: Percentage;
-  readonly years: number;
+  readonly currentAge: number;
+  readonly retirementAge: number;
+  readonly longevityAge: number;
+  readonly scenarios: readonly RetirementProjectionScenario[];
 }
 
 export interface RetirementCorpusResult {
   readonly estimatedCorpus: Money;
+  readonly projectedSavings: Money;
+  readonly fundingGap: Money;
+  readonly scenarios: readonly RetirementScenarioResult[];
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money inputs and output retain currency; rates use human percentages. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** The plug-in compares caller-supplied retirement-income scenarios and exposes every material assumption. */
 export declare function calculateRetirementCorpus(input: RetirementCorpusInput): RetirementCorpusResult;
