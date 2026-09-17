@@ -1,7 +1,7 @@
 import type { FinancialAccountId } from "../accounts/financial-account.types.js";
 import type { BudgetId } from "../budgets/budget.types.js";
 import type { CashFlowSummary } from "../cash-flow/cash-flow.types.js";
-import type { CurrencyCode, DateRange, IsoDate, OwnerId } from "../finance.types.js";
+import type { CurrencyCode, DateRange, FiscalYearId, IsoDate, OwnerId } from "../finance.types.js";
 import type { Money } from "../money.types.js";
 import type { Percentage } from "../percentage.types.js";
 
@@ -15,7 +15,7 @@ export interface PortfolioSummary { readonly recordedCost: Money; readonly recor
 export interface UpcomingRecurringPaymentSummary { readonly count: number; readonly recordedAmount: Money; readonly before: IsoDate; }
 export interface UpcomingInsuranceRenewalSummary { readonly count: number; readonly before: IsoDate; }
 export interface FinancialGoalSummary { readonly targetAmount: Money; readonly recordedAmount: Money; readonly recordedProgress: Percentage; }
-export interface TaxSummary { readonly financialYear: string; readonly recordedAmount: Money; }
+export interface TaxSummary { readonly financialYear: FiscalYearId; readonly recordedAmount: Money; }
 export interface ImportSummary { readonly importCount: number; readonly acceptedRowCount: number; readonly rejectedRowCount: number; }
 export interface FinanceSummaryQuery { readonly ownerId: OwnerId; readonly currency: CurrencyCode; readonly range?: DateRange; }
 
@@ -31,6 +31,6 @@ export interface FinanceService {
   getUpcomingRecurringPayments(query: FinanceSummaryQuery, before: IsoDate): Promise<UpcomingRecurringPaymentSummary>;
   getUpcomingInsuranceRenewals(query: FinanceSummaryQuery, before: IsoDate): Promise<UpcomingInsuranceRenewalSummary>;
   getFinancialGoalSummary(query: FinanceSummaryQuery): Promise<FinancialGoalSummary>;
-  getTaxSummary(query: FinanceSummaryQuery, financialYear: string): Promise<TaxSummary>;
+  getTaxSummary(query: FinanceSummaryQuery, financialYear: FiscalYearId): Promise<TaxSummary>;
   getImportSummary(ownerId: OwnerId): Promise<ImportSummary>;
 }

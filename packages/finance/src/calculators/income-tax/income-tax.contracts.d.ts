@@ -1,4 +1,4 @@
-import type { DecimalString, IsoDate } from "../../finance.types.js";
+import type { DecimalString, FiscalYearId, IsoDate } from "../../finance.types.js";
 import type { InterestRate } from "../../interest-rate.types.js";
 import type { Money } from "../../money.types.js";
 import type { Percentage } from "../../percentage.types.js";
@@ -6,7 +6,7 @@ import type { CalculatorInputContext, CalculatorResultMetadata } from "../calcul
 
 export interface IncomeTaxInput extends CalculatorInputContext {
   readonly taxableIncome: Money;
-  readonly financialYear: string;
+  readonly financialYear: FiscalYearId;
   readonly jurisdiction: string;
 }
 

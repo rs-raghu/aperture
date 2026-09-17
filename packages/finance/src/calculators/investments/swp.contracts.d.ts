@@ -1,4 +1,4 @@
-import type { DecimalString, IsoDate } from "../../finance.types.js";
+import type { CashFlowTiming, DecimalString, IsoDate } from "../../finance.types.js";
 import type { InterestRate } from "../../interest-rate.types.js";
 import type { Money } from "../../money.types.js";
 import type { Percentage } from "../../percentage.types.js";
@@ -9,6 +9,7 @@ export interface SwpInput extends CalculatorInputContext {
   readonly periodicWithdrawal: Money;
   readonly expectedReturn: InterestRate;
   readonly withdrawalCount: number;
+  readonly withdrawalTiming: CashFlowTiming;
 }
 
 export interface SwpResult {

@@ -4,12 +4,12 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 17 — Health integration hardening
-- Current phase status: implementation and Phase 16–17 pair gate complete; ready to commit
+- Current phase: 18 — Finance models and validation
+- Current phase status: implementation and focused verification complete; commit pending
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: `2f12da3` for Phase 16; Phase 17 pending
-- Last successfully completed command: workspace and web-production dependency audits after the full Phase 16–17 gate
-- Last push: `aa4eac4` pushed to `origin/codex/aperture-v2`; local and upstream matched after the Phase 14–15 pair
+- Ending commit: `970ff40` for Phase 17; Phase 18 pending
+- Last successfully completed command: `npm run build --workspace @aperture/finance`
+- Last push: `970ff40` pushed to `origin/codex/aperture-v2`; local and upstream matched before the push
 - Unresolved concern: supplemental Expo compatibility metadata requests patch updates to Expo, Expo Crypto, and Expo Router; the standard mobile checks pass and unrelated upgrades remain deferred until required by an applicable phase.
 
 ## Phase records
@@ -21,8 +21,8 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | 14 | Complete | `78dad26` | 294 tests / 4 files; strict lint, type-check, and build pass | 4,940 tests / 33 suites or files; workspace type-check/lint/builds, 21-page Next production build, and Expo web export pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/health@0.4.0` only / none | All 22 repository interfaces implemented; volatile storage only |
 | 15 | Complete | `aa4eac4` | 15 tests / 7 files; web lint, type-check, and 21-page production build pass | 4,940 tests / 33 suites or files; workspace type-check/lint/builds, Next production build, and Expo web export pass; Expo Doctor 20/21 at accepted patch baseline; pushed | Local `@aperture/health@0.4.0` and `@aperture/health-memory@0.5.0` links / none | Volatile synthetic-owner web preview; no authentication or persistence |
 | 16 | Complete | `2f12da3` | 31 mobile tests / 11 suites; mobile lint and type-check pass; Android, iOS, and web exports pass; Expo Doctor 20/21 at accepted patch baseline | 4,963 tests / 40 suites or files; workspace type-check/lint/builds, 21-page Next production build, and Expo all-platform export pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/health@0.4.0` and `@aperture/health-memory@0.5.0` links / none | Volatile synthetic-owner mobile preview; no Android runtime available, so native execution remains unverified |
-| 17 | Ready to commit | Pending | 4,500 tests across Health, Health Memory, web, and mobile suites; applicable lint, type-check, and builds pass | 4,963 tests / 40 suites or files; workspace type-check/lint/builds, 21-page Next production build, and Expo Android/iOS/web export pass; Expo Doctor 20/21 at accepted patch baseline | No new dependency / none | Durable storage, authentication, native device execution, and integrations remain deferred |
-| 18 | Not started | — | — | — | — | Finance models and validation |
+| 17 | Complete | `970ff40` | 4,500 tests across Health, Health Memory, web, and mobile suites; applicable lint, type-check, and builds pass | 4,963 tests / 40 suites or files; workspace type-check/lint/builds, 21-page Next production build, and Expo Android/iOS/web export pass; Expo Doctor 20/21 at accepted patch baseline; pushed | No new dependency / none | Durable storage, authentication, native device execution, and integrations remain deferred |
+| 18 | Complete | Phase 18 commit | 27 tests / 2 files; generated-surface check, strict lint, type-check, and build pass | Pending Phase 18–19 pair gate | Existing local `@aperture/validation@0.5.0` / none | 281 data schemas, 30 repository contracts, and 183 operations inventoried; calculation implementations remain Phase 19–22 work |
 | 19 | Not started | — | — | — | — | Finance calculation foundation |
 | 20 | Not started | — | — | — | — | Investment and wealth calculators |
 | 21 | Not started | — | — | — | — | Loan, income, tax, and economic calculators |
@@ -47,13 +47,13 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Current phase details
 
-- Files changed: absolute-instant comparison and duration precision, memory timestamp ordering/ranges, service-backed web hydration total, cross-platform error/status accessibility, hardening tests, and Health vertical-slice documentation
-- Dependencies added: none
+- Files changed: Finance contracts, generated runtime schemas and fixtures, validation helpers, public runtime entry point, package build configuration, model documentation, tests, lockfile, and this ledger
+- Dependencies added: existing local `@aperture/validation@0.5.0`
 - Database migrations added: none
-- Tests added: offset and nanosecond ordering/range/summary regression, exact workout duration, service-backed hydration parity, cross-platform repository-error normalization, explicit-zone input normalization, web route and control accessibility, mobile control announcement, virtualized list, and long-text coverage
-- Focused verification result: Health 4,151 tests / 6 files, Health Memory 295 / 4, web 19 / 8, and mobile 35 / 12 pass; applicable lint, type-check, and builds pass
-- Full regression result: 4,963 tests in 40 suites or files pass; all workspace type-checks and lint checks pass; applicable package builds and the 21-page Next production build pass; Expo Android, iOS, and web exports pass; Expo Doctor remains 20/21 only because of three documented patch-version mismatches
-- Audit result: 13 moderate and 0 high/critical workspace findings in the accepted Expo dependency tree; web production audit reports 0 vulnerabilities. Neither audit timed out, and no forced dependency rewrite was applied.
-- Known limitations: ADB is unavailable and native iOS execution is unavailable on Windows; Android and iOS results are JavaScript export checks, not native runs. Expo Doctor remains 20/21 only because of the three documented patch-version mismatches.
-- Deferred work: Finance runtime implementation, durable repositories, persistence, authentication, integrations, and Phases 18–39
-- Next phase: 18 after the Phase 16–17 pair gate, commit, and push
+- Tests added: generated valid-fixture coverage for every runtime schema; decimal, currency, date, timestamp, fiscal-year, rate, timing, range, update, pagination, credential, monetary-type, and public-import boundaries
+- Focused verification result: 27/27 Finance tests pass; generated-surface check, strict lint, type-check, and build pass
+- Full regression result: pending the Phase 18–19 pair gate
+- Audit result: pending the Phase 18–19 pair gate; Phase 17 baseline was 13 moderate workspace findings and 0 web production findings
+- Known limitations: operation and repository behavior remains intentionally deferred; Phase 18 supplies runtime models and validation only
+- Deferred work: Finance calculations, services, repositories, UI, durable storage, platform integration, and Phases 19–39
+- Next phase: 19 after the Phase 18 commit

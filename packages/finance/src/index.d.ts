@@ -161,7 +161,7 @@ export type { FinancialDocumentId, FinancialDocument } from "./documents/financi
 
 export type { FinanceErrorCode, FinanceDomainError } from "./finance.errors.js";
 
-export type { OwnerId, CurrencyCode, DecimalString, IsoDate, IsoDateTime, DateRange, FinancialPeriod, FinancialFrequency, FinancialStatus, FinancialSource, FinancialMetadata, PageRequest, PageResult, OwnerQuery } from "./finance.types.js";
+export type { OwnerId, CurrencyCode, DecimalString, IsoDate, IsoDateTime, FiscalYearId, DateRange, FinancialPeriod, FinancialFrequency, CompoundingFrequency, CashFlowTiming, FinancialStatus, FinancialSource, FinancialMetadata, PageRequest, PageResult, OwnerQuery } from "./finance.types.js";
 
 export type { CreateFinancialGoalInput, UpdateFinancialGoalInput, FinancialGoalListQuery, FinancialGoalProgress } from "./financial-goals/financial-goal.contracts.js";
 export { createFinancialGoal, updateFinancialGoal, completeFinancialGoal, archiveFinancialGoal, getFinancialGoal, listFinancialGoals, getFinancialGoalProgress } from "./financial-goals/financial-goal.contracts.js";

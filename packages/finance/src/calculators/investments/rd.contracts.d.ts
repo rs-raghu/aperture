@@ -1,4 +1,4 @@
-import type { DecimalString, IsoDate } from "../../finance.types.js";
+import type { CashFlowTiming, DecimalString, IsoDate } from "../../finance.types.js";
 import type { InterestRate } from "../../interest-rate.types.js";
 import type { Money } from "../../money.types.js";
 import type { Percentage } from "../../percentage.types.js";
@@ -8,6 +8,7 @@ export interface RdInput extends CalculatorInputContext {
   readonly periodicContribution: Money;
   readonly assumedRate: InterestRate;
   readonly contributionCount: number;
+  readonly contributionTiming: CashFlowTiming;
 }
 
 export interface RdResult {
