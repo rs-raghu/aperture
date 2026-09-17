@@ -13,8 +13,8 @@
     }
   },
   "scripts": {
-    "generate": "node scripts/generate-schemas.mjs",
-    "check:generated": "node scripts/generate-schemas.mjs --check",
+    "generate": "node scripts/generate-schemas.mjs && node scripts/generate-investment-registry.mjs",
+    "check:generated": "node scripts/generate-schemas.mjs --check && node scripts/generate-investment-registry.mjs --check",
     "typecheck": "npm run check:generated && tsc --project tsconfig.json --noEmit",
     "pretest": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/finance",
     "test": "vitest run",

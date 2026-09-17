@@ -4,12 +4,12 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 19 — Finance calculation foundation
-- Current phase status: implementation and Phase 18–19 pair verification complete; commit pending
+- Current phase: 20 — Investment and wealth calculators
+- Current phase status: implementation and focused verification complete; commit pending
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: `50b0e0b` for Phase 18; Phase 19 pending
-- Last successfully completed command: Phase 18–19 pair dependency audits (13 moderate workspace Expo-chain findings; 0 production-web findings)
-- Last push: `970ff40` pushed to `origin/codex/aperture-v2`; local and upstream matched before the push
+- Ending commit: `d5338d9` for Phase 19; Phase 20 pending
+- Last successfully completed command: `npm test --workspace @aperture/finance` (58/58 tests)
+- Last push: `d5338d9` pushed to `origin/codex/aperture-v2`; local and upstream matched before the push
 - Unresolved concern: supplemental Expo compatibility metadata requests patch updates to Expo, Expo Crypto, and Expo Router; the standard mobile checks pass and unrelated upgrades remain deferred until required by an applicable phase.
 
 ## Phase records
@@ -23,8 +23,8 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | 16 | Complete | `2f12da3` | 31 mobile tests / 11 suites; mobile lint and type-check pass; Android, iOS, and web exports pass; Expo Doctor 20/21 at accepted patch baseline | 4,963 tests / 40 suites or files; workspace type-check/lint/builds, 21-page Next production build, and Expo all-platform export pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/health@0.4.0` and `@aperture/health-memory@0.5.0` links / none | Volatile synthetic-owner mobile preview; no Android runtime available, so native execution remains unverified |
 | 17 | Complete | `970ff40` | 4,500 tests across Health, Health Memory, web, and mobile suites; applicable lint, type-check, and builds pass | 4,963 tests / 40 suites or files; workspace type-check/lint/builds, 21-page Next production build, and Expo Android/iOS/web export pass; Expo Doctor 20/21 at accepted patch baseline; pushed | No new dependency / none | Durable storage, authentication, native device execution, and integrations remain deferred |
 | 18 | Complete | `50b0e0b` | 27 tests / 2 files; generated-surface check, strict lint, type-check, and build pass | 5,011 tests / 43 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Existing local `@aperture/validation@0.5.0` / none | 281 data schemas, 30 repository contracts, and 183 operations inventoried |
-| 19 | Complete | Phase 19 commit | 48 Finance tests / 3 files; strict lint, type-check, and build pass | 5,011 tests / 43 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Direct declaration of existing `decimal.js@10.6.0` / none | Calculator-specific wrappers, manifests, and presentations remain Phase 20–22 and 25–26 work |
-| 20 | Not started | — | — | — | — | Investment and wealth calculators |
+| 19 | Complete | `d5338d9` | 48 Finance tests / 3 files; strict lint, type-check, and build pass | 5,011 tests / 43 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline; pushed | Direct declaration of existing `decimal.js@10.6.0` / none | Calculator-specific wrappers, manifests, and presentations remain Phase 20–22 and 25–26 work |
+| 20 | Complete | Phase 20 commit | 58 Finance tests / 4 files; generated registry check, strict lint, type-check, and build pass | Pending Phase 20–21 pair gate | No new dependency / none | 18 independent calculator plug-ins; government schemes require user-supplied assumptions and ship without rate presets |
 | 21 | Not started | — | — | — | — | Loan, income, tax, and economic calculators |
 | 22 | Not started | — | — | — | — | Retirement and independence calculators |
 | 23 | Not started | — | — | — | — | Finance services |
@@ -47,13 +47,13 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Current phase details
 
-- Files changed: Finance calculation foundation schemas, pure functions, errors, manifest, examples, public exports, documentation, tests, package dependency metadata, lockfile, and this ledger
-- Dependencies added: direct declaration of existing `decimal.js@10.6.0`
+- Files changed: 18 investment calculator plug-ins, shared plug-in types/helpers, generated registry and public type barrel, registry generators, public exports, tests, documentation, package scripts, and this ledger
+- Dependencies added: none
 - Database migrations added: none
-- Tests added: formula references and boundaries for interest, rate conversion, present/future value, annuities, timelines, NPV, ROI, CAGR, bounded XIRR, inflation, amortization, contribution/withdrawal timing, rounding, currency mismatches, plug-in metadata, and normalized errors
-- Focused verification result: 48/48 Finance tests pass; generated-surface check, strict lint, type-check, and build pass
-- Full regression result: 5,011 tests / 43 suites or files pass; workspace type-check and lint pass; Finance build and 21-page Next production build pass; Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline
-- Audit result: 13 moderate workspace Expo-chain findings and 0 production-web findings; no high or critical findings
-- Known limitations: native Android runtime and native iOS execution were not performed; platform export verification passed
-- Deferred work: calculator-specific modules, services, repositories, UI, durable storage, platform integration, and Phases 20–39
-- Next phase: 20 after the Phase 19 commit and pair push
+- Tests added: discovery, unique IDs, owned examples, all 18 reference results, structured invalid inputs, explicit rates and timing, government-preset policy, currency mismatch, and impossible-value boundaries
+- Focused verification result: 58/58 Finance tests pass; generated checks, strict lint, type-check, and build pass
+- Full regression result: pending the Phase 20–21 pair gate
+- Audit result: Phase 19 baseline was 13 moderate workspace Expo-chain findings and 0 production-web findings
+- Known limitations: government-scheme rates, limits, eligibility, tax treatment, and product calendars have no versioned official preset and remain explicit user assumptions
+- Deferred work: loan, tax, retirement calculators, services, repositories, UI, durable storage, platform integration, and Phases 21–39
+- Next phase: 21 after the Phase 20 commit

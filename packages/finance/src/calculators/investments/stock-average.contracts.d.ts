@@ -16,5 +16,5 @@ export interface StockAverageResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Quantities are decimal strings and unit prices retain currency. Output is not an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Quantities are decimal strings, unit prices retain currency, and result metadata is explicit. */
 export declare function calculateStockAverage(input: StockAverageInput): StockAverageResult;

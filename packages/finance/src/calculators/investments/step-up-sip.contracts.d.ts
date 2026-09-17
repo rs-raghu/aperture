@@ -18,5 +18,5 @@ export interface StepUpSipResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; rates use human percentages. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; rates and contribution timing are explicit. Output separates contributions and estimated value. */
 export declare function calculateStepUpSip(input: StepUpSipInput): StepUpSipResult;

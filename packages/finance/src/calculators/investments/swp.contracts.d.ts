@@ -18,5 +18,5 @@ export interface SwpResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; rate uses a human percentage. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; rate and withdrawal timing are explicit. Output separates withdrawals and estimated value. */
 export declare function calculateSwp(input: SwpInput): SwpResult;

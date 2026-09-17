@@ -15,5 +15,5 @@ export interface XirrResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Cash-flow money retains currency and dates are ISO strings; output uses a human percentage. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Cash-flow money retains currency, dates are ISO strings, and the estimated output includes explicit metadata. */
 export declare function calculateXirr(input: XirrInput): XirrResult;

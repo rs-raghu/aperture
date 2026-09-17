@@ -17,5 +17,5 @@ export interface SipResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; rates use human percentages. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; rate and contribution timing are explicit. Output separates contributions and estimated value. */
 export declare function calculateSip(input: SipInput): SipResult;

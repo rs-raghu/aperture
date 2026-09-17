@@ -15,5 +15,5 @@ export interface RoiResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; percentage output uses the human-percentage convention. Output is not an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; percentage output uses the human-percentage convention and explicit metadata. */
 export declare function calculateRoi(input: RoiInput): RoiResult;

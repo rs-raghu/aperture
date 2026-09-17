@@ -16,5 +16,5 @@ export interface SsyResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; rate uses a human percentage. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; rate and timing are explicit. Output is an estimate with explicit metadata. */
 export declare function calculateSsy(input: SsyInput): SsyResult;
