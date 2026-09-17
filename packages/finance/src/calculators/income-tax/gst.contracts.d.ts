@@ -17,5 +17,5 @@ export interface GstResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; rate uses a human percentage. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; the plug-in calculates inclusive or exclusive GST from a caller-supplied rate. */
 export declare function calculateGst(input: GstInput): GstResult;

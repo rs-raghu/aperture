@@ -6,8 +6,20 @@ import type { CalculatorInputContext, CalculatorResultMetadata } from "../calcul
 
 export interface IncomeTaxInput extends CalculatorInputContext {
   readonly taxableIncome: Money;
+  readonly deductions: Money;
   readonly financialYear: FiscalYearId;
   readonly jurisdiction: string;
+  readonly taxRuleVersion: string;
+  readonly ruleEffectiveOn: IsoDate;
+  readonly slabs: readonly {
+    readonly startsAt: Money;
+    readonly endsAt?: Money;
+    readonly rate: Percentage;
+  }[];
+  readonly rebateThreshold: Money;
+  readonly rebateAmount: Money;
+  readonly cessRate: Percentage;
+  readonly surchargeRate: Percentage;
 }
 
 export interface IncomeTaxResult {
@@ -15,5 +27,5 @@ export interface IncomeTaxResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; year and jurisdiction identify external rule context. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; the plug-in evaluates caller-supplied, effective-dated rules and reports an estimate with disclosures. */
 export declare function calculateIncomeTax(input: IncomeTaxInput): IncomeTaxResult;

@@ -195,6 +195,7 @@ export const carLoanEmiInputSchema = z.strictObject({
   "sourceReferences": z.array(z.lazy(() => calculatorSourceReferenceSchema)).readonly(),
   "principal": z.lazy(() => moneySchema),
   "annualInterestRate": z.lazy(() => interestRateSchema),
+  "annualRateKind": z.enum(["nominal", "effective"]),
   "paymentCount": financePositiveIntegerSchema,
 }).readonly();
 
@@ -475,6 +476,7 @@ export const emiInputSchema = z.strictObject({
   "sourceReferences": z.array(z.lazy(() => calculatorSourceReferenceSchema)).readonly(),
   "principal": z.lazy(() => moneySchema),
   "annualInterestRate": z.lazy(() => interestRateSchema),
+  "annualRateKind": z.enum(["nominal", "effective"]),
   "paymentCount": financePositiveIntegerSchema,
 }).readonly();
 
@@ -710,7 +712,9 @@ export const flatVsReducingRateInputSchema = z.strictObject({
   "sourceReferences": z.array(z.lazy(() => calculatorSourceReferenceSchema)).readonly(),
   "principal": z.lazy(() => moneySchema),
   "flatRate": z.lazy(() => interestRateSchema),
+  "flatRateKind": z.enum(["nominal", "effective"]),
   "reducingRate": z.lazy(() => interestRateSchema),
+  "reducingRateKind": z.enum(["nominal", "effective"]),
   "paymentCount": financePositiveIntegerSchema,
 }).readonly();
 
@@ -787,6 +791,7 @@ export const homeLoanEmiInputSchema = z.strictObject({
   "sourceReferences": z.array(z.lazy(() => calculatorSourceReferenceSchema)).readonly(),
   "principal": z.lazy(() => moneySchema),
   "annualInterestRate": z.lazy(() => interestRateSchema),
+  "annualRateKind": z.enum(["nominal", "effective"]),
   "paymentCount": financePositiveIntegerSchema,
 }).readonly();
 
@@ -804,6 +809,10 @@ export const hraInputSchema = z.strictObject({
   "hraReceived": z.lazy(() => moneySchema),
   "rentPaid": z.lazy(() => moneySchema),
   "locationCategory": financeTextSchema,
+  "salaryRate": z.lazy(() => percentageSchema),
+  "rentOffsetRate": z.lazy(() => percentageSchema),
+  "ruleVersion": financeVersionSchema,
+  "ruleEffectiveOn": z.lazy(() => isoDateSchema),
 }).readonly();
 
 export const hraResultSchema = z.strictObject({
@@ -843,8 +852,20 @@ export const incomeTaxInputSchema = z.strictObject({
   "assumptions": z.array(z.lazy(() => calculatorAssumptionSchema)).readonly(),
   "sourceReferences": z.array(z.lazy(() => calculatorSourceReferenceSchema)).readonly(),
   "taxableIncome": z.lazy(() => moneySchema),
+  "deductions": z.lazy(() => moneySchema),
   "financialYear": z.lazy(() => fiscalYearIdSchema),
   "jurisdiction": financeTextSchema,
+  "taxRuleVersion": financeVersionSchema,
+  "ruleEffectiveOn": z.lazy(() => isoDateSchema),
+  "slabs": z.array(z.strictObject({
+    "startsAt": z.lazy(() => moneySchema),
+    "endsAt": z.lazy(() => moneySchema).optional(),
+    "rate": z.lazy(() => percentageSchema),
+  }).readonly()).readonly(),
+  "rebateThreshold": z.lazy(() => moneySchema),
+  "rebateAmount": z.lazy(() => moneySchema),
+  "cessRate": z.lazy(() => percentageSchema),
+  "surchargeRate": z.lazy(() => percentageSchema),
 }).readonly();
 
 export const incomeTaxResultSchema = z.strictObject({
@@ -1084,6 +1105,14 @@ export const netSalaryInputSchema = z.strictObject({
   "sourceReferences": z.array(z.lazy(() => calculatorSourceReferenceSchema)).readonly(),
   "grossSalary": z.lazy(() => moneySchema),
   "recordedDeductions": z.lazy(() => moneySchema),
+  "earnings": z.array(z.strictObject({
+    "name": financeTextSchema,
+    "amount": z.lazy(() => moneySchema),
+  }).readonly()).readonly(),
+  "deductions": z.array(z.strictObject({
+    "name": financeTextSchema,
+    "amount": z.lazy(() => moneySchema),
+  }).readonly()).readonly(),
 }).readonly();
 
 export const netSalaryResultSchema = z.strictObject({

@@ -9,6 +9,10 @@ export interface HraInput extends CalculatorInputContext {
   readonly hraReceived: Money;
   readonly rentPaid: Money;
   readonly locationCategory: string;
+  readonly salaryRate: Percentage;
+  readonly rentOffsetRate: Percentage;
+  readonly ruleVersion: string;
+  readonly ruleEffectiveOn: IsoDate;
 }
 
 export interface HraResult {
@@ -16,5 +20,5 @@ export interface HraResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; location identifies external rule context. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; the plug-in evaluates caller-supplied, effective-dated HRA percentages and reports an estimate. */
 export declare function calculateHra(input: HraInput): HraResult;

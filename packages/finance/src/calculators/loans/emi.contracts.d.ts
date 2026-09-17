@@ -7,6 +7,7 @@ import type { CalculatorInputContext, CalculatorResultMetadata } from "../calcul
 export interface EmiInput extends CalculatorInputContext {
   readonly principal: Money;
   readonly annualInterestRate: InterestRate;
+  readonly annualRateKind: "nominal" | "effective";
   readonly paymentCount: number;
 }
 
@@ -17,5 +18,5 @@ export interface EmiResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; rates use human percentages; count is integral. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; the plug-in implements EMI amortization with an explicit annual-rate convention and reconciled final payment. */
 export declare function calculateEmi(input: EmiInput): EmiResult;

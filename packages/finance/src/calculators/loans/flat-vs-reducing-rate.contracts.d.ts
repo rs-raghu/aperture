@@ -7,7 +7,9 @@ import type { CalculatorInputContext, CalculatorResultMetadata } from "../calcul
 export interface FlatVsReducingRateInput extends CalculatorInputContext {
   readonly principal: Money;
   readonly flatRate: InterestRate;
+  readonly flatRateKind: "nominal" | "effective";
   readonly reducingRate: InterestRate;
+  readonly reducingRateKind: "nominal" | "effective";
   readonly paymentCount: number;
 }
 
@@ -18,5 +20,5 @@ export interface FlatVsReducingRateResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; rates use human percentages. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; the plug-in compares disclosed flat and reducing annual-rate conventions over the same monthly term. */
 export declare function compareFlatAndReducingRate(input: FlatVsReducingRateInput): FlatVsReducingRateResult;

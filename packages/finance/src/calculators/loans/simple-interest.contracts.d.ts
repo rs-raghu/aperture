@@ -16,5 +16,5 @@ export interface SimpleInterestResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; rate uses a human percentage. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; the plug-in implements simple interest from caller-supplied assumptions and reports an estimate with disclosures. */
 export declare function calculateSimpleInterest(input: SimpleInterestInput): SimpleInterestResult;

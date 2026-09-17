@@ -93,10 +93,10 @@ describe("investment calculator reference results", () => {
 
 describe("investment boundaries and government-rate policy", () => {
   it("publishes no unverified government rate presets", () => {
-    const schemes = investmentCalculatorPlugins.filter(({ manifest }) => manifest.governmentScheme);
+    const schemes = investmentCalculatorPlugins.filter((plugin) => "governmentScheme" in plugin.manifest && plugin.manifest.governmentScheme);
     expect(schemes.map(({ manifest }) => manifest.id).sort()).toEqual(["nsc", "post-office-mis", "ppf", "scss", "ssy"]);
     for (const { manifest, examples } of schemes) {
-      expect(manifest.ratePolicy).toBe("required_user_input");
+      expect("ratePolicy" in manifest ? manifest.ratePolicy : undefined).toBe("required_user_input");
       expect(manifest.presets).toEqual([]);
       expect(Reflect.apply(getInvestmentCalculatorPlugin(manifest.id)?.calculate ?? (() => undefined), undefined, [examples[0]?.input])).toMatchObject({
         metadata: { warnings: [expect.objectContaining({ code: "user_supplied_rate_unverified" })] },

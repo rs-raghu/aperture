@@ -15,5 +15,5 @@ export interface InflationAdjustedValueResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money retains currency; inflation uses a human percentage; count is integral. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; the plug-in applies the supplied inflation assumption across an integral year count. */
 export declare function calculateInflationAdjustedValue(input: InflationAdjustedValueInput): InflationAdjustedValueResult;

@@ -146,6 +146,7 @@ export const financeSchemaFixtures: Readonly<Record<string, () => unknown>> = {
       "sourceReferences": [],
       "principal": financeSchemaFixture("Money"),
       "annualInterestRate": financeSchemaFixture("InterestRate"),
+      "annualRateKind": "nominal",
       "paymentCount": 1,
     }),
   "CarLoanEmiResult": (): unknown => ({
@@ -362,6 +363,7 @@ export const financeSchemaFixtures: Readonly<Record<string, () => unknown>> = {
       "sourceReferences": [],
       "principal": financeSchemaFixture("Money"),
       "annualInterestRate": financeSchemaFixture("InterestRate"),
+      "annualRateKind": "nominal",
       "paymentCount": 1,
     }),
   "EmiResult": (): unknown => ({
@@ -536,7 +538,9 @@ export const financeSchemaFixtures: Readonly<Record<string, () => unknown>> = {
       "sourceReferences": [],
       "principal": financeSchemaFixture("Money"),
       "flatRate": financeSchemaFixture("InterestRate"),
+      "flatRateKind": "nominal",
       "reducingRate": financeSchemaFixture("InterestRate"),
+      "reducingRateKind": "nominal",
       "paymentCount": 1,
     }),
   "FlatVsReducingRateResult": (): unknown => ({
@@ -597,6 +601,7 @@ export const financeSchemaFixtures: Readonly<Record<string, () => unknown>> = {
       "sourceReferences": [],
       "principal": financeSchemaFixture("Money"),
       "annualInterestRate": financeSchemaFixture("InterestRate"),
+      "annualRateKind": "nominal",
       "paymentCount": 1,
     }),
   "HomeLoanEmiResult": (): unknown => ({
@@ -612,6 +617,10 @@ export const financeSchemaFixtures: Readonly<Record<string, () => unknown>> = {
       "hraReceived": financeSchemaFixture("Money"),
       "rentPaid": financeSchemaFixture("Money"),
       "locationCategory": "fixture-value",
+      "salaryRate": financeSchemaFixture("Percentage"),
+      "rentOffsetRate": financeSchemaFixture("Percentage"),
+      "ruleVersion": "1.0.0",
+      "ruleEffectiveOn": financeSchemaFixture("IsoDate"),
     }),
   "HraResult": (): unknown => ({
       "estimatedExemption": financeSchemaFixture("Money"),
@@ -640,8 +649,16 @@ export const financeSchemaFixtures: Readonly<Record<string, () => unknown>> = {
       "assumptions": [],
       "sourceReferences": [],
       "taxableIncome": financeSchemaFixture("Money"),
+      "deductions": financeSchemaFixture("Money"),
       "financialYear": financeSchemaFixture("FiscalYearId"),
       "jurisdiction": "fixture-value",
+      "taxRuleVersion": "1.0.0",
+      "ruleEffectiveOn": financeSchemaFixture("IsoDate"),
+      "slabs": [],
+      "rebateThreshold": financeSchemaFixture("Money"),
+      "rebateAmount": financeSchemaFixture("Money"),
+      "cessRate": financeSchemaFixture("Percentage"),
+      "surchargeRate": financeSchemaFixture("Percentage"),
     }),
   "IncomeTaxResult": (): unknown => ({
       "estimatedTax": financeSchemaFixture("Money"),
@@ -813,6 +830,8 @@ export const financeSchemaFixtures: Readonly<Record<string, () => unknown>> = {
       "sourceReferences": [],
       "grossSalary": financeSchemaFixture("Money"),
       "recordedDeductions": financeSchemaFixture("Money"),
+      "earnings": [],
+      "deductions": [],
     }),
   "NetSalaryResult": (): unknown => ({
       "estimatedNetSalary": financeSchemaFixture("Money"),

@@ -6,11 +6,7 @@ import type { CalculatorResultMetadata, CalculatorWarning } from "../calculator.
 import type { InterestRate } from "../../interest-rate.types.js";
 import type { Money } from "../../money.types.js";
 import { FinanceCalculationError } from "../foundation/foundation.errors.js";
-import type {
-  InvestmentCalculatorId,
-  InvestmentCalculatorManifest,
-  InvestmentCalculatorPlugin,
-} from "./plugin.types.js";
+import type { InvestmentCalculatorManifest, InvestmentCalculatorPlugin } from "./plugin.types.js";
 
 const InvestmentDecimal = Decimal.clone({ precision: 50, rounding: Decimal.ROUND_HALF_EVEN, toExpNeg: -1_000_000, toExpPos: 1_000_000 });
 
@@ -77,7 +73,7 @@ export function ensureSameCurrency(...values: readonly Money[]): string {
 
 export function resultMetadata(
   input: RuntimeCalculatorContext,
-  calculatorId: InvestmentCalculatorId,
+  calculatorId: string,
   isEstimate: boolean,
   warnings: readonly CalculatorWarning[] = [],
 ): CalculatorResultMetadata {

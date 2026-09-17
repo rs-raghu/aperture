@@ -7,6 +7,8 @@ import type { CalculatorInputContext, CalculatorResultMetadata } from "../calcul
 export interface NetSalaryInput extends CalculatorInputContext {
   readonly grossSalary: Money;
   readonly recordedDeductions: Money;
+  readonly earnings: readonly { readonly name: string; readonly amount: Money }[];
+  readonly deductions: readonly { readonly name: string; readonly amount: Money }[];
 }
 
 export interface NetSalaryResult {
@@ -14,5 +16,5 @@ export interface NetSalaryResult {
   readonly metadata: CalculatorResultMetadata;
 }
 
-/** Money inputs and output retain currency. Output is an estimate. Version, assumptions, and sources are placeholders. No formula is implemented in Phase 3. */
+/** Money retains currency; itemized earnings and deductions must reconcile before the plug-in calculates net take-home. */
 export declare function calculateNetSalary(input: NetSalaryInput): NetSalaryResult;
