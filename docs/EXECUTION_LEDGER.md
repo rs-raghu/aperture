@@ -4,11 +4,11 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 22 — Retirement and independence calculators
-- Current phase status: implementation and focused verification complete; commit pending
+- Current phase: 23 — Finance services
+- Current phase status: complete and committed locally; pair push pending
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: `cfe9e36` for Phase 21; Phase 22 pending
-- Last successfully completed command: `npm test --workspace @aperture/finance` (83/83 tests)
+- Ending commit: Phase 23 commit (local; push pending)
+- Last successfully completed command: Expo web production export for Phase 23
 - Last push: `cfe9e36` pushed to `origin/codex/aperture-v2`; local and upstream matched before the push
 - Unresolved concern: supplemental Expo compatibility metadata requests patch updates to Expo, Expo Crypto, and Expo Router; the standard mobile checks pass and unrelated upgrades remain deferred until required by an applicable phase.
 
@@ -26,8 +26,8 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | 19 | Complete | `d5338d9` | 48 Finance tests / 3 files; strict lint, type-check, and build pass | 5,011 tests / 43 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline; pushed | Direct declaration of existing `decimal.js@10.6.0` / none | Calculator-specific wrappers, manifests, and presentations remain Phase 20–22 and 25–26 work |
 | 20 | Complete | `4bf2cdc` | 58 Finance tests / 4 files; generated registry check, strict lint, type-check, and build pass | 5,035 tests / 45 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | No new dependency / none | 18 independent calculator plug-ins; government schemes require user-supplied assumptions and ship without rate presets |
 | 21 | Complete | `cfe9e36` | 72 Finance tests / 5 files; generated registries and schemas, strict lint, type-check, and build pass | 5,035 tests / 45 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline; pushed | No new dependency / none | Tax and HRA rules remain caller-supplied and effective-dated; no timeless official-rule presets are embedded |
-| 22 | Complete | Phase 22 commit | 83 Finance tests / 6 files; generated registries and schemas, strict lint, type-check, and build pass | Pending Phase 22–23 pair gate | No new dependency / none | Six retirement plug-ins; government rules have no embedded current presets and remain caller-supplied, versioned, and effective-dated |
-| 23 | Not started | — | — | — | — | Finance services |
+| 22 | Complete | `55e3b86` | 83 Finance tests / 6 files; generated registries and schemas, strict lint, type-check, and build pass | 5,051 tests / 47 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | No new dependency / none | Six retirement plug-ins; government rules have no embedded current presets and remain caller-supplied, versioned, and effective-dated |
+| 23 | Complete | Phase 23 commit | 88 Finance tests / 7 files; strict lint, type-check, build, and generated checks pass | 5,051 tests / 47 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | No new dependency / none | Repository-only service; favorites and recent calculators remain absent because no repository contracts declare them |
 | 24 | Not started | — | — | — | — | Finance memory repositories |
 | 25 | Not started | — | — | — | — | Finance web and Calculator Hub |
 | 26 | Not started | — | — | — | — | Finance mobile |
@@ -47,13 +47,13 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Current phase details
 
-- Files changed: six retirement calculator plug-ins, projection and manifest helpers, expanded effective-dated contracts, generated schemas and global registry, public exports, tests, documentation, and this ledger
+- Files changed: Finance application error/context/dependency types, reusable owner-scoped CRUD use cases, composed Finance application service, public runtime exports, deterministic repository test doubles, tests, documentation, and this ledger
 - Dependencies added: none
 - Database migrations added: none
-- Tests added: generated retirement discovery, owned examples, FIRE and retirement-corpus reconciliation, multi-scenario inflation comparison, age and longevity boundaries, currency mismatch, NPS allocation, separate employer contributions, configurable gratuity, government-rule warnings, and impossible percentages
-- Focused verification result: 83/83 Finance tests pass; generated checks, strict lint, type-check, and build pass
-- Full regression result: pending the Phase 22–23 pair gate
+- Tests added: every public service method; injected IDs/time; CRUD and lifecycle flows; owner isolation; generated validation; duplicates; relationship and currency checks; monetary boundaries; calculator discovery/execution/scenario validation; registry conflicts; and repository contract violations
+- Focused verification result: 88/88 Finance tests pass; generated checks, strict lint, type-check, and build pass
+- Full regression result: 5,051 tests / 47 suites or files pass; workspace type-check/lint, Finance build, 21-page Next production build, and Expo Android/iOS/web exports pass; Expo Doctor remains 20/21 at the accepted patch baseline
 - Audit result: 13 moderate workspace Expo-chain findings and 0 production-web findings
-- Known limitations: statutory retirement rules and rates have no versioned official preset; taxes, fees, sequence risk, eligibility, and unmodeled changes remain outside the projections
-- Deferred work: Finance services, repositories, UI, durable storage, platform integration, and Phases 23–39
-- Next phase: 23 after the Phase 22 commit
+- Known limitations: the application layer depends on repository filtering and does not provide durable storage; favorites and recent calculators have no declared repository contract
+- Deferred work: Finance memory repositories, UI, durable storage, platform integration, and Phases 24–39
+- Next phase: 24 after the Phase 23 commit and pair push

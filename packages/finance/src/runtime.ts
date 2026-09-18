@@ -7,6 +7,9 @@ export * from "./calculators/investments/plugin.types.js";
 export * from "./calculators/regulated-plugin.types.js";
 export * from "./calculators/retirement/retirement-plugin.types.js";
 export * from "./calculators/calculator.registry.generated.js";
+export * from "./application/application.errors.js";
+export * from "./application/application.types.js";
+export * from "./services/finance-application-service.js";
 
 export function pageResultSchema<TEntity>(itemSchema: z.ZodType<TEntity>) {
   return z.strictObject({
