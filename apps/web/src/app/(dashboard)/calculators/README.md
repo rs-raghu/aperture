@@ -1,3 +1,3 @@
-# Calculators
+# Calculator Hub routes
 
-Reserves future calculator web routes. No page or formula is implemented.
+`/calculators` renders the registry-driven Hub and `/calculators/[calculator-id]` renders the generic calculator presentation. Both share the dashboard-level `FinanceProvider` with Finance routes, preserving volatile favorites, recent use, and saved comparisons during client navigation.
