@@ -3,7 +3,7 @@ import type { FinancialAccount, FinancialAccountId, FinancialAccountType } from 
 
 export interface CreateFinancialAccountInput { readonly ownerId: OwnerId; readonly name: string; readonly accountType: FinancialAccountType; readonly currency: CurrencyCode; }
 export interface UpdateFinancialAccountInput { readonly name?: string; readonly accountType?: FinancialAccountType; readonly status?: FinancialStatus; }
-export interface FinancialAccountListQuery extends OwnerQuery { readonly accountType?: FinancialAccountType; readonly status?: FinancialStatus; }
+export interface FinancialAccountListQuery extends OwnerQuery { readonly accountType?: FinancialAccountType; readonly status?: FinancialStatus; readonly currency?: CurrencyCode; }
 export interface FinancialAccountsByTypeQuery extends OwnerQuery { readonly accountType: FinancialAccountType; }
 
 export declare function createFinancialAccount(input: CreateFinancialAccountInput): Promise<FinancialAccount>;

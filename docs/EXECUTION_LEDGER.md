@@ -4,12 +4,12 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 23 — Finance services
-- Current phase status: complete and committed locally; pair push pending
+- Current phase: 24 — Finance memory repositories
+- Current phase status: focused verification complete; commit pending
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: Phase 23 commit (local; push pending)
-- Last successfully completed command: Expo web production export for Phase 23
-- Last push: `cfe9e36` pushed to `origin/codex/aperture-v2`; local and upstream matched before the push
+- Ending commit: `2a0dcb9` (Phase 23); Phase 24 commit pending
+- Last successfully completed command: `npm test --workspace @aperture/finance-memory` (35/35 tests)
+- Last push: `2a0dcb9` pushed to `origin/codex/aperture-v2`; local and upstream matched after the push
 - Unresolved concern: supplemental Expo compatibility metadata requests patch updates to Expo, Expo Crypto, and Expo Router; the standard mobile checks pass and unrelated upgrades remain deferred until required by an applicable phase.
 
 ## Phase records
@@ -27,8 +27,8 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | 20 | Complete | `4bf2cdc` | 58 Finance tests / 4 files; generated registry check, strict lint, type-check, and build pass | 5,035 tests / 45 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | No new dependency / none | 18 independent calculator plug-ins; government schemes require user-supplied assumptions and ship without rate presets |
 | 21 | Complete | `cfe9e36` | 72 Finance tests / 5 files; generated registries and schemas, strict lint, type-check, and build pass | 5,035 tests / 45 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline; pushed | No new dependency / none | Tax and HRA rules remain caller-supplied and effective-dated; no timeless official-rule presets are embedded |
 | 22 | Complete | `55e3b86` | 83 Finance tests / 6 files; generated registries and schemas, strict lint, type-check, and build pass | 5,051 tests / 47 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | No new dependency / none | Six retirement plug-ins; government rules have no embedded current presets and remain caller-supplied, versioned, and effective-dated |
-| 23 | Complete | Phase 23 commit | 88 Finance tests / 7 files; strict lint, type-check, build, and generated checks pass | 5,051 tests / 47 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | No new dependency / none | Repository-only service; favorites and recent calculators remain absent because no repository contracts declare them |
-| 24 | Not started | — | — | — | — | Finance memory repositories |
+| 23 | Complete | `2a0dcb9` | 88 Finance tests / 7 files; strict lint, type-check, build, and generated checks pass | 5,051 tests / 47 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline; pushed | No new dependency / none | Repository-only service; favorites and recent calculators remain absent because no repository contracts declare them |
+| 24 | Complete; commit pending | — | 35 Finance Memory tests / 4 files; strict lint, type-check, build, public import, and Finance generated checks pass | Pair gate runs after Phase 25 | Local `@aperture/finance@0.4.0` and `@aperture/validation@0.5.0` links / none | Volatile storage only; cursor continuity intentionally ends after any mutation |
 | 25 | Not started | — | — | — | — | Finance web and Calculator Hub |
 | 26 | Not started | — | — | — | — | Finance mobile |
 | 27 | Not started | — | — | — | — | Finance vertical-slice hardening |
@@ -47,13 +47,13 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Current phase details
 
-- Files changed: Finance application error/context/dependency types, reusable owner-scoped CRUD use cases, composed Finance application service, public runtime exports, deterministic repository test doubles, tests, documentation, and this ledger
-- Dependencies added: none
+- Files changed: new Finance Memory package, account and transaction currency query declarations, generated runtime query schemas, deterministic fixtures and repository contracts, integration tests, package lock, documentation, and this ledger
+- Dependencies added: local `@aperture/finance@0.4.0` and `@aperture/validation@0.5.0` workspace links
 - Database migrations added: none
-- Tests added: every public service method; injected IDs/time; CRUD and lifecycle flows; owner isolation; generated validation; duplicates; relationship and currency checks; monetary boundaries; calculator discovery/execution/scenario validation; registry conflicts; and repository contract violations
-- Focused verification result: 88/88 Finance tests pass; generated checks, strict lint, type-check, and build pass
-- Full regression result: 5,051 tests / 47 suites or files pass; workspace type-check/lint, Finance build, 21-page Next production build, and Expo Android/iOS/web exports pass; Expo Doctor remains 20/21 at the accepted patch baseline
+- Tests added: all 26 repository surfaces; CRUD; owner isolation; factory isolation; defensive cloning; exact decimal strings; deterministic ordering; pagination and stale cursors; account, category, currency, and date filtering; invalid entities and queries; and real Finance service integration
+- Focused verification result: 35/35 Finance Memory tests pass; strict lint, type-check, build, public import, and Finance generated checks pass
+- Full regression result: deferred to the required Phase 24–25 pair gate
 - Audit result: 13 moderate workspace Expo-chain findings and 0 production-web findings
-- Known limitations: the application layer depends on repository filtering and does not provide durable storage; favorites and recent calculators have no declared repository contract
-- Deferred work: Finance memory repositories, UI, durable storage, platform integration, and Phases 24–39
-- Next phase: 24 after the Phase 23 commit and pair push
+- Known limitations: the adapter is volatile and mutation-sensitive cursors deliberately reject continuation after a write
+- Deferred work: Finance web/mobile UI, durable storage, platform integration, and Phases 25–39
+- Next phase: 25 after the Phase 24 commit

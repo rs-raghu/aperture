@@ -1,4 +1,4 @@
-import type { DateRange, IsoDateTime, OwnerId, OwnerQuery, PageResult } from "../finance.types.js";
+import type { CurrencyCode, DateRange, IsoDateTime, OwnerId, OwnerQuery, PageResult } from "../finance.types.js";
 import type { Money } from "../money.types.js";
 import type { FinancialAccountId } from "../accounts/financial-account.types.js";
 import type { TransactionCategoryId } from "../categories/transaction-category.types.js";
@@ -7,7 +7,7 @@ import type { Transaction, TransactionId, TransactionType } from "./transaction.
 
 export interface CreateTransactionInput { readonly ownerId: OwnerId; readonly accountId: FinancialAccountId; readonly categoryId?: TransactionCategoryId; readonly description: string; readonly transactionType: TransactionType; readonly amount: Money; readonly occurredAt: IsoDateTime; }
 export interface UpdateTransactionInput { readonly categoryId?: TransactionCategoryId; readonly description?: string; readonly amount?: Money; readonly occurredAt?: IsoDateTime; }
-export interface TransactionListQuery extends OwnerQuery { readonly accountId?: FinancialAccountId; readonly categoryId?: TransactionCategoryId; readonly range?: DateRange; }
+export interface TransactionListQuery extends OwnerQuery { readonly accountId?: FinancialAccountId; readonly categoryId?: TransactionCategoryId; readonly currency?: CurrencyCode; readonly range?: DateRange; }
 export interface TransactionsByAccountQuery extends OwnerQuery { readonly accountId: FinancialAccountId; }
 export interface TransactionsByDateRangeQuery extends OwnerQuery { readonly range: DateRange; }
 export interface CreateTransactionSplitInput { readonly ownerId: OwnerId; readonly transactionId: TransactionId; readonly categoryId?: TransactionCategoryId; readonly amount: Money; readonly sequence: number; }

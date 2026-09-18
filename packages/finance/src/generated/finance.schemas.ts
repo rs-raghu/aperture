@@ -566,6 +566,7 @@ export const financialAccountListQuerySchema = z.strictObject({
   "ownerId": z.lazy(() => ownerIdSchema),
   "accountType": z.lazy(() => financialAccountTypeSchema).optional(),
   "status": z.lazy(() => financialStatusSchema).optional(),
+  "currency": z.lazy(() => currencyCodeSchema).optional(),
 }).readonly();
 
 export const financialAccountsByTypeQuerySchema = z.strictObject({
@@ -1694,6 +1695,7 @@ export const transactionListQuerySchema = z.strictObject({
   "ownerId": z.lazy(() => ownerIdSchema),
   "accountId": z.lazy(() => financialAccountIdSchema).optional(),
   "categoryId": z.lazy(() => transactionCategoryIdSchema).optional(),
+  "currency": z.lazy(() => currencyCodeSchema).optional(),
   "range": z.lazy(() => dateRangeSchema).optional(),
 }).readonly();
 
