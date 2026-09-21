@@ -1,5 +1,10 @@
 # Finance web feature and Calculator Hub
 
+> **Phase 31 update:** authenticated Finance records and supported calculator
+> scenarios now use the shared owner-scoped Supabase repository. Favorites,
+> recent-calculator display state, and academic calculator comparisons remain
+> session UI state because no domain repository contract declares them.
+
 The Phase 25 web preview connects React presentation code to the real `@aperture/finance` application service and the per-runtime `@aperture/finance-memory` adapter. A single `FinanceProvider` is mounted at the dashboard route-group boundary, so Finance records, favorites, recent calculators, and scenario comparisons survive client navigation between `/finance` and `/calculators`. A full refresh creates a clean runtime.
 
 ## Finance routes

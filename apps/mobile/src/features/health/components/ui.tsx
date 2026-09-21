@@ -14,7 +14,7 @@ export function PageHeader({ title, description }: { readonly title: string; rea
 }
 
 export function PreviewNotice() {
-  return <View style={styles.notice} accessibilityRole="summary"><Text style={styles.noticeTitle}>Development preview</Text><Text style={styles.noticeText}>Health data uses a synthetic test identity, stays in memory, and resets when the app reloads. This is not authentication. Do not enter personal health data.</Text></View>;
+  return <View style={styles.notice} accessibilityRole="summary"><Text style={styles.noticeTitle}>Private workspace</Text><Text style={styles.noticeText}>Signed-in health data is saved to the owner-scoped cloud database. It is a personal record, not medical advice.</Text></View>;
 }
 
 export function Panel({ title, description, children }: { readonly title: string; readonly description?: string | undefined; readonly children: ReactNode }) {

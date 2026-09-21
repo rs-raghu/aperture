@@ -21,6 +21,11 @@ limits the owner helper to authenticated sessions. Public self-registration is
 disabled in `config.toml`; deployed Supabase projects must apply the same Auth
 setting.
 
+The local API configuration exposes `education`, `health`, and `finance` in
+addition to `public`. These schemas are reachable only through their explicit
+role grants and owner RLS policies. Platform, Planner, credential, and migration
+schemas are not exposed by Phase 31.
+
 Run the schema suite from the repository root:
 
 ```sh

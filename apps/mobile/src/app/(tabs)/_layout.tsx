@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
-import { FinanceProvider } from "../../features/finance";
+import { MobileDataProvider } from "../../lib/data/mobile-data-provider";
 
 export default function TabsLayout() {
-  return <FinanceProvider><Stack screenOptions={{ headerShown: false }} /></FinanceProvider>;
+  return <MobileDataProvider><Stack screenOptions={{ headerShown: false }} /></MobileDataProvider>;
 }

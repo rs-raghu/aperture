@@ -26,7 +26,7 @@ export function AssignmentsScreen() {
       <PageHeader title="Assignments" description="Capture coursework and use service-defined submission and completion transitions." />
       <PreviewNotice />
       <AssignmentForm key={editing?.id ?? "new"} courses={query.data?.courses ?? []} editing={editing} onDone={() => setEditing(null)} />
-      <Panel title="Assignment list" description="Overdue state uses the injected preview clock.">
+      <Panel title="Assignment list" description="Overdue state uses the injected application clock.">
         <ChoiceField label="Course filter" value={courseFilter} options={[{ value: "", label: "All" }, ...(query.data?.courses ?? []).map((item) => ({ value: item.id, label: item.name }))]} onChange={setCourseFilter} />
         <ChoiceField label="Status filter" value={statusFilter} options={[{ value: "", label: "All" }, ...(["draft", "assigned", "submitted", "completed", "cancelled"] as const).map((value) => ({ value, label: value }))]} onChange={setStatusFilter} />
         <ErrorBanner error={query.error ?? action.error} />

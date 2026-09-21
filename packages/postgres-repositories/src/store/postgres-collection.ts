@@ -66,13 +66,70 @@ function queryFingerprint(query: DurableQuery): string {
   return stableSerialize(scope);
 }
 
+const BASE64URL_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+
+function utf8Bytes(value: string): readonly number[] {
+  const bytes: number[] = [];
+  for (const character of value) {
+    const codePoint = character.codePointAt(0)!;
+    if (codePoint <= 0x7f) bytes.push(codePoint);
+    else if (codePoint <= 0x7ff) bytes.push(0xc0 | (codePoint >> 6), 0x80 | (codePoint & 0x3f));
+    else if (codePoint <= 0xffff) bytes.push(0xe0 | (codePoint >> 12), 0x80 | ((codePoint >> 6) & 0x3f), 0x80 | (codePoint & 0x3f));
+    else bytes.push(0xf0 | (codePoint >> 18), 0x80 | ((codePoint >> 12) & 0x3f), 0x80 | ((codePoint >> 6) & 0x3f), 0x80 | (codePoint & 0x3f));
+  }
+  return bytes;
+}
+
+function encodeBase64Url(value: string): string {
+  const bytes = utf8Bytes(value);
+  let encoded = "";
+  for (let index = 0; index < bytes.length; index += 3) {
+    const first = bytes[index]!;
+    const second = bytes[index + 1];
+    const third = bytes[index + 2];
+    encoded += BASE64URL_ALPHABET[first >> 2];
+    encoded += BASE64URL_ALPHABET[((first & 0x03) << 4) | ((second ?? 0) >> 4)];
+    if (second !== undefined) encoded += BASE64URL_ALPHABET[((second & 0x0f) << 2) | ((third ?? 0) >> 6)];
+    if (third !== undefined) encoded += BASE64URL_ALPHABET[third & 0x3f];
+  }
+  return encoded;
+}
+
+function decodeBase64Url(value: string): string {
+  if (!/^[A-Za-z0-9_-]+$/.test(value)) throw new Error("Malformed base64url");
+  const bytes: number[] = [];
+  for (let index = 0; index < value.length; index += 4) {
+    const digits = [0, 1, 2, 3].map((offset) => {
+      const character = value[index + offset];
+      return character === undefined ? undefined : BASE64URL_ALPHABET.indexOf(character);
+    });
+    if (digits.some((digit) => digit !== undefined && digit < 0)) throw new Error("Malformed base64url");
+    const [first, second, third, fourth] = digits;
+    if (first === undefined || second === undefined) throw new Error("Malformed base64url");
+    bytes.push((first << 2) | (second >> 4));
+    if (third !== undefined) bytes.push(((second & 0x0f) << 4) | (third >> 2));
+    if (fourth !== undefined && third !== undefined) bytes.push(((third & 0x03) << 6) | fourth);
+  }
+  let decoded = "";
+  for (let index = 0; index < bytes.length;) {
+    const first = bytes[index++]!;
+    let codePoint: number;
+    if (first < 0x80) codePoint = first;
+    else if (first < 0xe0) codePoint = ((first & 0x1f) << 6) | (bytes[index++]! & 0x3f);
+    else if (first < 0xf0) codePoint = ((first & 0x0f) << 12) | ((bytes[index++]! & 0x3f) << 6) | (bytes[index++]! & 0x3f);
+    else codePoint = ((first & 0x07) << 18) | ((bytes[index++]! & 0x3f) << 12) | ((bytes[index++]! & 0x3f) << 6) | (bytes[index++]! & 0x3f);
+    decoded += String.fromCodePoint(codePoint);
+  }
+  return decoded;
+}
+
 function encodeCursor(value: CursorValue): string {
-  return Buffer.from(JSON.stringify(value), "utf8").toString("base64url");
+  return encodeBase64Url(JSON.stringify(value));
 }
 
 function decodeCursor(cursor: string): CursorValue {
   try {
-    const value = JSON.parse(Buffer.from(cursor, "base64url").toString("utf8")) as Partial<CursorValue>;
+    const value = JSON.parse(decodeBase64Url(cursor)) as Partial<CursorValue>;
     if (
       value.version !== 1 ||
       typeof value.namespace !== "string" ||

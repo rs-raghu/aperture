@@ -1,5 +1,3 @@
-import { randomUUID } from "node:crypto";
-
 import {
   activityRouteSchema,
   appointmentSchema,
@@ -84,6 +82,7 @@ import {
 } from "@aperture/health-memory/adapter-internals";
 
 import { PostgresRepositoryError, type SqlExecutor } from "./postgres.types.js";
+import { generateUuid } from "./random-identifier.js";
 import {
   compareText,
   PostgresCollection,
@@ -228,6 +227,7 @@ interface EquipmentUsageEntity extends DurableEntity, RecordEquipmentUsageInput 
 function createEquipmentRepository(
   database: SqlExecutor,
   collection: HealthPostgresCollection<Equipment>,
+  generateId: () => string,
 ): EquipmentRepository {
   const usage = new PostgresCollection<EquipmentUsageEntity>(database, {
     schema: "health",
@@ -286,14 +286,21 @@ function createEquipmentRepository(
     async recordUsage(input: RecordEquipmentUsageInput) {
       await requireOwned(input.equipmentId, input.ownerId);
       const now = new Date().toISOString();
-      await usage.create({ ...input, id: randomUUID(), createdAt: now, updatedAt: now });
+      await usage.create({ ...input, id: generateId(), createdAt: now, updatedAt: now });
       return getUsageSummary(input.equipmentId, input.ownerId);
     },
     getUsageSummary,
   });
 }
 
-export function createHealthPostgresRepository(database: SqlExecutor): HealthRepository {
+export interface CreateHealthPostgresRepositoryOptions {
+  readonly generateId?: () => string;
+}
+
+export function createHealthPostgresRepository(
+  database: SqlExecutor,
+  options: CreateHealthPostgresRepositoryOptions = {},
+): HealthRepository {
   const collection = <TEntity extends HealthMemoryEntity>(table: keyof typeof projections) =>
     new HealthPostgresCollection<TEntity>(database, table);
   const equipment = collection<Equipment>("equipment");
@@ -318,7 +325,7 @@ export function createHealthPostgresRepository(database: SqlExecutor): HealthRep
     runningActivities: Object.freeze(createRunningActivityMemoryRepository(collection<RunningActivity>("running_activities"))),
     runningSplits: Object.freeze(createRunningSplitMemoryRepository(collection<RunningSplit>("running_splits"))),
     activityRoutes: Object.freeze(createActivityRouteMemoryRepository(collection<ActivityRoute>("activity_routes"))),
-    equipment: createEquipmentRepository(database, equipment),
+    equipment: createEquipmentRepository(database, equipment, options.generateId ?? generateUuid),
     personalRecords: Object.freeze(createPersonalRecordMemoryRepository(collection<PersonalRecord>("personal_records"))),
     recoveryEntries: Object.freeze(createRecoveryEntryMemoryRepository(collection<RecoveryEntry>("recovery_entries"))),
   });

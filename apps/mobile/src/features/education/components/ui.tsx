@@ -48,8 +48,8 @@ export function PageHeader({ title, description }: { readonly title: string; rea
 export function PreviewNotice() {
   return (
     <View style={styles.notice} accessibilityRole="summary">
-      <Text style={styles.noticeTitle}>Development preview</Text>
-      <Text style={styles.noticeText}>Education data is stored in memory and resets when the app reloads.</Text>
+      <Text style={styles.noticeTitle}>Private workspace</Text>
+      <Text style={styles.noticeText}>Signed-in education data is saved to the owner-scoped cloud database. Explicit development previews use temporary memory.</Text>
     </View>
   );
 }

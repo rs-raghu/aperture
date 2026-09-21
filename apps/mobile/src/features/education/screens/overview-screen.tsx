@@ -66,11 +66,11 @@ export function OverviewScreen() {
 
   return (
     <Screen testID="education-overview-screen">
-      <PageHeader title="Education" description="A focused mobile preview powered by the real Education application service." />
+      <PageHeader title="Education" description="A focused mobile workspace powered by the shared Education application service." />
       <PreviewNotice />
       <ErrorBanner error={query.error} />
       {query.loading || !query.data ? <LoadingState /> : query.data.setupCount === 0 ? (
-        <EmptyState title="Your Education space is empty" description="Create an institution, program, and semester first. No sample records are hidden in this preview." href="/education/setup" action="Start setup" />
+        <EmptyState title="Your Education space is empty" description="Create an institution, program, and semester first. No sample records are hidden in your workspace." href="/education/setup" action="Start setup" />
       ) : (
         <>
           <Panel title="At a glance">

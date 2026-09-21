@@ -1,10 +1,8 @@
 import { Stack } from "expo-router";
-import { EducationProvider } from "../../../features/education";
 
 export default function EducationLayout() {
   return (
-    <EducationProvider>
-      <Stack
+    <Stack
         screenOptions={{
           headerStyle: { backgroundColor: "#102a43" },
           headerTintColor: "#ffffff",
@@ -20,7 +18,6 @@ export default function EducationLayout() {
         <Stack.Screen name="grades" options={{ title: "Grades" }} />
         <Stack.Screen name="attendance" options={{ title: "Attendance" }} />
         <Stack.Screen name="study-sessions" options={{ title: "Study sessions" }} />
-      </Stack>
-    </EducationProvider>
+    </Stack>
   );
 }

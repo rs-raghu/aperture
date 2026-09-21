@@ -1,3 +1,3 @@
 # Mobile routes
 
-Phase 10 activates the Education-only Expo Router preview under `/education`. Authentication and the other Phase 4 route inventories remain non-executable future placeholders. The root route redirects to Education for local development only.
+The root router enforces the Phase 30 authenticated owner boundary. Signed-in tabs use the Phase 31 shared Supabase composition for Education, Health, and Finance; the explicit local development bypass uses isolated memory repositories.

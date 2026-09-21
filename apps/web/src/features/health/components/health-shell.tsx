@@ -13,7 +13,7 @@ export function HealthShell({ children }: { readonly children: ReactNode }) {
         <Link className="health-brand" href="/health" aria-label="Aperture Health home">
           <span className="health-brand-mark">A</span><span>Aperture <strong>Health</strong></span>
         </Link>
-        <span className="preview-chip">Health preview</span>
+        <span className="preview-chip">Private health</span>
       </header>
       <nav className="health-nav" aria-label="Health">
         {healthNavigation.map((item) => {
@@ -22,10 +22,10 @@ export function HealthShell({ children }: { readonly children: ReactNode }) {
         })}
       </nav>
       <aside className="health-preview-notice" role="note">
-        <strong>Development preview</strong> — Health data stays in memory and resets on full refresh. The synthetic owner is a test identity, not authentication. Do not enter personal health data.
+        <strong>Private workspace</strong> — Signed-in health data is saved to the owner-scoped cloud database. It is a personal record, not medical advice.
       </aside>
       <main className="health-main">{children}</main>
-      <footer className="health-footer">Local Health preview · no diagnosis · no durable storage · synthetic data only</footer>
+      <footer className="health-footer">Private Health workspace · cloud synchronized · no diagnosis or medical advice</footer>
     </div>
   );
 }

@@ -58,7 +58,7 @@ export function RunningScreen() {
   };
 
   return <>
-    <PageHeader eyebrow="Activity log" title="Running" description="Manage routes, equipment, runs, results, and usage records. The preview reports arithmetic totals without coaching or medical guidance." />
+    <PageHeader eyebrow="Activity log" title="Running" description="Manage routes, equipment, runs, results, and usage records. Aperture reports arithmetic totals without coaching or medical guidance." />
     <ErrorBanner error={query.error ?? action.error} />
     <div className="grid grid-2">
       <Panel title="Routes"><form className="form-grid" onSubmit={submitRoute}><TextInput label="Route title *" name="routeTitle" required /><TextInput label="Distance in km" name="routeDistance" inputMode="decimal" /><div className="form-actions"><SubmitButton pending={action.pending}>Create route</SubmitButton></div></form>{query.data?.routes.length ? <ul className="record-list health-record-gap">{query.data.routes.map((item) => <li className="record-card" key={item.id}><div><h3>{item.title}</h3><p>{quantity(item.distance)}</p></div><button className="button button-small button-danger" onClick={() => void action.execute(() => service.deleteActivityRoute(context, item.id))}>Delete</button></li>)}</ul> : null}</Panel>

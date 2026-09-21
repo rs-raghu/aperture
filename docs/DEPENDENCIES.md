@@ -120,3 +120,14 @@ Health hardening adds no package and changes no dependency or lockfile entry. Ab
 | `expo-secure-store` | mobile | 57.0.4 | Runtime | Persists Supabase session envelopes in device-protected storage with after-first-unlock, device-only accessibility. |
 
 The existing `@supabase/supabase-js`, `@supabase/ssr`, and `react-native-url-polyfill` declarations are now active authentication dependencies. Web sessions use server-managed cookies; mobile sessions use SecureStore. AsyncStorage remains installed from the earlier Expo baseline but is not an authentication-token store.
+
+## Phase 31 dependency boundary
+
+`@aperture/supabase-repositories@0.1.0` adds local workspace links to the
+existing durable PostgreSQL repositories and Finance memory options. It uses
+the already installed `@supabase/supabase-js@2.114.0`; no new external runtime
+package is introduced. Web and mobile add only a local link to this adapter.
+
+The durable repository package no longer imports Node's crypto module. Its UUID
+fallback and pagination cursor codec use platform-neutral runtime primitives,
+allowing the same repository implementation to bundle for browsers and Expo.

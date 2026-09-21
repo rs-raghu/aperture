@@ -12,7 +12,7 @@ export function FinanceShell({ children, calculatorMode = false }: { readonly ch
       <Link className="finance-brand" href={calculatorMode ? "/calculators" : "/finance"} aria-label={calculatorMode ? "Aperture Calculator Hub home" : "Aperture Finance home"}>
         <span className="finance-brand-mark">A</span><span>Aperture <strong>{calculatorMode ? "Calculators" : "Finance"}</strong></span>
       </Link>
-      <span className="preview-chip">Private preview</span>
+      <span className="preview-chip">Private finance</span>
     </header>
     <nav className="finance-nav" aria-label="Finance">
       {financeNavigation.map((item) => {
@@ -21,9 +21,9 @@ export function FinanceShell({ children, calculatorMode = false }: { readonly ch
       })}
     </nav>
     <aside className="finance-preview-notice" role="note">
-      <strong>Development preview</strong> — Data stays in memory and resets on full refresh. The synthetic owner is not authentication. Never enter a bank password, PIN, OTP, or banking credential.
+      <strong>Private workspace</strong> — Signed-in finance data is saved to the owner-scoped cloud database. Never enter a bank password, PIN, OTP, or banking credential.
     </aside>
     <main className="finance-main">{children}</main>
-    <footer className="finance-footer">Local Finance preview · exact decimal strings · no bank connection · no financial advice</footer>
+    <footer className="finance-footer">Private Finance workspace · exact decimal strings · no bank connection · no financial advice</footer>
   </div>;
 }

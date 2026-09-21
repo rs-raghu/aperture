@@ -33,7 +33,7 @@ export function HydrationScreen() {
   };
 
   return <>
-    <PageHeader eyebrow="Fluid log" title="Hydration" description="Track consumed volumes and factual totals. The preview does not calculate a recommended intake." />
+    <PageHeader eyebrow="Fluid log" title="Hydration" description="Track consumed volumes and factual totals. Aperture does not calculate a recommended intake." />
     <div className="grid grid-2">
       <Panel title="Record hydration">
         <ErrorBanner error={action.error} />

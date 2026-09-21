@@ -21,15 +21,15 @@ describe("Calculator Hub mobile", () => {
     const view = await render(<FinanceProvider createRuntime={() => createFinanceTestRuntime()}><CalculatorScreen calculatorId="gpa" /></FinanceProvider>);
     await fireEvent.press(view.getByRole("button", { name: "Calculate" }));
     await waitFor(() => expect(view.getByText("Rounded GPA")).toBeTruthy());
-    await fireEvent.changeText(view.getByLabelText("Scenario name"), "Baseline"); await fireEvent.press(view.getByRole("button", { name: "Save scenario" })); await view.findByText("Saved Baseline in this preview.");
-    await fireEvent.changeText(view.getByLabelText("Scenario name"), "Alternative"); await fireEvent.press(view.getByRole("button", { name: "Save scenario" })); await view.findByText("Saved Alternative in this preview.");
+    await fireEvent.changeText(view.getByLabelText("Scenario name"), "Baseline"); await fireEvent.press(view.getByRole("button", { name: "Save scenario" })); await view.findByText("Saved Baseline.");
+    await fireEvent.changeText(view.getByLabelText("Scenario name"), "Alternative"); await fireEvent.press(view.getByRole("button", { name: "Save scenario" })); await view.findByText("Saved Alternative.");
     expect(view.getByText("Compare scenarios")).toBeTruthy(); expect(view.getByLabelText("First scenario: Baseline")).toBeTruthy(); expect(view.queryByText("[object Object]")).toBeNull();
   });
 
   it("persists a Finance calculator scenario through the repository", async () => {
     const runtime = createFinanceTestRuntime(); const view = await render(<FinanceProvider createRuntime={() => runtime}><CalculatorScreen calculatorId="simple-interest" /></FinanceProvider>);
     await fireEvent.press(view.getByRole("button", { name: "Calculate" })); await fireEvent.changeText(view.getByLabelText("Scenario name"), "Mobile baseline"); await fireEvent.press(view.getByRole("button", { name: "Save scenario" }));
-    await view.findByText("Saved Mobile baseline in this preview.");
+    await view.findByText("Saved Mobile baseline.");
     expect((await runtime.service.scenarios.list(runtime.context, { calculatorId: "simple-interest" })).items).toHaveLength(1);
   });
 });

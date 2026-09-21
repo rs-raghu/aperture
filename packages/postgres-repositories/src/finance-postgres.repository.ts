@@ -1,5 +1,3 @@
-import { randomUUID } from "node:crypto";
-
 import {
   assetSchema,
   budgetLineSchema,
@@ -38,6 +36,7 @@ import type { CreateFinanceMemoryRepositoryOptions } from "@aperture/finance-mem
 import type { ValidationSchema } from "@aperture/validation";
 
 import { PostgresRepositoryError, type SqlExecutor } from "./postgres.types.js";
+import { generateUuid } from "./random-identifier.js";
 import { PostgresCollection } from "./store/postgres-collection.js";
 
 type StoredEntity = Readonly<Record<string, unknown>> & {
@@ -136,7 +135,7 @@ class FinancePostgresCollection extends FinanceEntityCollection {
   ) {
     super(durableConfiguration, options);
     this.#now = options.now ?? (() => new Date().toISOString());
-    this.#generateId = options.generateId ?? (() => randomUUID());
+    this.#generateId = options.generateId ?? (() => generateUuid());
     this.#durable = new PostgresCollection(database, {
       schema: "finance",
       table: durableConfiguration.table,

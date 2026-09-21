@@ -1,5 +1,10 @@
 # Finance vertical slice
 
+> **Phase 31 update:** the signed-in web and mobile slices now use durable,
+> shared Supabase repositories. The Phase 27 limitations below describe the
+> earlier preview milestone; memory storage remains only for tests and the
+> explicit development bypass.
+
 Phase 27 closes the Finance and Calculator vertical slice from typed contracts through domain calculations, application services, volatile repositories, and web and Expo presentation layers. The slice contains 36 Finance calculators plus GPA and CGPA adapters, 26 memory repository implementations, nine Finance workflows on each platform, and one presentation registry shared by web and mobile.
 
 ## Architecture boundary

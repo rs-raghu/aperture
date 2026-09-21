@@ -28,7 +28,7 @@ export function OverviewScreen() {
         <FinancePanel title="Recent transactions" description="Newest entries appear first.">
           {query.data.transactions.length === 0 ? <FinanceEmptyState title="No transactions yet" description="Create an account and add a transaction to begin your local ledger." /> : <ul className="record-list">{query.data.transactions.slice(0, 5).map((item) => <li className="record-card" key={item.id}><div><h3>{item.description}</h3><p>{formatMoney(item.amount)} · {item.transactionType}</p></div></li>)}</ul>}
         </FinancePanel>
-        <FinancePanel title="Plans" description="Budgets and financial goals in this preview.">
+        <FinancePanel title="Plans" description="Budgets and financial goals in your workspace.">
           {query.data.budgets.length + query.data.goals.length === 0 ? <FinanceEmptyState title="No plans yet" description="Create a budget or goal to see it here." /> : <ul className="record-list">
             {query.data.budgets.map((item) => <li className="record-card" key={item.id}><div><h3>{item.name}</h3><p>Budget · {item.period}</p></div></li>)}
             {query.data.goals.map((item) => <li className="record-card" key={item.id}><div><h3>{item.name}</h3><p>Goal · {formatMoney(item.targetAmount)}</p></div></li>)}

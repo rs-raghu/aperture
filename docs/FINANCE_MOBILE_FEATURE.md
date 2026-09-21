@@ -1,5 +1,10 @@
 # Finance mobile feature and Calculator Hub
 
+> **Phase 31 update:** authenticated Finance records and supported calculator
+> scenarios now use the shared owner-scoped Supabase repository. Favorites,
+> recent-calculator display state, and academic calculator comparisons remain
+> session UI state because no domain repository contract declares them.
+
 Phase 26 composes the shared `@aperture/finance` application service, `@aperture/finance-memory` repository, and `@aperture/calculators` presentation registry into an Expo and React Native feature. The mobile feature imports no web components and contains no domain formulas.
 
 ## Composition and lifetime

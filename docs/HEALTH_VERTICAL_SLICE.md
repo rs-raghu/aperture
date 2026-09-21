@@ -1,5 +1,9 @@
 # Health vertical slice
 
+> **Phase 31 update:** the signed-in web and mobile slices now use durable,
+> shared Supabase repositories. Memory storage remains only for tests and the
+> explicit development bypass.
+
 Phase 17 audits and hardens the complete local Health implementation delivered in Phases 11–16. The slice is suitable for synthetic development workflows across the shared package, volatile memory adapter, Next.js preview, and Expo/React Native preview. It is not a production health system and must not be used for personal health data.
 
 ## Architecture

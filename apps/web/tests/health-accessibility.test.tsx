@@ -29,7 +29,7 @@ describe("Health web accessibility and route surface", () => {
   it("exposes every unique Health route in labelled navigation with a visible safety notice", () => {
     render(<HealthShell><p>Route content</p></HealthShell>);
     expect(screen.getByRole("navigation", { name: "Health" })).toBeTruthy();
-    expect(screen.getByRole("note").textContent).toContain("Do not enter personal health data");
+    expect(screen.getByRole("note").textContent).toContain("not medical advice");
     expect(healthNavigation).toHaveLength(10);
     expect(new Set(healthNavigation.map((item) => item.href)).size).toBe(10);
     for (const item of healthNavigation) {

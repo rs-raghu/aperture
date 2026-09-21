@@ -1,5 +1,9 @@
 project_id = "aperture-v2-local"
 
+[api]
+schemas = ["public", "education", "health", "finance"]
+extra_search_path = ["public", "extensions"]
+
 [auth]
 site_url = "http://127.0.0.1:3000"
 additional_redirect_urls = ["http://localhost:3000/auth/callback", "aperture://auth/callback"]

@@ -9,7 +9,7 @@ export function ProfileScreen() {
   const { service, context } = useHealth();
   const load = useCallback(() => service.getHealthProfile(context), [service, context]);
   const query = useHealthQuery(load);
-  return <Screen testID="health-profile-screen"><PageHeader title="Health profile" description="Choose display conventions for the synthetic mobile preview." /><PreviewNotice />{query.loading ? <LoadingState /> : <ProfileForm profile={query.data} />}<ErrorBanner error={query.error} /><Panel title="Privacy boundary" description="This local preview is volatile and observational."><></></Panel></Screen>;
+  return <Screen testID="health-profile-screen"><PageHeader title="Health profile" description="Choose display conventions for your private health workspace." /><PreviewNotice />{query.loading ? <LoadingState /> : <ProfileForm profile={query.data} />}<ErrorBanner error={query.error} /><Panel title="Privacy boundary" description="This owner-scoped record is observational and does not provide medical advice."><></></Panel></Screen>;
 }
 
 function ProfileForm({ profile }: { readonly profile: HealthProfile | null }) {

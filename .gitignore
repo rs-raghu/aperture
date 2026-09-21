@@ -3,6 +3,7 @@ node_modules/
 **/out/
 **/.expo/
 **/.expo-export/
+**/.expo-phase*/
 dist/
 build/
 coverage/

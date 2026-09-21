@@ -1,5 +1,9 @@
 # Education mobile preview
 
+> **Phase 31 update:** authenticated routes now receive the shared Supabase
+> repository from the tabs composition root. The memory composition described
+> below remains the test and explicit development-preview implementation.
+
 Phase 10 implements an Education-only development preview with Expo Router, React Native, the real `@aperture/education` application service, and the volatile `@aperture/education-memory` adapter. It is not a complete Aperture application or durable storage. Do not enter personal data.
 
 ## Architecture and dependency direction

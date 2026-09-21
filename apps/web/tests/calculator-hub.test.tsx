@@ -35,8 +35,8 @@ describe("Calculator Hub", () => {
     await user.click(screen.getByRole("button", { name: "Calculate" }));
     await waitFor(() => expect(document.body.textContent).toContain("Rounded GPA"));
     expect(document.body.textContent).toContain("9");
-    await user.type(screen.getByLabelText("Scenario name"), "Baseline"); await user.click(screen.getByRole("button", { name: "Save scenario" })); await screen.findByText("Saved Baseline in this preview.");
-    await user.type(screen.getByLabelText("Scenario name"), "Alternative"); await user.click(screen.getByRole("button", { name: "Save scenario" })); await screen.findByText("Saved Alternative in this preview.");
+    await user.type(screen.getByLabelText("Scenario name"), "Baseline"); await user.click(screen.getByRole("button", { name: "Save scenario" })); await screen.findByText("Saved Baseline.");
+    await user.type(screen.getByLabelText("Scenario name"), "Alternative"); await user.click(screen.getByRole("button", { name: "Save scenario" })); await screen.findByText("Saved Alternative.");
     const first = screen.getByLabelText("First scenario"); const second = screen.getByLabelText("Second scenario");
     await user.selectOptions(first, within(first).getByRole("option", { name: "Baseline" })); await user.selectOptions(second, within(second).getByRole("option", { name: "Alternative" }));
     expect(screen.getAllByRole("heading", { name: "Baseline" })).toHaveLength(1);

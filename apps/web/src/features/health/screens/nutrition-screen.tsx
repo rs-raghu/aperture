@@ -31,7 +31,7 @@ export function NutritionScreen() {
   };
 
   return <>
-    <PageHeader eyebrow="Food log" title="Nutrition" description="Keep factual meal and energy records. This preview does not score food choices or recommend a diet." />
+    <PageHeader eyebrow="Food log" title="Nutrition" description="Keep factual meal and energy records. Aperture does not score food choices or recommend a diet." />
     <div className="grid grid-2">
       <Panel title="Add nutrition entry">
         <ErrorBanner error={action.error} />

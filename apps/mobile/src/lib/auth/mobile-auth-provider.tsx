@@ -1,4 +1,5 @@
 import type { PlatformUser } from "@aperture/platform-contracts";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import * as Linking from "expo-linking";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
@@ -7,10 +8,12 @@ import {
   readMobileAuthenticationConfiguration,
 } from "./mobile-auth";
 
-interface MobileAuthValue {
+export interface MobileAuthValue {
   readonly loading: boolean;
   readonly user: PlatformUser | null;
   readonly error: string | null;
+  readonly mode: "supabase" | "development-bypass" | "unavailable";
+  readonly supabaseClient: SupabaseClient | null;
   signIn(email: string, password: string): Promise<void>;
   signOut(): Promise<void>;
 }
@@ -81,8 +84,10 @@ export function MobileAuthProvider({ children }: { readonly children: ReactNode 
     setUser(null);
   }, [runtime]);
 
+  const mode = runtime.configuration?.mode ?? "unavailable";
+  const supabaseClient = runtime.authentication?.client ?? null;
   return (
-    <MobileAuthContext.Provider value={{ loading, user, error, signIn, signOut }}>
+    <MobileAuthContext.Provider value={{ loading, user, error, mode, supabaseClient, signIn, signOut }}>
       {children}
     </MobileAuthContext.Provider>
   );

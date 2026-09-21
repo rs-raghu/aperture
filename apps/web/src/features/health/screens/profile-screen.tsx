@@ -24,9 +24,9 @@ export function ProfileScreen() {
   };
 
   return <>
-    <PageHeader eyebrow="Setup" title="Health profile" description="Choose display conventions for this local preview. Birth date is optional and is stored only in memory." />
+    <PageHeader eyebrow="Setup" title="Health profile" description="Choose display conventions for your private health workspace. Birth date is optional." />
     <div className="grid grid-2">
-      <Panel title={query.data ? "Edit profile" : "Create profile"} description="One profile is allowed for the synthetic preview owner.">
+      <Panel title={query.data ? "Edit profile" : "Create profile"} description="One profile is allowed for the authenticated owner.">
         <ErrorBanner error={query.error ?? action.error} />
         {query.loading ? <LoadingState /> : <form className="form-grid" onSubmit={submit} key={query.data?.updatedAt ?? "new"}>
           <SelectInput label="Measurement system *" name="measurementSystem" defaultValue={query.data?.measurementSystem ?? "metric"}>
@@ -36,8 +36,8 @@ export function ProfileScreen() {
           <div className="form-actions"><SubmitButton pending={action.pending}>{query.data ? "Save profile" : "Create profile"}</SubmitButton></div>
         </form>}
       </Panel>
-      <Panel title="Privacy boundary" description="What this preview does with profile data.">
-        <ul className="health-notes"><li>Uses a visible synthetic owner identifier.</li><li>Stores values only in the mounted in-memory runtime.</li><li>Does not authenticate, diagnose, recommend, upload, or synchronize.</li></ul>
+      <Panel title="Privacy boundary" description="How this workspace handles profile data.">
+        <ul className="health-notes"><li>Uses your authenticated owner identity.</li><li>Stores values in the owner-scoped cloud database.</li><li>Does not diagnose or recommend treatment.</li></ul>
       </Panel>
     </div>
   </>;

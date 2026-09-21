@@ -1,5 +1,9 @@
 # Health web preview
 
+> **Phase 31 update:** authenticated routes now receive the shared Supabase
+> repository and owner from the dashboard composition root. Memory storage and
+> synthetic owners remain only in tests and the explicit development bypass.
+
 Phase 15 composes the runtime Health service and `@aperture/health-memory` adapter into a local Next.js preview. It is a presentation and composition layer; domain validation, ownership, lifecycle transitions, relationships, and calculations remain in the shared Health package.
 
 ## Routes

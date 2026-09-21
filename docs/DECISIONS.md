@@ -1,4 +1,18 @@
-# Architectural decisions through Phase 14
+# Architectural decisions through Phase 31
+
+## Phase 31 shared cloud-synchronized composition
+
+Authenticated web and mobile sessions select one Supabase repository set at
+their application composition roots. Domain services and feature screens retain
+their established repository contracts and never select an adapter. The memory
+adapters remain isolated test fixtures and the storage mode used by the explicit
+local development bypass.
+
+The application is cloud-synchronized rather than local-first. It has bounded
+transient retries, record-ID idempotency with persisted-state confirmation, and
+observable per-domain sync state. It intentionally has no local record cache or
+offline write outbox; network failures remain visible failures. See
+[Shared data and synchronization](DATA_SYNCHRONIZATION.md).
 
 ## Health validation preserves recording contracts
 

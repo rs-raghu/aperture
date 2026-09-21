@@ -1,3 +1,3 @@
 # Mobile primary-route inventory
 
-Education is implemented as a stack-based development preview in Phase 10. Today, Health, Finance, Calculators, and Settings remain reserved non-executable directories; no complete tab shell is implemented.
+Education, Health, Finance, and Calculators are executable route stacks. The tabs boundary owns one authenticated Phase 31 data composition, so all feature routes share the same owner-scoped Supabase repositories and observable synchronization state.

@@ -27,7 +27,7 @@ export function SetupScreen() {
       <SemesterForm programs={query.data?.programs ?? []} />
     </div>
     <Panel title="Current hierarchy" description="The explicit parent chain used by every Education workflow.">
-      {query.loading ? <LoadingState /> : !query.data?.institutions.length ? <EmptyState title="No setup yet" description="Start by creating an institution above. Your data remains local to this mounted preview." /> : <SetupHierarchy data={query.data} />}
+      {query.loading ? <LoadingState /> : !query.data?.institutions.length ? <EmptyState title="No setup yet" description="Start by creating an institution above." /> : <SetupHierarchy data={query.data} />}
     </Panel>
   </>;
 }

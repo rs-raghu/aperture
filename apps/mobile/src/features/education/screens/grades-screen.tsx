@@ -43,7 +43,7 @@ function GradeWorkspace({ courseId, data }: { readonly courseId: string; readonl
   }, [service, context, courseId, data]);
   const query = useEducationQuery(load);
   const weighted = query.data?.performance.courseGrades.find((item) => item.courseId === courseId)?.weightedGrade;
-  const confirmDelete = (id: string, title: string) => Alert.alert("Delete grade?", `${title} will be removed from this in-memory preview.`, [{ text: "Keep grade", style: "cancel" }, { text: "Delete", style: "destructive", onPress: () => void action.execute(() => service.deleteGrade(context, id)) }]);
+  const confirmDelete = (id: string, title: string) => Alert.alert("Delete grade?", `${title} will be removed from your records.`, [{ text: "Keep grade", style: "cancel" }, { text: "Delete", style: "destructive", onPress: () => void action.execute(() => service.deleteGrade(context, id)) }]);
   return (
     <>
       <GradeForm courseId={courseId} course={query.data?.course} assignments={data.assignments.filter((item) => item.courseId === courseId)} exams={data.exams.filter((item) => item.courseId === courseId)} />

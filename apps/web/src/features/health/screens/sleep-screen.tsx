@@ -41,7 +41,7 @@ export function SleepScreen() {
       </Panel>
       <Panel title="Sleep history">
         <ErrorBanner error={query.error} />
-        {query.loading ? <LoadingState /> : !query.data?.length ? <EmptyState title="No sleep records" description="Add a sleep record to start a private history in this preview." /> : <ul className="record-list">{query.data.map((item) => <li className="record-card" key={item.id}><div><h3>{item.quality ?? "Unrated sleep"}</h3><p>{formatDateTime(item.startedAt)} to {formatDateTime(item.endedAt)}</p><p>{quantity(item.duration)}</p></div><button className="button button-small button-danger" type="button" disabled={action.pending} onClick={() => void action.execute(() => service.deleteSleep(context, item.id))}>Delete</button></li>)}</ul>}
+        {query.loading ? <LoadingState /> : !query.data?.length ? <EmptyState title="No sleep records" description="Add a sleep record to start a private history." /> : <ul className="record-list">{query.data.map((item) => <li className="record-card" key={item.id}><div><h3>{item.quality ?? "Unrated sleep"}</h3><p>{formatDateTime(item.startedAt)} to {formatDateTime(item.endedAt)}</p><p>{quantity(item.duration)}</p></div><button className="button button-small button-danger" type="button" disabled={action.pending} onClick={() => void action.execute(() => service.deleteSleep(context, item.id))}>Delete</button></li>)}</ul>}
       </Panel>
     </div>
   </>;

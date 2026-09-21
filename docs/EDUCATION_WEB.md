@@ -1,5 +1,9 @@
 # Phase 9 Education web preview
 
+> **Phase 31 update:** authenticated routes now receive the shared Supabase
+> repository from the dashboard composition root. The memory composition below
+> remains the test and explicit development-preview implementation.
+
 Phase 9 makes the Education feature runnable in a browser as a local development preview. It is not the complete Aperture shell, a production application, or durable storage.
 
 ## Architecture and dependency direction

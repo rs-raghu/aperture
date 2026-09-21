@@ -27,6 +27,11 @@ keychain accessibility. AsyncStorage is not used for authentication tokens.
 The root router prevents unauthenticated deep links from mounting feature
 routes.
 
+Authenticated web cookies and the mobile Supabase client are also the session
+source for the Phase 31 data adapters. Repository requests carry the provider
+access token internally; tokens are not copied into domain services or feature
+state.
+
 Required public mobile variables are listed in `apps/mobile/.env.example`.
 Only the Supabase URL, publishable key, and owner allowlist identity are public;
 service-role and integration credentials are forbidden in mobile variables.

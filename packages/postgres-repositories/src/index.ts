@@ -1,6 +1,9 @@
 export { createEducationPostgresRepository } from "./education-postgres.repository.js";
 export { createFinancePostgresRepository } from "./finance-postgres.repository.js";
-export { createHealthPostgresRepository } from "./health-postgres.repository.js";
+export {
+  createHealthPostgresRepository,
+  type CreateHealthPostgresRepositoryOptions,
+} from "./health-postgres.repository.js";
 export {
   PostgresRepositoryError,
   type PostgresRepositoryErrorCode,
@@ -13,6 +16,7 @@ export {
 import { createEducationPostgresRepository } from "./education-postgres.repository.js";
 import { createFinancePostgresRepository } from "./finance-postgres.repository.js";
 import { createHealthPostgresRepository } from "./health-postgres.repository.js";
+import type { CreateHealthPostgresRepositoryOptions } from "./health-postgres.repository.js";
 import {
   createEducationMemoryRepository,
   type CreateEducationMemoryRepositoryOptions,
@@ -32,11 +36,19 @@ import {
   type TransactionalSqlExecutor,
 } from "./postgres.types.js";
 
-export function createPostgresRepositorySet(database: SqlExecutor): PostgresRepositorySet {
+export interface CreatePostgresRepositorySetOptions {
+  readonly finance?: CreateFinanceMemoryRepositoryOptions;
+  readonly health?: CreateHealthPostgresRepositoryOptions;
+}
+
+export function createPostgresRepositorySet(
+  database: SqlExecutor,
+  options: CreatePostgresRepositorySetOptions = {},
+): PostgresRepositorySet {
   return Object.freeze({
     education: createEducationPostgresRepository(database),
-    health: createHealthPostgresRepository(database),
-    finance: createFinancePostgresRepository(database),
+    health: createHealthPostgresRepository(database, options.health),
+    finance: createFinancePostgresRepository(database, options.finance),
   });
 }
 
@@ -51,6 +63,7 @@ export type RepositoryComposition =
       readonly mode: "postgres";
       readonly database: SqlExecutor;
       readonly finance?: CreateFinanceMemoryRepositoryOptions;
+      readonly health?: CreateHealthPostgresRepositoryOptions;
     };
 
 export function createRepositorySet(configuration: RepositoryComposition): PostgresRepositorySet {
@@ -63,7 +76,7 @@ export function createRepositorySet(configuration: RepositoryComposition): Postg
   }
   return Object.freeze({
     education: createEducationPostgresRepository(configuration.database),
-    health: createHealthPostgresRepository(configuration.database),
+    health: createHealthPostgresRepository(configuration.database, configuration.health),
     finance: createFinancePostgresRepository(configuration.database, configuration.finance),
   });
 }

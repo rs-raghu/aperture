@@ -174,3 +174,18 @@ th { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-s
   .calculator-toolbar { align-items: flex-start; flex-direction: column; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; } }
+/* Shared cloud-data activity is intentionally compact and independent of feature shells. */
+.data-sync-status {
+  position: fixed;
+  z-index: 50;
+  right: 1rem;
+  bottom: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #334155;
+  padding: 0.45rem 0.75rem;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
+  font-size: 0.78rem;
+  font-weight: 700;
+}

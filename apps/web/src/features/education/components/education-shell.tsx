@@ -13,7 +13,7 @@ export function EducationShell({ children }: { readonly children: ReactNode }) {
         <Link className="education-brand" href="/education" aria-label="Aperture Education home">
           <span className="brand-mark">A</span><span>Aperture <strong>Education</strong></span>
         </Link>
-        <span className="preview-chip">Phase 9 preview</span>
+        <span className="preview-chip">Private education</span>
       </header>
       <nav className="education-nav" aria-label="Education">
         {educationNavigation.map((item) => {
@@ -22,10 +22,10 @@ export function EducationShell({ children }: { readonly children: ReactNode }) {
         })}
       </nav>
       <aside className="preview-notice" role="note">
-        <strong>Development preview</strong> — Education data is stored in memory and resets when the page is refreshed. The temporary owner identity is not authentication.
+        <strong>Private workspace</strong> — Signed-in data is saved to the owner-scoped cloud database. Explicit development previews use temporary memory.
       </aside>
       <main className="education-main">{children}</main>
-      <footer className="education-footer">Local Education preview · no durable storage · no personal data</footer>
+      <footer className="education-footer">Private Education workspace · owner scoped · cloud synchronized</footer>
     </div>
   );
 }

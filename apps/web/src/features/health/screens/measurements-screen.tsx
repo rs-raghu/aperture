@@ -31,7 +31,7 @@ export function MeasurementsScreen() {
   };
 
   return <>
-    <PageHeader eyebrow="Body record" title="Measurements" description="Store unusual as well as typical structurally valid values. The preview records observations without interpreting them." />
+    <PageHeader eyebrow="Body record" title="Measurements" description="Store unusual as well as typical structurally valid values. Aperture records observations without interpreting them." />
     <div className="grid grid-2">
       <Panel title="Record measurement" description="Units follow the selected measurement type.">
         <ErrorBanner error={action.error} />

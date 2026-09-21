@@ -62,7 +62,7 @@ export function OverviewScreen() {
     ...(data?.sessions.filter((item) => item.status === "completed").map((item) => ({ id: item.id, label: item.title, kind: "Study", at: item.updatedAt })) ?? []),
   ].sort((a, b) => b.at.localeCompare(a.at) || a.id.localeCompare(b.id)).slice(0, 5);
 
-  return <><PageHeader eyebrow="Education overview" title="A calm view of what matters next" description="Live summaries composed by the Education application service from this tab's in-memory repository." action={<Link className="button button-primary" href="/education/setup">Set up education</Link>} />
+  return <><PageHeader eyebrow="Education overview" title="A calm view of what matters next" description="Live summaries composed by the Education application service from your owner-scoped repository." action={<Link className="button button-primary" href="/education/setup">Set up education</Link>} />
     <ErrorBanner error={error} />
     {loading || !data ? <LoadingState /> : data.setupCount === 0 ? <EmptyState title="Your Education space is empty" description="Create an institution, program, and semester first. Then courses and academic activity can be added without hidden sample records." href="/education/setup" action="Start setup" /> : <>
       <div className="grid metric-grid">
