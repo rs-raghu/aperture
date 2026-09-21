@@ -4,12 +4,12 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 27 — Finance integration hardening
-- Current phase status: complete; pair gate passed and commit pending
+- Current phase: 28 — PostgreSQL/Supabase schema and migrations
+- Current phase status: complete; focused gate passed and commit pending
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: `3fa0318` (Phase 26); Phase 27 commit pending
-- Last successfully completed command: `npm audit --omit=dev --workspace @aperture/web --audit-level=moderate` (0 vulnerabilities)
-- Last push: `f515ed8` pushed to `origin/codex/aperture-v2`; local and upstream matched after the push
+- Ending commit: `4410b06` (Phase 27); Phase 28 commit pending
+- Last successfully completed command: `npm test --workspace @aperture/database` (6/6 tests)
+- Last push: `4410b06` pushed to `origin/codex/aperture-v2`; local and upstream matched after the push
 - Unresolved concern: supplemental Expo compatibility metadata requests patch updates to Expo, Expo Crypto, and Expo Router; the standard mobile checks pass and unrelated upgrades remain deferred until required by an applicable phase.
 
 ## Phase records
@@ -31,8 +31,8 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | 24 | Complete | `4273e0d` | 35 Finance Memory tests / 4 files; strict lint, type-check, build, public import, and Finance generated checks pass | 5,095 tests / 55 suites or files; workspace type-check/lint, Finance/Memory builds, 31-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/finance@0.4.0` and `@aperture/validation@0.5.0` links / none | Volatile storage only; cursor continuity intentionally ends after any mutation |
 | 25 | Complete | `f515ed8` | 28 web tests / 12 files; strict lint and type-check pass; 31-route Next production build passes | 5,095 tests / 55 suites or files; workspace type-check/lint, Finance/Memory builds, 31-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/finance@0.4.0`, `@aperture/finance-memory@0.1.0`, and `@aperture/validation@0.5.0` links / none | Volatile synthetic-owner preview; academic scenario history is web-runtime state; no authentication or persistence |
 | 26 | Complete | `3fa0318` | 13 Finance mobile tests / 5 files; 48 mobile tests / 17 suites; mobile strict lint and type-check pass; shared Calculator package build and type-check pass; Android, iOS, and web exports pass | Pair gate completed in Phase 27 | Local `@aperture/calculators@0.4.0`, `@aperture/finance@0.4.0`, and `@aperture/finance-memory@0.1.0` links; Calculator presentation registry promoted to shared runtime / none | Volatile synthetic-owner preview; academic scenarios remain provider state; native device execution remains unverified |
-| 27 | Complete; commit pending | — | 88 Finance tests / 7 files and 6 Calculator hardening tests / 1 file; generated 38-entry reference drift check, strict lint, type-check, and builds pass | 5,114 tests / 61 suites or files; workspace type-check/lint, 31-route Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | No new runtime dependency / none | Current government/tax presets intentionally absent; volatile repositories and synthetic owners remain until Phases 28–31 |
-| 28 | Not started | — | — | — | — | PostgreSQL/Supabase schema and migrations |
+| 27 | Complete | `4410b06` | 88 Finance tests / 7 files and 6 Calculator hardening tests / 1 file; generated 38-entry reference drift check, strict lint, type-check, and builds pass | 5,114 tests / 61 suites or files; workspace type-check/lint, 31-route Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | No new runtime dependency / none | Current government/tax presets intentionally absent; volatile repositories and synthetic owners remain until Phases 28–31 |
+| 28 | Complete; commit pending | — | 6 database tests; fresh and prior-state migration paths, discovery, ordering, roll-forward guards, schema invariants, RLS, constraints, owner isolation, and synthetic seed pass | Full pair gate runs with Phase 29 | `@electric-sql/pglite@0.3.14`; five ordered core/plugin migrations covering 74 tables | RLS policies exist but authenticated grants/session handling begin in Phase 30; no remote database was contacted |
 | 29 | Not started | — | — | — | — | Durable repository adapters |
 | 30 | Not started | — | — | — | — | Personal authentication and RLS security |
 | 31 | Not started | — | — | — | — | Shared web/mobile data and synchronization |
@@ -47,14 +47,12 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Current phase details
 
-- Files changed: shared result metadata, native disclosure copy, Finance/integration hardening tests, generated Calculator reference and drift generator, Finance vertical-slice documentation, and this ledger
-- Dependencies added: none
-- Database migrations added: none
-- Tests added: 38-calculator and nine-category completeness, every reference example, decimal portability, result identity/version/source/assumption metadata, universal estimate disclosure, government preset policy, caller-rule warnings, effective tax metadata, and complete reference documentation
-- Focused verification result: 88/88 Finance tests and 6/6 Calculator hardening tests pass; generated reference drift check, relevant lint, type-check, and builds pass
-- Full regression result: 5,114 tests / 61 suites or files pass; workspace type-check and lint pass; the 31-route Next production build and Expo Android/iOS/web exports pass
-- Expo Doctor result: 20/21 at the accepted baseline; only Expo patch-version recommendations remain
-- Audit result: 13 moderate workspace findings in the Expo dependency chain and 0 production-web findings
-- Known limitations: the synthetic owner is not authentication; all preview records and UI preferences reset on reload; government and tax values must be supplied and effective-dated; native device execution was unavailable
-- Deferred work: durable database schema, repository adapters, authentication, synchronization, and Phases 28–39
-- Next phase: 28 after the Phase 27 commit and Phase 26–27 push
+- Files changed: core and plugin-owned migrations, discovery library, isolated PostgreSQL test harness, synthetic seed, schema documentation, lockfile, and this ledger
+- Dependencies added: development-only `@electric-sql/pglite@0.3.14` in `@aperture/database`
+- Database migrations added: core (`20260921000100`), Education (`20260921001000`), Health (`20260921002000`), Finance (`20260921003000`), and Platform/Planner (`20260921004000`)
+- Tests added: migration discovery without a central manifest, ordering and roll-forward checks, fresh database application, previous-core-state application, shared-column/RLS/type invariants, owner-preserving relationships, decimal/range/currency constraints, and synthetic seed loading
+- Focused verification result: 6/6 database tests pass against isolated PGlite PostgreSQL
+- Full regression result: deferred to the Phase 28–29 pair gate
+- Known limitations: authenticated grants and session enforcement begin in Phase 30; no remote database was configured or contacted
+- Deferred work: durable repository adapters, authentication, synchronization, and Phases 29–39
+- Next phase: 29 after the Phase 28 commit
