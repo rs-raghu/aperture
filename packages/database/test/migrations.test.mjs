@@ -17,7 +17,7 @@ test("discovers core and plugin-owned migrations without a central manifest", as
 
   assert.deepEqual(
     migrations.map(({ scope }) => scope),
-    ["core", "education", "health", "finance", "platform-contracts"],
+    ["core", "education", "health", "finance", "platform-contracts", "postgres-repositories"],
   );
   assert.equal(new Set(migrations.map(({ version }) => version)).size, migrations.length);
   assert.deepEqual(
@@ -68,17 +68,17 @@ test("applies from an empty PostgreSQL database with types, constraints, indexes
     const tables = await db.query(
       "select table_schema, table_name from information_schema.tables where table_schema in ('education','health','finance','platform','planner') order by 1, 2",
     );
-    assert.equal(tables.rows.length, 74);
+    assert.equal(tables.rows.length, 75);
 
     const policies = await db.query(
       "select count(*)::int as count from pg_policies where schemaname in ('education','health','finance','platform','planner')",
     );
-    assert.equal(policies.rows[0]?.count, 73);
+    assert.equal(policies.rows[0]?.count, 74);
 
     const rowSecurity = await db.query(
       "select count(*)::int as count from pg_class c join pg_namespace n on n.oid = c.relnamespace where n.nspname in ('education','health','finance','platform','planner') and c.relkind = 'r' and c.relrowsecurity",
     );
-    assert.equal(rowSecurity.rows[0]?.count, 73);
+    assert.equal(rowSecurity.rows[0]?.count, 74);
 
     const foreignKeys = await db.query(
       "select count(*)::int as count from pg_constraint where contype = 'f' and connamespace in (select oid from pg_namespace where nspname in ('education','health','finance','platform','planner'))",

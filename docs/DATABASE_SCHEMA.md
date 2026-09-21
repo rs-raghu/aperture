@@ -19,6 +19,7 @@ The current sequence is:
 3. Health records and relationships.
 4. Finance records, including calculator scenarios.
 5. Settings, synchronization, integrations, exports, backups, and Planner.
+6. Durable-repository alignment and Health equipment usage.
 
 Each file is transactional and records its version in
 `platform.migration_audit`. The automated guard rejects destructive `DROP`,

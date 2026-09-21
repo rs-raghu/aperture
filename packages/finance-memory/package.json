@@ -7,6 +7,10 @@
     ".": {
       "types": "./src/index.ts",
       "import": "./dist/index.js"
+    },
+    "./adapter-internals": {
+      "types": "./src/adapter-internals.ts",
+      "import": "./dist/adapter-internals.js"
     }
   },
   "scripts": {

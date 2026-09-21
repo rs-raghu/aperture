@@ -4,11 +4,11 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 28 — PostgreSQL/Supabase schema and migrations
-- Current phase status: complete; focused gate passed and commit pending
+- Current phase: 29 — Durable repository adapters
+- Current phase status: complete; pair gate passed and commit pending
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: `4410b06` (Phase 27); Phase 28 commit pending
-- Last successfully completed command: `npm test --workspace @aperture/database` (6/6 tests)
+- Ending commit: `c841033` (Phase 28); Phase 29 commit pending
+- Last successfully completed command: `npm audit --omit=dev --workspace @aperture/web --audit-level=moderate` (0 vulnerabilities)
 - Last push: `4410b06` pushed to `origin/codex/aperture-v2`; local and upstream matched after the push
 - Unresolved concern: supplemental Expo compatibility metadata requests patch updates to Expo, Expo Crypto, and Expo Router; the standard mobile checks pass and unrelated upgrades remain deferred until required by an applicable phase.
 
@@ -32,8 +32,8 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | 25 | Complete | `f515ed8` | 28 web tests / 12 files; strict lint and type-check pass; 31-route Next production build passes | 5,095 tests / 55 suites or files; workspace type-check/lint, Finance/Memory builds, 31-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/finance@0.4.0`, `@aperture/finance-memory@0.1.0`, and `@aperture/validation@0.5.0` links / none | Volatile synthetic-owner preview; academic scenario history is web-runtime state; no authentication or persistence |
 | 26 | Complete | `3fa0318` | 13 Finance mobile tests / 5 files; 48 mobile tests / 17 suites; mobile strict lint and type-check pass; shared Calculator package build and type-check pass; Android, iOS, and web exports pass | Pair gate completed in Phase 27 | Local `@aperture/calculators@0.4.0`, `@aperture/finance@0.4.0`, and `@aperture/finance-memory@0.1.0` links; Calculator presentation registry promoted to shared runtime / none | Volatile synthetic-owner preview; academic scenarios remain provider state; native device execution remains unverified |
 | 27 | Complete | `4410b06` | 88 Finance tests / 7 files and 6 Calculator hardening tests / 1 file; generated 38-entry reference drift check, strict lint, type-check, and builds pass | 5,114 tests / 61 suites or files; workspace type-check/lint, 31-route Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | No new runtime dependency / none | Current government/tax presets intentionally absent; volatile repositories and synthetic owners remain until Phases 28–31 |
-| 28 | Complete; commit pending | — | 6 database tests; fresh and prior-state migration paths, discovery, ordering, roll-forward guards, schema invariants, RLS, constraints, owner isolation, and synthetic seed pass | Full pair gate runs with Phase 29 | `@electric-sql/pglite@0.3.14`; five ordered core/plugin migrations covering 74 tables | RLS policies exist but authenticated grants/session handling begin in Phase 30; no remote database was contacted |
-| 29 | Not started | — | — | — | — | Durable repository adapters |
+| 28 | Complete | `c841033` | 6 database tests; fresh and prior-state migration paths, discovery, ordering, roll-forward guards, schema invariants, RLS, constraints, owner isolation, and synthetic seed pass | Pair gate completed in Phase 29 | `@electric-sql/pglite@0.3.14`; five ordered core/plugin migrations initially covering 74 tables | Authenticated grants/session handling begin in Phase 30; no remote database was contacted |
+| 29 | Complete; commit pending | — | 10 PostgreSQL adapter tests / 3 files plus 6 migration tests; all 62 repository surfaces, owner isolation, transactions, decimals, pagination, date filters, defensive mapping, structured errors, composition, and equipment usage pass | 5,130 tests / 65 suites or files; workspace type-check/lint, 31-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | `@aperture/postgres-repositories@0.1.0`; repository-alignment migration adds Health equipment usage and aligns domain constraints, bringing the schema to 75 tables | Direct SQL adapter is intended for server-side PostgreSQL connections; authenticated client composition begins in Phases 30–31 |
 | 30 | Not started | — | — | — | — | Personal authentication and RLS security |
 | 31 | Not started | — | — | — | — | Shared web/mobile data and synchronization |
 | 32 | Not started | — | — | — | — | Modular dashboard shell and generated registries |
@@ -47,12 +47,14 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Current phase details
 
-- Files changed: core and plugin-owned migrations, discovery library, isolated PostgreSQL test harness, synthetic seed, schema documentation, lockfile, and this ledger
-- Dependencies added: development-only `@electric-sql/pglite@0.3.14` in `@aperture/database`
-- Database migrations added: core (`20260921000100`), Education (`20260921001000`), Health (`20260921002000`), Finance (`20260921003000`), and Platform/Planner (`20260921004000`)
-- Tests added: migration discovery without a central manifest, ordering and roll-forward checks, fresh database application, previous-core-state application, shared-column/RLS/type invariants, owner-preserving relationships, decimal/range/currency constraints, and synthetic seed loading
-- Focused verification result: 6/6 database tests pass against isolated PGlite PostgreSQL
-- Full regression result: deferred to the Phase 28–29 pair gate
-- Known limitations: authenticated grants and session enforcement begin in Phase 30; no remote database was configured or contacted
-- Deferred work: durable repository adapters, authentication, synchronization, and Phases 29–39
-- Next phase: 29 after the Phase 28 commit
+- Files changed: PostgreSQL repository package, internal memory-adapter behavior exports, repository alignment migration, migration expectations, durable-repository/schema documentation, lockfile, and this ledger
+- Dependencies added: local Education, Health, Finance, memory-adapter, and validation packages plus development-only `@electric-sql/pglite@0.3.14`
+- Database migrations added: repository alignment (`20260921005000`) for Health equipment usage, Finance domain alignment, and domain status constraints
+- Tests added: all 62 Education/Health/Finance repository surfaces, specialized lookups, owner isolation, soft delete, decimal fidelity, date filtering, persistent adapter instances, snapshot-bound pagination, database error mapping, corrupted-row rejection, transaction rollback, equipment usage, and memory/PostgreSQL composition
+- Focused verification result: 10/10 PostgreSQL adapter tests and 6/6 migration tests pass against isolated PGlite PostgreSQL
+- Full regression result: 5,130 tests / 65 suites or files pass; workspace type-check and lint pass; the 31-route Next production build and Expo Android/iOS/web exports pass
+- Expo Doctor result: 20/21 at the accepted baseline; only Expo patch-version recommendations remain
+- Audit result: 13 moderate workspace findings in the Expo dependency chain and 0 production-web findings
+- Known limitations: authenticated client-side Supabase access and session enforcement begin in Phases 30–31; no remote database was configured or contacted
+- Deferred work: authentication, synchronization, and Phases 30–39
+- Next phase: 30 after the Phase 29 commit and Phase 28–29 push

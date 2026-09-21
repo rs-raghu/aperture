@@ -1,0 +1,31 @@
+{
+  "name": "@aperture/postgres-repositories",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "pretest": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory && npm run build --workspace @aperture/finance && npm run build --workspace @aperture/finance-memory && npm run build --workspace @aperture/postgres-repositories",
+    "test": "vitest run",
+    "build": "tsc --project tsconfig.build.json",
+    "lint": "tsc --project tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@aperture/education": "0.7.0",
+    "@aperture/education-memory": "0.8.0",
+    "@aperture/finance": "0.4.0",
+    "@aperture/finance-memory": "0.1.0",
+    "@aperture/health": "0.4.0",
+    "@aperture/health-memory": "0.5.0",
+    "@aperture/validation": "0.5.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.14"
+  }
+}
