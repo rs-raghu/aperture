@@ -22,7 +22,7 @@ All pages state that they use volatile local data and a synthetic owner. Finance
 
 ## Calculator registration
 
-The Hub derives its 36 financial calculators from the generated `allFinanceCalculatorPlugins` registry. GPA and CGPA are thin presentation adapters around `calculateGpa` and `calculateCgpa` from `@aperture/education/calculations`; the formulas are not copied into the web feature.
+The Hub derives its 36 financial calculators from the generated `allFinanceCalculatorPlugins` registry. GPA and CGPA are thin presentation adapters around `calculateGpa` and `calculateCgpa` from `@aperture/education`; the formulas are not copied into the web feature. The presentation registry now lives in `@aperture/calculators` and is shared with Expo.
 
 The 38 calculators are presented through nine categories:
 

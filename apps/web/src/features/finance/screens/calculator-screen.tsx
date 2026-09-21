@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
-import { getWebCalculator } from "../calculators/calculator-catalog";
+import { getCalculatorPresentation } from "@aperture/calculators";
 import { FinanceErrorBanner, FinanceField, FinancePageHeader, FinancePanel, FinanceSelectInput, FinanceTextInput, humanize } from "../components/ui";
 import { useFinance } from "../providers/finance-provider";
 import { normalizeFinanceUiError, type FinanceUiError } from "../view-models/finance-error";
@@ -48,12 +48,12 @@ function OutputTree({ value, label = "Result" }: { readonly value: unknown; read
 }
 
 export function CalculatorScreen({ calculatorId }: { readonly calculatorId: string }) {
-  const calculator = getWebCalculator(calculatorId);
+  const calculator = getCalculatorPresentation(calculatorId);
   if (!calculator) return <><FinancePageHeader eyebrow="Calculator Hub" title="Calculator not found" description="The requested calculator is not registered." /><Link className="button button-secondary" href="/calculators">Return to Calculator Hub</Link></>;
   return <RegisteredCalculatorScreen calculator={calculator} />;
 }
 
-function RegisteredCalculatorScreen({ calculator }: { readonly calculator: NonNullable<ReturnType<typeof getWebCalculator>> }) {
+function RegisteredCalculatorScreen({ calculator }: { readonly calculator: NonNullable<ReturnType<typeof getCalculatorPresentation>> }) {
   const { service, context, favorites, toggleFavorite, recordCalculatorUse, rememberScenario, savedScenarios } = useFinance();
   const initialInput = useMemo(() => structuredClone(calculator.exampleInput), [calculator]);
   const [input, setInput] = useState<Readonly<Record<string, unknown>>>(initialInput);
@@ -76,7 +76,7 @@ function RegisteredCalculatorScreen({ calculator }: { readonly calculator: NonNu
     const name = scenarioName.trim();
     if (!name) { setError({ message: "Enter a scenario name before saving.", fieldErrors: { scenarioName: "Enter a scenario name." } }); return; }
     try {
-      if (calculator.supportsDurableScenario) await service.scenarios.create(context, { calculatorId: calculator.id, calculatorVersion: calculator.version, name, input });
+      if (calculator.supportsFinanceScenario) await service.scenarios.create(context, { calculatorId: calculator.id, calculatorVersion: calculator.version, name, input });
       const saved = rememberScenario({ calculatorId: calculator.id, name, input, output });
       setScenarioName(""); setSaveStatus(`Saved ${saved.name} in this preview.`); setError(null);
     } catch (caught) { setError(normalizeFinanceUiError(caught)); }
@@ -92,7 +92,7 @@ function RegisteredCalculatorScreen({ calculator }: { readonly calculator: NonNu
     <div className="calculator-layout">
       <FinancePanel title="Inputs" description="Every assumption is editable. Nested rows come from the calculator's tested example shape."><form className="calculator-form" onSubmit={calculate}><InputTree value={input} onChange={update} /><div className="record-actions"><button className="button button-primary finance-button" type="submit">Calculate</button><button className="button button-ghost" type="button" onClick={reset}>Reset</button></div></form></FinancePanel>
       <div className="calculator-results"><FinancePanel title="Result summary" description="Decimal values are rendered directly from the typed result.">{output === null ? <p className="muted-copy">Enter assumptions and calculate to see a result.</p> : <OutputTree value={output} />}</FinancePanel>
-        <FinancePanel title="Save scenario" description={calculator.supportsDurableScenario ? "Saved through the Finance application service and memory repository." : "Academic scenarios stay in this preview runtime."}><FinanceTextInput label="Scenario name" name="scenarioName" value={scenarioName} error={error?.fieldErrors.scenarioName} onChange={(event) => setScenarioName(event.target.value)} /><button className="button button-secondary" type="button" onClick={() => void save()}>Save scenario</button>{saveStatus && <p className="success-message" role="status">{saveStatus}</p>}</FinancePanel>
+        <FinancePanel title="Save scenario" description={calculator.supportsFinanceScenario ? "Saved through the Finance application service and memory repository." : "Academic scenarios stay in this preview runtime."}><FinanceTextInput label="Scenario name" name="scenarioName" value={scenarioName} error={error?.fieldErrors.scenarioName} onChange={(event) => setScenarioName(event.target.value)} /><button className="button button-secondary" type="button" onClick={() => void save()}>Save scenario</button>{saveStatus && <p className="success-message" role="status">{saveStatus}</p>}</FinancePanel>
       </div>
     </div>
     <div className="grid grid-2"><FinancePanel title="Formula & breakdown"><p className="formula">{calculator.formula}</p><p>The result groups above expose every output field returned by the registered calculator, including component totals and scenario rows.</p></FinancePanel><FinancePanel title="Assumptions & disclosures"><ul className="disclosure-list">{assumptions.map((item) => <li key={item}>{item}</li>)}{Array.isArray(warnings) && warnings.map((item, index) => <li key={`warning-${index}`}>{String(item)}</li>)}</ul></FinancePanel></div>

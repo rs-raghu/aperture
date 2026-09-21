@@ -1,7 +1,7 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
-import { allWebCalculators, calculatorCategories } from "@/features/finance/calculators/calculator-catalog";
+import { allCalculatorPresentations, calculatorPresentationCategories } from "@aperture/calculators";
 import { FinanceProvider } from "@/features/finance/providers/finance-provider";
 import { CalculatorHubScreen } from "@/features/finance/screens/calculator-hub-screen";
 import { CalculatorScreen } from "@/features/finance/screens/calculator-screen";
@@ -11,12 +11,12 @@ const OWNER = "calculator-web-owner";
 
 describe("Calculator Hub", () => {
   it("registers every required calculator under all nine presentation categories", () => {
-    expect(allWebCalculators).toHaveLength(38);
-    expect(new Set(allWebCalculators.map(({ id }) => id)).size).toBe(38);
-    expect(new Set(allWebCalculators.map(({ category }) => category)).size).toBe(9);
-    expect(calculatorCategories).toHaveLength(9);
-    expect(allWebCalculators.map(({ id }) => id)).toEqual(expect.arrayContaining(["gpa", "cgpa", "sip", "emi", "income-tax", "fire", "apy", "inflation-adjusted-value"]));
-    for (const calculator of allWebCalculators) {
+    expect(allCalculatorPresentations).toHaveLength(38);
+    expect(new Set(allCalculatorPresentations.map(({ id }) => id)).size).toBe(38);
+    expect(new Set(allCalculatorPresentations.map(({ category }) => category)).size).toBe(9);
+    expect(calculatorPresentationCategories).toHaveLength(9);
+    expect(allCalculatorPresentations.map(({ id }) => id)).toEqual(expect.arrayContaining(["gpa", "cgpa", "sip", "emi", "income-tax", "fire", "apy", "inflation-adjusted-value"]));
+    for (const calculator of allCalculatorPresentations) {
       const parsed = calculator.inputSchema.safeParse(calculator.exampleInput);
       expect(parsed.success, calculator.id).toBe(true);
       if (parsed.success) expect(calculator.calculate(parsed.data), calculator.id).toBeDefined();

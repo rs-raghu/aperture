@@ -4,12 +4,12 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 25 — Finance web and Calculator Hub
-- Current phase status: complete; pair gate passed and commit pending
+- Current phase: 26 — Finance mobile and Calculator Hub
+- Current phase status: complete; phase gate passed and commit pending
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: `4273e0d` (Phase 24); Phase 25 commit pending
-- Last successfully completed command: `npm audit --omit=dev --workspace @aperture/web --audit-level=moderate` (0 vulnerabilities)
-- Last push: `2a0dcb9` pushed to `origin/codex/aperture-v2`; local and upstream matched after the push
+- Ending commit: `f515ed8` (Phase 25); Phase 26 commit pending
+- Last successfully completed command: `npm run build --workspace @aperture/web` (31 routes)
+- Last push: `f515ed8` pushed to `origin/codex/aperture-v2`; local and upstream matched after the push
 - Unresolved concern: supplemental Expo compatibility metadata requests patch updates to Expo, Expo Crypto, and Expo Router; the standard mobile checks pass and unrelated upgrades remain deferred until required by an applicable phase.
 
 ## Phase records
@@ -29,8 +29,8 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | 22 | Complete | `55e3b86` | 83 Finance tests / 6 files; generated registries and schemas, strict lint, type-check, and build pass | 5,051 tests / 47 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | No new dependency / none | Six retirement plug-ins; government rules have no embedded current presets and remain caller-supplied, versioned, and effective-dated |
 | 23 | Complete | `2a0dcb9` | 88 Finance tests / 7 files; strict lint, type-check, build, and generated checks pass | 5,051 tests / 47 suites or files; workspace type-check/lint, Finance build, 21-page Next production build, Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline; pushed | No new dependency / none | Repository-only service; favorites and recent calculators remain absent because no repository contracts declare them |
 | 24 | Complete | `4273e0d` | 35 Finance Memory tests / 4 files; strict lint, type-check, build, public import, and Finance generated checks pass | 5,095 tests / 55 suites or files; workspace type-check/lint, Finance/Memory builds, 31-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/finance@0.4.0` and `@aperture/validation@0.5.0` links / none | Volatile storage only; cursor continuity intentionally ends after any mutation |
-| 25 | Complete; commit pending | — | 28 web tests / 12 files; strict lint and type-check pass; 31-route Next production build passes | 5,095 tests / 55 suites or files; workspace type-check/lint, Finance/Memory builds, 31-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/finance@0.4.0`, `@aperture/finance-memory@0.1.0`, and `@aperture/validation@0.5.0` links / none | Volatile synthetic-owner preview; academic scenario history is web-runtime state; no authentication or persistence |
-| 26 | Not started | — | — | — | — | Finance mobile |
+| 25 | Complete | `f515ed8` | 28 web tests / 12 files; strict lint and type-check pass; 31-route Next production build passes | 5,095 tests / 55 suites or files; workspace type-check/lint, Finance/Memory builds, 31-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/finance@0.4.0`, `@aperture/finance-memory@0.1.0`, and `@aperture/validation@0.5.0` links / none | Volatile synthetic-owner preview; academic scenario history is web-runtime state; no authentication or persistence |
+| 26 | Complete; commit pending | — | 13 Finance mobile tests / 5 files; 48 mobile tests / 17 suites; mobile strict lint and type-check pass; shared Calculator package build and type-check pass; Android, iOS, and web exports pass | Pair gate belongs to Phase 27 | Local `@aperture/calculators@0.4.0`, `@aperture/finance@0.4.0`, and `@aperture/finance-memory@0.1.0` links; Calculator presentation registry promoted to shared runtime / none | Volatile synthetic-owner preview; academic scenarios remain provider state; native device execution remains unverified |
 | 27 | Not started | — | — | — | — | Finance vertical-slice hardening |
 | 28 | Not started | — | — | — | — | PostgreSQL/Supabase schema and migrations |
 | 29 | Not started | — | — | — | — | Durable repository adapters |
@@ -47,13 +47,13 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Current phase details
 
-- Files changed: Finance and Calculator routes, dashboard-level provider, Finance runtime/shell/navigation/hooks/screens, calculator presentation catalog, responsive styles, deterministic test composition, tests, package scripts/links, route documentation, feature documentation, lockfile, and this ledger
-- Dependencies added: local `@aperture/finance@0.4.0`, `@aperture/finance-memory@0.1.0`, and `@aperture/validation@0.5.0` workspace links
+- Files changed: Expo Finance and Calculator routes, tabs-level provider, native runtime/hooks/screens/components, shared Calculator presentation registry, web registry consumers, deterministic tests, package scripts/links, feature documentation, lockfile, and this ledger
+- Dependencies added: local `@aperture/calculators@0.4.0`, `@aperture/finance@0.4.0`, and `@aperture/finance-memory@0.1.0` mobile workspace links
 - Database migrations added: none
-- Tests added: Finance provider lifetime and owner isolation; every Finance screen workflow; transaction filtering and exact decimals; 38-calculator/9-category inventory; every calculator example execution; search; favorites; recent use; saving and comparison; accessible validation; route navigation; and credential warning
-- Focused verification result: 28/28 web tests pass; strict lint and type-check pass; Next production build compiles 31 routes
-- Full regression result: 5,095 tests / 55 suites or files pass; workspace type-check/lint, Finance and Finance Memory builds, 31-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor remains 20/21 at the accepted patch baseline
-- Audit result: 13 moderate workspace Expo-chain findings and 0 production-web findings
-- Known limitations: the synthetic owner is not authentication; all preview records and UI preferences reset on refresh; academic scenarios are not part of the Finance service registry
-- Deferred work: Finance mobile UI, durable storage, platform integration, and Phases 26–39
-- Next phase: 26 after the Phase 25 commit, pair gate, and push
+- Tests added: provider lifetime, owner isolation, Strict Mode mutation safety, native account/asset/loan forms, exact decimals, cross-screen state and summaries, 38-calculator/9-category inventory, every example execution, search, favorites, academic and repository-backed scenarios, accessible errors and result cards, numeric keyboards, and credential warnings
+- Focused verification result: 13/13 new Finance mobile tests pass; all 48 mobile tests / 17 suites pass; mobile lint and type-check pass; Calculator package build and type-check pass; all three Expo platform exports pass
+- Adjacent verification result: all 28 web tests / 12 files and the 31-route Next production build pass after promotion of the shared presentation registry
+- Expo Doctor result: 20/21 at the accepted baseline; only Expo patch-version recommendations remain
+- Known limitations: the synthetic owner is not authentication; all preview records and UI preferences reset on reload; academic scenarios are not part of the Finance service registry; native device execution was unavailable
+- Deferred work: Phase 27 vertical-slice audit, durable storage, authentication, synchronization, and Phases 28–39
+- Next phase: 27 after the Phase 26 commit

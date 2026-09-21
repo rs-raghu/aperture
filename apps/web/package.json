@@ -4,16 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory && npm run build --workspace @aperture/finance && npm run build --workspace @aperture/finance-memory",
+    "predev": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory && npm run build --workspace @aperture/finance && npm run build --workspace @aperture/finance-memory && npm run build --workspace @aperture/calculators",
     "dev": "next dev",
-    "prebuild": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory && npm run build --workspace @aperture/finance && npm run build --workspace @aperture/finance-memory",
+    "prebuild": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory && npm run build --workspace @aperture/finance && npm run build --workspace @aperture/finance-memory && npm run build --workspace @aperture/calculators",
     "build": "next build",
     "typecheck": "tsc --project tsconfig.json --noEmit",
-    "pretest": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory && npm run build --workspace @aperture/finance && npm run build --workspace @aperture/finance-memory",
+    "pretest": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/education-memory && npm run build --workspace @aperture/health && npm run build --workspace @aperture/health-memory && npm run build --workspace @aperture/finance && npm run build --workspace @aperture/finance-memory && npm run build --workspace @aperture/calculators",
     "test": "vitest run",
     "lint": "eslint src tests --max-warnings=0"
   },
   "dependencies": {
+    "@aperture/calculators": "^0.4.0",
     "@aperture/education": "^0.7.0",
     "@aperture/education-memory": "^0.8.0",
     "@aperture/finance": "^0.4.0",

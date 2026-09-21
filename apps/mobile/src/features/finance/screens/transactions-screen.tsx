@@ -1,0 +1,28 @@
+import { useCallback, useState } from "react";
+import type { TransactionType } from "@aperture/finance";
+import { ActionButton, ChoiceField, EmptyState, ErrorBanner, LoadingState, PageHeader, Panel, RecordCard, RecordList, Screen, TextField, formatMoney } from "../components/ui";
+import { useFinanceAction } from "../hooks/use-finance-action";
+import { useFinanceQuery } from "../hooks/use-finance-query";
+import { useFinance } from "../providers/finance-provider";
+
+const transactionTypes: readonly TransactionType[] = ["expense", "income", "transfer"];
+
+export function TransactionsScreen() {
+  const { service, context } = useFinance(); const action = useFinanceAction();
+  const [categoryName, setCategoryName] = useState(""); const [categoryKind, setCategoryKind] = useState<TransactionType>("expense");
+  const [accountId, setAccountId] = useState(""); const [categoryId, setCategoryId] = useState(""); const [transactionType, setTransactionType] = useState<TransactionType>("expense");
+  const [description, setDescription] = useState(""); const [amount, setAmount] = useState(""); const [currency, setCurrency] = useState("USD"); const [occurredAt, setOccurredAt] = useState(new Date().toISOString().slice(0, 16));
+  const [typeFilter, setTypeFilter] = useState<TransactionType | "all">("all"); const [currencyFilter, setCurrencyFilter] = useState("");
+  const load = useCallback(async () => {
+    const [accounts, categories, transactions] = await Promise.all([service.accounts.list(context), service.categories.list(context), service.transactions.list(context, { ...(typeFilter === "all" ? {} : { transactionType: typeFilter }), ...(currencyFilter ? { currency: currencyFilter } : {}) })]);
+    return { accounts: accounts.items, categories: categories.items, transactions: transactions.items };
+  }, [service, context, typeFilter, currencyFilter]);
+  const query = useFinanceQuery(load);
+  const addCategory = () => void action.execute(() => service.categories.create(context, { name: categoryName, kind: categoryKind })).then((result) => { if (result) setCategoryName(""); });
+  const addTransaction = () => void action.execute(() => service.transactions.create(context, { accountId, ...(categoryId ? { categoryId } : {}), description, transactionType, amount: { amount, currency }, occurredAt: new Date(occurredAt).toISOString() })).then((result) => { if (result) { setDescription(""); setAmount(""); } });
+  return <Screen testID="finance-transactions-screen"><PageHeader eyebrow="Personal ledger" title="Transactions" description="Record manual income and expenses, then narrow the ledger by type and currency." /><ErrorBanner error={query.error ?? action.error} />
+    <Panel title="Add category"><TextField label="Category name" name="category-name" value={categoryName} onChangeText={setCategoryName} required /><ChoiceField label="Kind" value={categoryKind} onChange={setCategoryKind} options={transactionTypes.map((value) => ({ value, label: value }))} /><ActionButton label="Add category" pending={action.pending} onPress={addCategory} /></Panel>
+    <Panel title="Add transaction" description="The currency must match the selected account."><ChoiceField label="Account" value={accountId} onChange={setAccountId} options={(query.data?.accounts ?? []).map((item) => ({ value: item.id, label: item.name }))} error={!accountId && query.data?.accounts.length === 0 ? "Add an account on the Accounts screen first." : undefined} required /><ChoiceField label="Category" value={categoryId} onChange={setCategoryId} options={[{ value: "", label: "No category" }, ...(query.data?.categories ?? []).map((item) => ({ value: item.id, label: `${item.name} (${item.kind})` }))]} /><ChoiceField label="Type" value={transactionType} onChange={setTransactionType} options={transactionTypes.map((value) => ({ value, label: value }))} /><TextField label="Description" name="transaction-description" value={description} onChangeText={setDescription} required /><TextField label="Amount" name="transaction-amount" value={amount} onChangeText={setAmount} keyboardType="decimal-pad" required /><TextField label="Currency" name="transaction-currency" value={currency} onChangeText={(value) => setCurrency(value.toUpperCase())} autoCapitalize="characters" required /><TextField label="Occurred at" name="transaction-date" value={occurredAt} onChangeText={setOccurredAt} hint="Use YYYY-MM-DDTHH:mm." required /><ActionButton label="Add transaction" pending={action.pending} disabled={!accountId} onPress={addTransaction} /></Panel>
+    <Panel title="Transaction ledger" description="Filters use AND semantics."><ChoiceField label="Filter by type" value={typeFilter} onChange={setTypeFilter} options={[{ value: "all", label: "all" }, ...transactionTypes.map((value) => ({ value, label: value }))]} /><TextField label="Filter by currency" name="currency-filter" value={currencyFilter} onChangeText={(value) => setCurrencyFilter(value.toUpperCase())} autoCapitalize="characters" />{query.loading || !query.data ? <LoadingState /> : query.data.transactions.length === 0 ? <EmptyState title="No matching transactions" description="Add a transaction or change the filters." /> : <RecordList items={query.data.transactions} keyExtractor={(item) => item.id} accessibilityLabel="Transaction ledger" renderItem={(item) => <RecordCard title={item.description} details={[`${formatMoney(item.amount)} · ${item.transactionType}`, new Date(item.occurredAt).toLocaleString()]}><ActionButton label="Delete" tone="danger" onPress={() => void action.execute(() => service.transactions.delete(context, item.id))} /></RecordCard>} />}</Panel>
+  </Screen>;
+}
