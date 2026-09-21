@@ -98,9 +98,8 @@ describe("investment boundaries and government-rate policy", () => {
     for (const { manifest, examples } of schemes) {
       expect("ratePolicy" in manifest ? manifest.ratePolicy : undefined).toBe("required_user_input");
       expect(manifest.presets).toEqual([]);
-      expect(Reflect.apply(getInvestmentCalculatorPlugin(manifest.id)?.calculate ?? (() => undefined), undefined, [examples[0]?.input])).toMatchObject({
-        metadata: { warnings: [expect.objectContaining({ code: "user_supplied_rate_unverified" })] },
-      });
+      const result = Reflect.apply(getInvestmentCalculatorPlugin(manifest.id)?.calculate ?? (() => undefined), undefined, [examples[0]?.input]);
+      expect(result.metadata.warnings).toEqual(expect.arrayContaining([expect.objectContaining({ code: "user_supplied_rate_unverified" })]));
     }
   });
 

@@ -11,7 +11,10 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --noEmit",
-    "build": "tsc --project tsconfig.build.json"
+    "build": "tsc --project tsconfig.build.json",
+    "pretest": "npm run build --workspace @aperture/validation && npm run build --workspace @aperture/education && npm run build --workspace @aperture/finance && npm run build --workspace @aperture/calculators",
+    "test": "node scripts/generate-calculator-reference.mjs --check && vitest run",
+    "check:reference": "node scripts/generate-calculator-reference.mjs --check"
   },
   "dependencies": {
     "@aperture/education": "0.7.0",

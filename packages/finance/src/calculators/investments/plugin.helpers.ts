@@ -77,6 +77,10 @@ export function resultMetadata(
   isEstimate: boolean,
   warnings: readonly CalculatorWarning[] = [],
 ): CalculatorResultMetadata {
+  const estimateDisclosure: CalculatorWarning = {
+    code: "estimate_not_advice",
+    message: "This result is a mechanical estimate based on supplied inputs and is not financial, tax, legal, or investment advice.",
+  };
   return {
     calculatorId,
     version: input.version,
@@ -87,7 +91,7 @@ export function resultMetadata(
     sourceReferences: input.sourceReferences.map((source) => source.effectiveOn === undefined
       ? { title: source.title, reference: source.reference }
       : { title: source.title, reference: source.reference, effectiveOn: source.effectiveOn }),
-    warnings,
+    warnings: isEstimate ? [...warnings, estimateDisclosure] : warnings,
   };
 }
 

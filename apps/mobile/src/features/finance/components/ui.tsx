@@ -14,7 +14,7 @@ export function PageHeader({ title, description, eyebrow }: { readonly title: st
 }
 
 export function PreviewNotice() {
-  return <View style={styles.notice} accessibilityRole="summary"><Text style={styles.noticeTitle}>Development preview</Text><Text style={styles.noticeText}>Finance data uses a synthetic test identity, stays in memory, and resets when the app reloads. Never enter bank passwords, PINs, one-time codes, card security codes, or other banking credentials.</Text></View>;
+  return <View style={styles.notice} accessibilityRole="summary"><Text style={styles.noticeTitle}>Development preview</Text><Text style={styles.noticeText}>Finance data uses a synthetic test identity, stays in memory, and resets when the app reloads. Calculator results are estimates, not financial, tax, legal, or investment advice. Never enter bank passwords, PINs, one-time codes, card security codes, or other banking credentials.</Text></View>;
 }
 
 export function Panel({ title, description, children }: { readonly title: string; readonly description?: string; readonly children: ReactNode }) {
