@@ -20,6 +20,7 @@ The current sequence is:
 4. Finance records, including calculator scenarios.
 5. Settings, synchronization, integrations, exports, backups, and Planner.
 6. Durable-repository alignment and Health equipment usage.
+7. Authenticated and anonymous role grants for the personal-data boundary.
 
 Each file is transactional and records its version in
 `platform.migration_audit`. The automated guard rejects destructive `DROP`,
@@ -37,6 +38,11 @@ Every personal table includes:
 - a unique `(owner_id, id)` key for owner-preserving relationships
 - owner/update and active-record indexes
 - Row Level Security tied to the authenticated JWT subject
+
+The final security migration grants table access only to PostgreSQL's
+`authenticated` role, revokes personal schemas and data from `anon` and
+`public`, and restricts the JWT owner helper to authenticated sessions. Public
+self-registration is disabled in the checked-in Supabase configuration.
 
 Domain columns add database validation and query support. Calendar concepts use
 `date`; events use `timestamptz`; money and precision-sensitive values use

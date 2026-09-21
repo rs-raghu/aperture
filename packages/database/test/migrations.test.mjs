@@ -17,7 +17,7 @@ test("discovers core and plugin-owned migrations without a central manifest", as
 
   assert.deepEqual(
     migrations.map(({ scope }) => scope),
-    ["core", "education", "health", "finance", "platform-contracts", "postgres-repositories"],
+    ["core", "education", "health", "finance", "platform-contracts", "postgres-repositories", "core"],
   );
   assert.equal(new Set(migrations.map(({ version }) => version)).size, migrations.length);
   assert.deepEqual(
@@ -207,6 +207,36 @@ test("loads only the documented synthetic development seed", async () => {
         currency: "USD",
       },
     ]);
+  } finally {
+    await db.close();
+  }
+});
+
+test("enforces authenticated owner RLS and denies anonymous and cross-owner access", async () => {
+  const db = new PGlite();
+  try {
+    await apply(db, await discoverMigrations());
+    const ownerA = "10000000-0000-4000-8000-000000000001";
+    const ownerB = "20000000-0000-4000-8000-000000000001";
+    await db.query(
+      "insert into education.institutions (id, owner_id, name, status, payload) values ('30000000-0000-4000-8000-000000000001', $1, 'Owner A', 'active', $2::jsonb), ('30000000-0000-4000-8000-000000000002', $3, 'Owner B', 'active', $4::jsonb)",
+      [ownerA, JSON.stringify({ ownerId: ownerA }), ownerB, JSON.stringify({ ownerId: ownerB })],
+    );
+
+    await db.exec("set role authenticated");
+    await db.query("select set_config('request.jwt.claim.sub', $1, false)", [ownerA]);
+    assert.equal((await db.query("select count(*)::int as count from education.institutions")).rows[0]?.count, 1);
+    await assert.rejects(db.query(
+      "insert into education.institutions (id, owner_id, name, status) values ('30000000-0000-4000-8000-000000000003', $1, 'Cross owner', 'active')",
+      [ownerB],
+    ));
+
+    await db.query("select set_config('request.jwt.claim.sub', '', false)");
+    assert.equal((await db.query("select count(*)::int as count from education.institutions")).rows[0]?.count, 0);
+    await db.exec("reset role");
+    await db.exec("set role anon");
+    await assert.rejects(db.query("select * from education.institutions"));
+    await db.exec("reset role");
   } finally {
     await db.close();
   }

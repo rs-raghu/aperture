@@ -4,6 +4,7 @@ module.exports = {
   setupFilesAfterEnv: ["<rootDir>/tests/setup.ts"],
   collectCoverageFrom: ["src/features/{education,health,finance}/**/*.{ts,tsx}"],
   moduleNameMapper: {
+    "^@aperture/auth$": "<rootDir>/../../packages/auth/dist/index.js",
     "^@aperture/calculators$": "<rootDir>/../../packages/calculators/dist/runtime.js",
     "^@aperture/education$": "<rootDir>/../../packages/education/dist/index.js",
     "^@aperture/education-memory$": "<rootDir>/../../packages/education-memory/dist/index.js",

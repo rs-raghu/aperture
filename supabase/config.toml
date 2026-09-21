@@ -1,0 +1,12 @@
+project_id = "aperture-v2-local"
+
+[auth]
+site_url = "http://127.0.0.1:3000"
+additional_redirect_urls = ["http://localhost:3000/auth/callback", "aperture://auth/callback"]
+enable_signup = false
+minimum_password_length = 12
+
+[auth.email]
+enable_signup = false
+double_confirm_changes = true
+enable_confirmations = true

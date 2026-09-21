@@ -9,8 +9,8 @@ Versions below are the direct versions resolved on 2026-09-03. The root TypeScri
 | `next` | 16.3.4 | Runtime | Establishes the planned App Router platform and supplies framework types/configuration contracts. |
 | `react` | 19.2.8 | Runtime | Next.js peer runtime required for a compatible web platform manifest. No component is created. |
 | `react-dom` | 19.2.8 | Runtime | Next.js browser-rendering peer required for manifest compatibility. No rendering is implemented. |
-| `@supabase/supabase-js` | 2.114.0 | Runtime | Reserves the future typed Supabase client dependency; no client is instantiated. |
-| `@supabase/ssr` | 0.12.5 | Runtime | Reserves future server/browser session integration boundaries for Next.js; no auth behavior exists. |
+| `@supabase/supabase-js` | 2.114.0 | Runtime | Originally reserved the typed Supabase client dependency; Phase 30 now uses it through the shared authentication package. |
+| `@supabase/ssr` | 0.12.5 | Runtime | Supplies the Phase 30 server-cookie session adapter for Next.js. |
 
 ## Mobile workspace
 
@@ -20,9 +20,9 @@ Versions below are the direct versions resolved on 2026-09-03. The root TypeScri
 | `expo-router` | 57.0.18 | Runtime | Registers the future file-based navigation platform; no executable route exists. |
 | `react` | 19.2.3 | Runtime | Expo SDK-compatible React peer. No component is created. |
 | `react-native` | 0.86.3 | Runtime | Expo SDK-compatible native platform peer. No native UI is created. |
-| `@supabase/supabase-js` | 2.114.0 | Runtime | Reserves the future typed Supabase client dependency; no client is instantiated. |
-| `react-native-url-polyfill` | 4.0.0 | Runtime | Reserves URL API compatibility required by the future mobile Supabase adapter. It is not imported. |
-| `@react-native-async-storage/async-storage` | 2.2.0 | Runtime | Reserves Expo-supported persistent session storage for future authentication design. No value is stored. |
+| `@supabase/supabase-js` | 2.114.0 | Runtime | Supplies the Phase 30 PKCE authentication client. |
+| `react-native-url-polyfill` | 4.0.0 | Runtime | Supplies URL API compatibility before the mobile Supabase client is created. |
+| `@react-native-async-storage/async-storage` | 2.2.0 | Runtime | Remains available for non-secret local application data; authentication tokens are never stored here. |
 
 ## Compatibility verification
 
@@ -111,3 +111,12 @@ The existing `@aperture/mobile@0.4.0` workspace now declares local runtime links
 ## Phase 17 dependency boundary
 
 Health hardening adds no package and changes no dependency or lockfile entry. Absolute timestamp comparison uses the platform date parser for whole seconds plus the existing decimal arithmetic for exact fractional duration; UI regression tests reuse the installed web and React Native testing libraries.
+
+## Phase 30 additions
+
+| Package | Workspace | Resolved version | Kind | Purpose |
+| --- | --- | ---: | --- | --- |
+| `@aperture/auth` | web and mobile | 0.1.0 | Runtime workspace link | Centralizes the one-owner Supabase Auth policy, session lifecycle, PKCE callback exchange, and development-bypass guard. |
+| `expo-secure-store` | mobile | 57.0.4 | Runtime | Persists Supabase session envelopes in device-protected storage with after-first-unlock, device-only accessibility. |
+
+The existing `@supabase/supabase-js`, `@supabase/ssr`, and `react-native-url-polyfill` declarations are now active authentication dependencies. Web sessions use server-managed cookies; mobile sessions use SecureStore. AsyncStorage remains installed from the earlier Expo baseline but is not an authentication-token store.

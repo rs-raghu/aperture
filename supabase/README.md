@@ -15,9 +15,11 @@ keys include the owner so one owner cannot attach a record to another owner's
 data.
 
 The RLS helper reads the authenticated owner UUID from
-`request.jwt.claim.sub`. Authentication roles and grants are introduced with
-the authenticated backend in Phase 30; until then, migrations and policies are
-validated in an isolated local PostgreSQL runtime.
+`request.jwt.claim.sub`. The Phase 30 security migration grants personal-table
+access to the `authenticated` role, revokes it from `anon` and `public`, and
+limits the owner helper to authenticated sessions. Public self-registration is
+disabled in `config.toml`; deployed Supabase projects must apply the same Auth
+setting.
 
 Run the schema suite from the repository root:
 
