@@ -268,6 +268,14 @@ The repository now discovers checked-in `aperture.plugin.json` manifests during 
 
 Feature visibility in Phase 32 is mounted-shell state. Required Today and Settings features ignore disable overrides, and disabling an optional feature never mutates its records. Phase 34 owns durable, owner-scoped feature preferences.
 
+## Today consumes registered contributions
+
+Today receives ordered widget metadata from the generated feature registry and data loaders through the application composition root. Its UI and generic aggregation package do not import platform feature components. Contributors use public repository contracts, return a common Today item model, and fail independently so one unavailable feature does not take down the daily dashboard.
+
+## Planner recurrence and overdue state are derived
+
+Planner stores one item plus a structured recurrence rule. Daily and weekly projections expand occurrences without creating duplicate rows. Overdue is computed from an incomplete item's deadline and the requested plan date, which avoids persisting a status that would become stale with time. Completion remains durable through the normal item status and matching completion timestamp.
+
 ## Platform implementation remains deferred
 
 The Education, Health, and Finance packages depend on no UI framework, mobile framework, server, API, authentication system, or database library. Phase 4 dependencies belong only to their application workspaces. Web/mobile behavior, persistence, authentication, SQL, and provider integrations remain deferred.

@@ -16,6 +16,7 @@ describe("mobile dashboard shell", () => {
     const view = await render(<MobileDashboardShell><Text>Education content</Text></MobileDashboardShell>);
     expect(view.getByRole("tab", { name: "Today" })).toBeTruthy();
     expect(view.getByRole("tab", { name: "Education" })).toBeTruthy();
+    expect(view.getByRole("tab", { name: "Planner" })).toBeTruthy();
     await fireEvent.press(view.getByRole("button", { name: "Search Aperture" }));
     fireEvent.changeText(await view.findByLabelText("Search routes"), "assignment");
     await fireEvent.press(await view.findByRole("link", { name: "Assignments, Education" }));

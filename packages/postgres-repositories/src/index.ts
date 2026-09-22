@@ -1,5 +1,6 @@
 export { createEducationPostgresRepository } from "./education-postgres.repository.js";
 export { createFinancePostgresRepository } from "./finance-postgres.repository.js";
+export { createPlannerPostgresRepository } from "./planner-postgres.repository.js";
 export {
   createHealthPostgresRepository,
   type CreateHealthPostgresRepositoryOptions,
@@ -16,6 +17,8 @@ export {
 import { createEducationPostgresRepository } from "./education-postgres.repository.js";
 import { createFinancePostgresRepository } from "./finance-postgres.repository.js";
 import { createHealthPostgresRepository } from "./health-postgres.repository.js";
+import { createPlannerPostgresRepository } from "./planner-postgres.repository.js";
+import { createPlannerMemoryRepository } from "@aperture/planner";
 import type { CreateHealthPostgresRepositoryOptions } from "./health-postgres.repository.js";
 import {
   createEducationMemoryRepository,
@@ -49,6 +52,7 @@ export function createPostgresRepositorySet(
     education: createEducationPostgresRepository(database),
     health: createHealthPostgresRepository(database, options.health),
     finance: createFinancePostgresRepository(database, options.finance),
+    planner: createPlannerPostgresRepository(database),
   });
 }
 
@@ -72,12 +76,14 @@ export function createRepositorySet(configuration: RepositoryComposition): Postg
       education: createEducationMemoryRepository(configuration.education),
       health: createHealthMemoryRepository(configuration.health),
       finance: createFinanceMemoryRepository(configuration.finance),
+      planner: createPlannerMemoryRepository(),
     });
   }
   return Object.freeze({
     education: createEducationPostgresRepository(configuration.database),
     health: createHealthPostgresRepository(configuration.database, configuration.health),
     finance: createFinancePostgresRepository(configuration.database, configuration.finance),
+    planner: createPlannerPostgresRepository(configuration.database),
   });
 }
 

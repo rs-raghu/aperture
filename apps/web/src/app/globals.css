@@ -246,3 +246,25 @@ th { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-s
   font-size: 0.78rem;
   font-weight: 700;
 }
+
+.planner-shell { min-height: calc(100vh - 122px); background: radial-gradient(circle at 92% 0, #e5edf9 0, transparent 28rem), #f6f7f4; }
+.planner-nav { display: flex; gap: 4px; padding: 9px 5vw; overflow-x: auto; background: #253a58; }
+.planner-nav a { padding: 8px 12px; color: #e5edf8; text-decoration: none; border-radius: 8px; font-weight: 700; }
+.planner-nav a:hover, .planner-nav a[aria-current="page"] { color: white; background: rgba(255,255,255,.15); }
+.planner-main, .today-main { width: min(1220px, 90vw); margin: 0 auto; padding: 44px 0 72px; }
+.planner-layout { align-items: start; }
+.planner-layout > .panel { margin-top: 0; }
+.week-grid, .today-widget-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px; align-items: start; }
+.week-grid > .panel, .today-widget-grid > .panel { margin-top: 0; }
+.week-day { min-height: 230px; }
+.today-main { min-height: calc(100vh - 122px); }
+.today-controls { margin-bottom: 20px; }
+.today-controls fieldset { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 20px 0 0; padding: 16px; border: 1px solid var(--line); border-radius: 12px; }
+.today-controls legend { padding: 0 7px; font-weight: 800; }
+.today-controls label { display: inline-flex; align-items: center; gap: 7px; }
+.quick-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.today-widget { min-width: 0; }
+
+@media (max-width: 780px) {
+  .planner-main, .today-main { width: min(92vw, 680px); padding-top: 30px; }
+}

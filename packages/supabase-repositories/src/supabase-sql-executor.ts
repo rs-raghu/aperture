@@ -69,7 +69,7 @@ interface ParsedSelect extends QualifiedTable {
 type ParsedStatement = ParsedInsert | ParsedUpdate | ParsedDelete | ParsedSelect;
 
 const IDENTIFIER = "[a-z][a-z0-9_]*";
-const PERSONAL_SCHEMAS = new Set<CloudSynchronizationScope>(["education", "health", "finance"]);
+const PERSONAL_SCHEMAS = new Set<CloudSynchronizationScope>(["education", "health", "finance", "planner"]);
 
 function parseQualified(schema: string, table: string): QualifiedTable {
   if (!PERSONAL_SCHEMAS.has(schema as CloudSynchronizationScope)) {

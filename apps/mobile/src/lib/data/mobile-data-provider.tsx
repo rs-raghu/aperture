@@ -1,6 +1,9 @@
 import { createEducationService, type EducationClock } from "@aperture/education";
 import { allFinanceCalculatorPlugins, createFinanceApplicationService } from "@aperture/finance";
 import { createHealthService, type HealthClock } from "@aperture/health";
+import { createPlannerService, type PlannerClock } from "@aperture/planner";
+import { createStandardTodayContributors, createTodayService } from "@aperture/today";
+import { featureRegistry } from "@aperture/feature-registry";
 import {
   createPreviewRepositorySet,
   createSupabaseRepositorySet,
@@ -17,12 +20,16 @@ import type { FinanceMobileRuntime } from "../../features/finance/adapters/finan
 import { FinanceProvider } from "../../features/finance/providers/finance-provider";
 import type { HealthMobileRuntime } from "../../features/health/adapters/health-runtime";
 import { HealthProvider } from "../../features/health/providers/health-provider";
+import { PlannerProvider, type PlannerMobileRuntime } from "../../features/planner/providers/planner-provider";
+import { TodayProvider, type TodayMobileRuntime } from "../../features/today/provider";
 import { useMobileAuth } from "../auth/mobile-auth-provider";
 
 export interface MobileDataComposition {
   readonly education: EducationMobileRuntime;
   readonly health: HealthMobileRuntime;
   readonly finance: FinanceMobileRuntime;
+  readonly planner: PlannerMobileRuntime;
+  readonly today: TodayMobileRuntime;
   readonly mode: "memory" | "supabase";
   readonly snapshots: () => readonly CloudSynchronizationSnapshot[];
   readonly subscribe: (listener: () => void) => () => void;
@@ -59,6 +66,12 @@ export function createMobileDataComposition(
   const now = () => new Date().toISOString();
   const educationClock: EducationClock = Object.freeze({ now });
   const healthClock: HealthClock = Object.freeze({ now });
+  const plannerClock: PlannerClock = Object.freeze({ now });
+  const planner = Object.freeze({
+    service: createPlannerService({ repository: repositories.planner, clock: plannerClock, idGenerator: { generate: randomUUID } }),
+    context: Object.freeze({ ownerId }),
+    clock: plannerClock,
+  });
   return Object.freeze({
     education: Object.freeze({
       service: createEducationService({ repositories: repositories.education, clock: educationClock, idGenerator: { generate: randomUUID } }),
@@ -78,6 +91,21 @@ export function createMobileDataComposition(
         idGenerator: { next: (scope: string) => `${scope.replaceAll(" ", "-")}-${randomUUID()}` },
       }),
       context: Object.freeze({ ownerId }),
+    }),
+    planner,
+    today: Object.freeze({
+      service: createTodayService({
+        widgets: featureRegistry.widgets("mobile"),
+        contributors: createStandardTodayContributors(repositories, planner.service),
+        quickActions: [
+          { id: "planner.add", label: "Add task", href: "/planner", featureId: "planner" },
+          { id: "education.add", label: "Add assignment", href: "/education/assignments", featureId: "education" },
+          { id: "health.add", label: "Plan workout", href: "/health/workouts", featureId: "health" },
+          { id: "finance.add", label: "Add reminder", href: "/finance/transactions", featureId: "finance" },
+        ],
+      }),
+      ownerId,
+      now,
     }),
     mode: durable === null ? "memory" : "supabase",
     snapshots: () => durable?.synchronization.getAllSnapshots() ?? EMPTY_SYNCHRONIZATION,
@@ -103,13 +131,17 @@ export function MobileDataProvider({ children }: { readonly children: ReactNode 
         <View style={styles.status} accessibilityRole="summary" accessibilityLiveRegion="polite">
           <Text style={styles.statusText}>{synchronizationLabel(status)}</Text>
         </View>
-        <FinanceProvider ownerId={ownerId} createRuntime={() => composition.finance}>
-          <EducationProvider ownerId={ownerId} createRuntime={() => composition.education}>
-            <HealthProvider ownerId={ownerId} createRuntime={() => composition.health}>
-              {children}
-            </HealthProvider>
-          </EducationProvider>
-        </FinanceProvider>
+        <TodayProvider runtime={composition.today}>
+          <PlannerProvider runtime={composition.planner}>
+            <FinanceProvider ownerId={ownerId} createRuntime={() => composition.finance}>
+              <EducationProvider ownerId={ownerId} createRuntime={() => composition.education}>
+                <HealthProvider ownerId={ownerId} createRuntime={() => composition.health}>
+                  {children}
+                </HealthProvider>
+              </EducationProvider>
+            </FinanceProvider>
+          </PlannerProvider>
+        </TodayProvider>
       </View>
     </MobileDataContext.Provider>
   );

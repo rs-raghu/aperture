@@ -1,4 +1,4 @@
-export type CloudSynchronizationScope = "education" | "health" | "finance";
+export type CloudSynchronizationScope = "education" | "health" | "finance" | "planner";
 export type CloudSynchronizationState = "idle" | "synchronizing" | "synchronized" | "failed";
 
 export interface CloudSynchronizationSnapshot {
@@ -13,7 +13,7 @@ export interface CloudSynchronizationSnapshot {
 
 export type CloudSynchronizationListener = (snapshot: CloudSynchronizationSnapshot) => void;
 
-const scopes = ["education", "health", "finance"] as const;
+const scopes = ["education", "health", "finance", "planner"] as const;
 
 function initial(scope: CloudSynchronizationScope): CloudSynchronizationSnapshot {
   return Object.freeze({ scope, state: "idle", inFlight: 0, attempt: 0 });

@@ -13,7 +13,7 @@ describe("web dashboard shell", () => {
   it("renders generated primary navigation and searches generated routes", async () => {
     const user = userEvent.setup();
     render(<WebDashboardShell><main>Education content</main></WebDashboardShell>);
-    expect(screen.getByRole("navigation", { name: "Primary navigation" }).textContent).toContain("TodayEducationHealthFinanceCalculatorsSettings");
+    expect(screen.getByRole("navigation", { name: "Primary navigation" }).textContent).toContain("TodayEducationHealthFinancePlannerCalculatorsSettings");
     await user.click(screen.getByRole("button", { name: /Search/ }));
     await user.type(screen.getByRole("textbox", { name: "Search routes" }), "assignment");
     const result = screen.getByRole("link", { name: /Assignments/ });

@@ -2,7 +2,7 @@ module.exports = {
   preset: "jest-expo",
   testMatch: ["<rootDir>/tests/**/*.test.ts?(x)"],
   setupFilesAfterEnv: ["<rootDir>/tests/setup.ts"],
-  collectCoverageFrom: ["src/features/{education,health,finance}/**/*.{ts,tsx}"],
+  collectCoverageFrom: ["src/features/{education,health,finance,planner,today}/**/*.{ts,tsx}"],
   moduleNameMapper: {
     "^@aperture/auth$": "<rootDir>/../../packages/auth/dist/index.js",
     "^@aperture/calculators$": "<rootDir>/../../packages/calculators/dist/runtime.js",
@@ -17,7 +17,9 @@ module.exports = {
     "^@aperture/finance-memory/adapter-internals$": "<rootDir>/../../packages/finance-memory/dist/adapter-internals.js",
     "^@aperture/feature-registry$": "<rootDir>/../../packages/feature-registry/dist/index.js",
     "^@aperture/postgres-repositories$": "<rootDir>/../../packages/postgres-repositories/dist/index.js",
+    "^@aperture/planner$": "<rootDir>/../../packages/planner/dist/index.js",
     "^@aperture/supabase-repositories$": "<rootDir>/../../packages/supabase-repositories/dist/index.js",
+    "^@aperture/today$": "<rootDir>/../../packages/today/dist/index.js",
     "^@aperture/validation$": "<rootDir>/../../packages/validation/dist/index.js",
   },
 };

@@ -11,6 +11,8 @@ describe("web data composition", () => {
     expect(composition.education.context.ownerId).toBe(OWNER);
     expect(composition.health.context.ownerId).toBe(OWNER);
     expect(composition.finance.context.ownerId).toBe(OWNER);
+    expect(composition.planner.context.ownerId).toBe(OWNER);
+    expect(composition.today.ownerId).toBe(OWNER);
     expect(composition.snapshots()).toEqual([]);
   });
 
@@ -25,10 +27,13 @@ describe("web data composition", () => {
     expect(composition.education.context.ownerId).toBe(OWNER);
     expect(composition.health.context.ownerId).toBe(OWNER);
     expect(composition.finance.context.ownerId).toBe(OWNER);
+    expect(composition.planner.context.ownerId).toBe(OWNER);
+    expect(composition.today.ownerId).toBe(OWNER);
     expect(composition.snapshots()).toEqual([
       expect.objectContaining({ scope: "education", state: "idle" }),
       expect.objectContaining({ scope: "health", state: "idle" }),
       expect.objectContaining({ scope: "finance", state: "idle" }),
+      expect.objectContaining({ scope: "planner", state: "idle" }),
     ]);
   });
 });

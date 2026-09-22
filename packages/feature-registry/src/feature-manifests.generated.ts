@@ -197,6 +197,17 @@ export const generatedFeatureManifests = [
         ],
         "order": 20,
         "defaultEnabled": true
+      },
+      {
+        "id": "education.study",
+        "title": "Planned study",
+        "description": "Study sessions scheduled for this date.",
+        "platforms": [
+          "web",
+          "mobile"
+        ],
+        "order": 21,
+        "defaultEnabled": true
       }
     ],
     "calculatorModules": [
@@ -591,6 +602,93 @@ export const generatedFeatureManifests = [
     },
     "migrations": [
       "packages/finance/migrations/20260921003000_finance.sql"
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "planner",
+    "displayName": "Planner",
+    "description": "Plan tasks, events, reminders, focus blocks, and recurring work.",
+    "version": "0.1.0",
+    "status": "enabled",
+    "defaultEnabled": true,
+    "disableAllowed": true,
+    "order": 45,
+    "icon": "calendar",
+    "theme": {
+      "accent": "#38628e",
+      "surface": "#e8eef7"
+    },
+    "permissions": [
+      {
+        "id": "planner.read",
+        "description": "Read owner-scoped plans and items.",
+        "required": true
+      },
+      {
+        "id": "planner.write",
+        "description": "Create and update owner-scoped plans and items.",
+        "required": true
+      }
+    ],
+    "routes": [
+      {
+        "id": "planner.day",
+        "label": "Daily plan",
+        "description": "Plan and complete work for one day.",
+        "paths": {
+          "web": "/planner",
+          "mobile": "/planner"
+        },
+        "navigation": "primary",
+        "order": 45,
+        "searchable": true,
+        "requiresSession": true
+      },
+      {
+        "id": "planner.week",
+        "label": "Weekly plan",
+        "description": "Review recurring and scheduled work across a week.",
+        "paths": {
+          "web": "/planner/week",
+          "mobile": "/planner/week"
+        },
+        "navigation": "secondary",
+        "order": 46,
+        "searchable": true,
+        "requiresSession": true
+      }
+    ],
+    "widgets": [
+      {
+        "id": "planner.items",
+        "title": "Planner tasks",
+        "description": "Scheduled and overdue planner items.",
+        "platforms": [
+          "web",
+          "mobile"
+        ],
+        "order": 10,
+        "defaultEnabled": true
+      }
+    ],
+    "calculatorModules": [],
+    "frontends": {
+      "web": {
+        "source": "apps/web/src/features/planner/index.ts",
+        "import": "../features/planner/index"
+      },
+      "mobile": {
+        "source": "apps/mobile/src/features/planner/index.ts",
+        "import": "../features/planner/index"
+      }
+    },
+    "backend": {
+      "source": "packages/planner/src/index.ts",
+      "import": "@aperture/planner"
+    },
+    "migrations": [
+      "packages/planner/migrations/20260922001000_planner.sql"
     ]
   },
   {

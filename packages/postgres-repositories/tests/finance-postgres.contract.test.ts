@@ -136,7 +136,7 @@ describe("Finance PostgreSQL repository contract", () => {
   it("selects memory or durable adapters only at the composition boundary", async () => {
     const testDatabase = await createTestDatabase();
     databases.push(testDatabase.database);
-    expect(Object.keys(createRepositorySet({ mode: "memory" }))).toEqual(["education", "health", "finance"]);
-    expect(Object.keys(createRepositorySet({ mode: "postgres", database: testDatabase.executor }))).toEqual(["education", "health", "finance"]);
+    expect(Object.keys(createRepositorySet({ mode: "memory" }))).toEqual(["education", "health", "finance", "planner"]);
+    expect(Object.keys(createRepositorySet({ mode: "postgres", database: testDatabase.executor }))).toEqual(["education", "health", "finance", "planner"]);
   });
 });

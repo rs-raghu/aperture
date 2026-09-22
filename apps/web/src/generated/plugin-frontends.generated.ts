@@ -8,6 +8,7 @@ export const webFeatureModuleLoaders: Readonly<Partial<Record<FeatureId, Feature
   "education": () => import("../features/education/index"),
   "health": () => import("../features/health/index"),
   "finance": () => import("../features/finance/index"),
+  "planner": () => import("../features/planner/index"),
   "calculators": () => import("../features/finance/index"),
   "settings": () => import("../features/settings/index"),
 });

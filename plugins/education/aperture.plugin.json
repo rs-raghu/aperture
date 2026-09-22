@@ -25,7 +25,8 @@
     { "id": "education.study", "label": "Study sessions", "description": "Plan and complete focused study.", "paths": { "web": "/education/study-sessions", "mobile": "/education/study-sessions" }, "navigation": "secondary", "order": 27, "searchable": true, "requiresSession": true }
   ],
   "widgets": [
-    { "id": "education.deadlines", "title": "Education deadlines", "description": "Upcoming assignments and exams.", "platforms": ["web", "mobile"], "order": 20, "defaultEnabled": true }
+    { "id": "education.deadlines", "title": "Education deadlines", "description": "Upcoming assignments and exams.", "platforms": ["web", "mobile"], "order": 20, "defaultEnabled": true },
+    { "id": "education.study", "title": "Planned study", "description": "Study sessions scheduled for this date.", "platforms": ["web", "mobile"], "order": 21, "defaultEnabled": true }
   ],
   "calculatorModules": [
     { "id": "education.academic", "source": "packages/education/src/index.ts", "import": "@aperture/education" }

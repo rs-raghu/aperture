@@ -135,3 +135,7 @@ package is introduced. Web and mobile add only a local link to this adapter.
 The durable repository package no longer imports Node's crypto module. Its UUID
 fallback and pagination cursor codec use platform-neutral runtime primitives,
 allowing the same repository implementation to bundle for browsers and Expo.
+
+## Phase 33 dependency boundary
+
+`@aperture/planner@0.1.0` and `@aperture/today@0.1.0` are local workspace packages. Planner reuses the existing local validation package; Today links the public Education, Health, Finance, and Planner contracts. Web, mobile, PostgreSQL repositories, and the existing Supabase composition add local workspace links only. Phase 33 introduces no external runtime or development dependency.

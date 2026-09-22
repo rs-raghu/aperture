@@ -41,4 +41,5 @@ export interface PostgresRepositorySet {
   readonly education: import("@aperture/education").EducationRepository;
   readonly health: import("@aperture/health").HealthRepository;
   readonly finance: import("@aperture/finance").FinanceRepository;
+  readonly planner: import("@aperture/planner").PlannerRepository;
 }

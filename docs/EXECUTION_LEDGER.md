@@ -4,12 +4,12 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 32 — Modular dashboard shell
-- Current phase status: complete; full gate passed and commit pending
+- Current phase: 33 — Today and Planner vertical slices
+- Current phase status: complete; full pair gate passed and commit pending
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: `1d2017f` (Phase 31); Phase 32 commit pending
-- Last successfully completed command: `npx expo export --platform all --output-dir .expo-phase32-final` (Android, iOS, and web exports pass)
-- Last push: `1d2017f` pushed to `origin/codex/aperture-v2`; Phase 32 remains local until its commit
+- Ending commit: `cbc716b` (Phase 32); Phase 33 commit pending
+- Last successfully completed command: `npx expo-doctor apps/mobile` (20/21 checks pass at the accepted Expo patch-version baseline)
+- Last push: `1d2017f` pushed to `origin/codex/aperture-v2`; Phases 32–33 remain local until the pair push
 - Unresolved concern: supplemental Expo compatibility metadata requests patch updates to Expo, Expo Crypto, and Expo Router; the standard mobile checks pass and unrelated upgrades remain deferred until required by an applicable phase.
 
 ## Phase records
@@ -36,8 +36,8 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | 29 | Complete | `f2d5863` | 10 PostgreSQL adapter tests / 3 files plus 6 migration tests; all 62 repository surfaces, owner isolation, transactions, decimals, pagination, date filters, defensive mapping, structured errors, composition, and equipment usage pass | 5,130 tests / 65 suites or files; workspace type-check/lint, 31-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | `@aperture/postgres-repositories@0.1.0`; repository-alignment migration adds Health equipment usage and aligns domain constraints, bringing the schema to 75 tables | Direct SQL adapter is intended for server-side PostgreSQL connections; authenticated client composition begins in Phases 30–31 |
 | 30 | Complete | `97da0c4` | 10 shared Auth tests, 7 database tests, 31 web tests, and 50 mobile tests; owner allowlist, unknown accounts, missing/expired sessions, refresh, logout, PKCE callback, SecureStore, development bypass, and restricted-role RLS pass | 5,146 tests / 68 suites or files; workspace type-check/lint, 33-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | `@aperture/auth@0.1.0`, `expo-secure-store@57.0.4`; authentication-role security migration and checked-in Supabase Auth configuration | A production Supabase project must apply the checked-in Auth setting and redirect allowlist; native execution remains unverified in this environment |
 | 31 | Complete | `1d2017f` | 8 Supabase adapter tests, 10 PostgreSQL adapter tests, 33 web tests, and 52 mobile tests; shared clients, composition selection, retry confirmation, duplicate rejection, owner isolation, REST paging, sync state, and failed-network behavior pass | 5,158 tests / 71 suites or files; workspace type-check/lint, 33-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/supabase-repositories@0.1.0`; existing `@supabase/supabase-js@2.114.0`; no new external dependency or database migration | Cloud-synchronized with no offline record cache or write outbox; Finance favorites/recent use and academic comparisons remain declared session UI state |
-| 32 | Complete; commit pending | — | 5 registry tests, 35 web tests, and 54 mobile tests; manifest validation, duplicate rejection, route matching, search, navigation, feature enablement, widget discovery, command palette behavior, loading/error/not-found states, and generated imports pass | 5,167 tests / 74 suites or files; workspace type-check/lint, 35-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/feature-registry@0.5.0`; no new external dependency or database migration | Feature visibility is mounted-shell state until Phase 34; Today and Settings are shell placeholders pending their declared vertical-slice phases; native device execution remains unverified |
-| 33 | Not started | — | — | — | — | Today and Planner vertical slices |
+| 32 | Complete | `cbc716b` | 5 registry tests, 35 web tests, and 54 mobile tests; manifest validation, duplicate rejection, route matching, search, navigation, feature enablement, widget discovery, command palette behavior, loading/error/not-found states, and generated imports pass | 5,167 tests / 74 suites or files; workspace type-check/lint, 35-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/feature-registry@0.5.0`; no new external dependency or database migration | Feature visibility is mounted-shell state until Phase 34; Today and Settings are shell placeholders pending their declared vertical-slice phases; native device execution remains unverified |
+| 33 | Complete; commit pending | — | 4 Planner, 3 Today, 12 PostgreSQL adapter, 7 database, 37 web, and 55 mobile tests; planning, recurrence, overdue derivation, contributor isolation, repository durability, owner isolation, manifest widgets, and end-to-end UI workflows pass | 5,179 tests / 79 suites or files; workspace type-check/lint, 37-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/planner@0.1.0` and `@aperture/today@0.1.0`; planner alignment migration `20260922001000_planner.sql`; no new external dependency | Today widget visibility remains mounted-session state until Phase 34; recurrence projections are UTC/date-based; no remote database or native device was exercised |
 | 34 | Not started | — | — | — | — | Settings and privacy controls |
 | 35 | Not started | — | — | — | — | Export, import, backup, and restoration |
 | 36 | Not started | — | — | — | — | Optional Strava integration |
@@ -47,14 +47,14 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Current phase details
 
-- Files changed: six plugin manifests; manifest generator and scaffold command; executable feature registry; generated web/mobile frontend loaders; responsive web and native shells; command search; session feature visibility; theme tokens; route loading, error, and not-found states; Today/Settings shell placeholders; tests and architecture documentation
-- Dependencies added: local `@aperture/feature-registry@0.5.0` links for web/mobile; no new external package
-- Database migrations added: none; Phase 32 inventories existing feature-owned migration paths through manifests
-- Tests added: generated inventory, global duplicate rejection, route matching, enablement protections, search, widget ordering, web command palette navigation/visibility, and mobile command search/visibility
-- Focused verification result: 5/5 feature-registry tests, 35/35 web tests, and 54/54 mobile tests pass
-- Full regression result: 5,167 tests / 74 suites or files pass; workspace type-check and lint pass; the 35-route Next production build and Expo Android/iOS/web exports pass
+- Files changed: Planner domain, memory and PostgreSQL repositories, migration, Today aggregation service and standard contributors, plugin manifests, generated registries, web/mobile Planner and Today screens, provider composition, tests, and architecture documentation
+- Dependencies added: local `@aperture/planner@0.1.0` and `@aperture/today@0.1.0` links; no new external package
+- Database migrations added: `20260922001000_planner.sql` adds planner scope support, plan types, item scheduling/deadline/recurrence/completion fields, completion constraints, and an overdue index
+- Tests added: Planner lifecycle, recurrence, filters and owner isolation; Today aggregation and contributor failure isolation; PGlite Planner adapter coverage; web and mobile Planner/Today interaction workflows
+- Focused verification result: 4/4 Planner tests, 3/3 Today tests, 12/12 PostgreSQL adapter tests, 7/7 database tests, 37/37 web tests, and 55/55 mobile tests pass
+- Full regression result: 5,179 tests / 79 suites or files pass; workspace type-check and lint pass; the 37-route Next production build and Expo Android/iOS/web exports pass
 - Expo Doctor result: 20/21 at the accepted baseline; only four Expo patch-version recommendations remain
 - Audit result: 13 moderate workspace findings in the Expo dependency chain and 0 production-web findings
-- Known limitations: Phase 32 feature visibility lasts for the mounted shell rather than syncing across devices, Today and Settings expose phase-boundary placeholders, no remote project was configured or contacted, and native device execution remains unverified
-- Deferred work: Today and Planner vertical slices in Phase 33, then Phases 34–39
-- Next phase: 33 after the Phase 32 commit
+- Known limitations: Today widget visibility lasts for the mounted session until Phase 34, recurrence projections use UTC calendar dates, no remote project was configured or contacted, and native device execution remains unverified
+- Deferred work: Settings and privacy controls in Phase 34, then Phases 35–39
+- Next phase: 34 after the Phase 33 commit and Phase 32–33 pair push

@@ -41,6 +41,8 @@ Calculator source discovery remains owned by the calculator packages. `npm run g
 
 Phase 32 enablement is intentionally scoped to the mounted shell. Phase 34 will persist owner-scoped settings across devices. Disabling a feature only removes its navigation and presentation; it never deletes records.
 
+Phase 33 uses the same registry for Today composition. Planner, Education, Health, and Finance declare their widget metadata in manifests. The composition root connects each widget ID to an owner-scoped contributor, and the Today feature consumes the generic aggregation service rather than importing another feature's UI internals. Widget failures remain isolated and widget visibility can be changed for the mounted Today screen.
+
 ## Adding a feature
 
 Run:
