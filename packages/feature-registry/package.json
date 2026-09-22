@@ -1,14 +1,19 @@
 {
   "name": "@aperture/feature-registry",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "type": "module",
   "exports": {
     ".": {
-      "types": "./src/index.d.ts"
+      "types": "./src/index.ts",
+      "import": "./dist/index.js"
     }
   },
   "scripts": {
-    "typecheck": "tsc --project tsconfig.json --noEmit"
+    "check:generated": "node ../../tooling/plugins/generate-plugins.mjs --check",
+    "typecheck": "npm run check:generated && tsc --project tsconfig.json --noEmit",
+    "build": "npm run check:generated && tsc --project tsconfig.build.json",
+    "test": "vitest run",
+    "lint": "npm run typecheck"
   }
 }

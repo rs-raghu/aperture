@@ -247,9 +247,9 @@ export function RecordList<TItem>({ items, keyExtractor, renderItem, accessibili
   );
 }
 
-export function NavigationCard({ href, title, description }: { readonly href: Href; readonly title: string; readonly description: string }) {
+export function NavigationCard({ href, title, description }: { readonly href: string; readonly title: string; readonly description: string }) {
   return (
-    <Link href={href} asChild>
+    <Link href={href as Href} asChild>
       <Pressable style={({ pressed }) => [styles.navigationCard, pressed ? styles.pressed : null]} accessibilityRole="link" accessibilityLabel={`${title}. ${description}`}>
         <View style={styles.navigationCopy}>
           <Text style={styles.navigationTitle}>{title}</Text>

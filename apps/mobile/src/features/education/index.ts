@@ -2,7 +2,6 @@ export { EducationProvider, useEducation } from "./providers/education-provider"
 export type { EducationContextValue, EducationProviderProps } from "./providers/education-provider";
 export { createEducationMobileRuntime, DEVELOPMENT_MOBILE_OWNER_ID } from "./adapters/education-runtime";
 export type { EducationMobileRuntime } from "./adapters/education-runtime";
-export { educationNavigation } from "./navigation/education-navigation";
 export { normalizeEducationMobileError } from "./view-models/education-error";
 export type { EducationMobileError } from "./view-models/education-error";
 export { OverviewScreen } from "./screens/overview-screen";

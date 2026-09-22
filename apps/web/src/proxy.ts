@@ -34,5 +34,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/education/:path*", "/health/:path*", "/finance/:path*", "/calculators/:path*"],
+  matcher: ["/((?!sign-in|auth/callback|_next/static|_next/image|favicon.ico).*)"],
 };

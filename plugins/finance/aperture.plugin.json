@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "finance",
+  "displayName": "Finance",
+  "description": "Track personal accounts, cash flow, assets, liabilities, budgets, and goals.",
+  "version": "0.5.0",
+  "status": "enabled",
+  "defaultEnabled": true,
+  "disableAllowed": true,
+  "order": 40,
+  "icon": "wallet",
+  "theme": { "accent": "#6658a6", "surface": "#e6e0f7" },
+  "permissions": [
+    { "id": "finance.read", "description": "Read owner-scoped finance records.", "required": true },
+    { "id": "finance.write", "description": "Create and update owner-scoped finance records.", "required": true }
+  ],
+  "routes": [
+    { "id": "finance.overview", "label": "Overview", "description": "Review balances, budgets, and financial goals.", "paths": { "web": "/finance", "mobile": "/finance" }, "navigation": "primary", "order": 40, "searchable": true, "requiresSession": true },
+    { "id": "finance.accounts", "label": "Accounts", "description": "Manage personal account records.", "paths": { "web": "/finance/accounts", "mobile": "/finance/accounts" }, "navigation": "secondary", "order": 41, "searchable": true, "requiresSession": true },
+    { "id": "finance.transactions", "label": "Transactions", "description": "Review income and expense records.", "paths": { "web": "/finance/transactions", "mobile": "/finance/transactions" }, "navigation": "secondary", "order": 42, "searchable": true, "requiresSession": true },
+    { "id": "finance.budgets", "label": "Budgets", "description": "Plan spending limits and periods.", "paths": { "web": "/finance/budgets", "mobile": "/finance/budgets" }, "navigation": "secondary", "order": 43, "searchable": true, "requiresSession": true },
+    { "id": "finance.assets", "label": "Assets", "description": "Review owned assets and valuations.", "paths": { "web": "/finance/assets", "mobile": "/finance/assets" }, "navigation": "secondary", "order": 44, "searchable": true, "requiresSession": true },
+    { "id": "finance.liabilities", "label": "Liabilities", "description": "Review liabilities and balances.", "paths": { "web": "/finance/liabilities", "mobile": "/finance/liabilities" }, "navigation": "secondary", "order": 45, "searchable": true, "requiresSession": true },
+    { "id": "finance.investments", "label": "Investments", "description": "Review investment positions.", "paths": { "web": "/finance/investments", "mobile": "/finance/investments" }, "navigation": "secondary", "order": 46, "searchable": true, "requiresSession": true },
+    { "id": "finance.loans", "label": "Loans", "description": "Review loan records and payments.", "paths": { "web": "/finance/loans", "mobile": "/finance/loans" }, "navigation": "secondary", "order": 47, "searchable": true, "requiresSession": true },
+    { "id": "finance.goals", "label": "Goals", "description": "Review financial targets and progress.", "paths": { "web": "/finance/goals", "mobile": "/finance/goals" }, "navigation": "secondary", "order": 48, "searchable": true, "requiresSession": true }
+  ],
+  "widgets": [
+    { "id": "finance.reminders", "title": "Finance reminders", "description": "Budget, payment, and goal reminders.", "platforms": ["web", "mobile"], "order": 40, "defaultEnabled": true }
+  ],
+  "calculatorModules": [],
+  "frontends": {
+    "web": { "source": "apps/web/src/features/finance/index.ts", "import": "../features/finance/index" },
+    "mobile": { "source": "apps/mobile/src/features/finance/index.ts", "import": "../features/finance/index" }
+  },
+  "backend": { "source": "packages/finance/src/runtime.ts", "import": "@aperture/finance" },
+  "migrations": ["packages/finance/migrations/20260921003000_finance.sql"]
+}

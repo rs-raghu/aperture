@@ -4,12 +4,12 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 31 — Shared web/mobile data and synchronization
-- Current phase status: complete; pair gate passed and commit pending
+- Current phase: 32 — Modular dashboard shell
+- Current phase status: complete; full gate passed and commit pending
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: `97da0c4` (Phase 30); Phase 31 commit pending
-- Last successfully completed command: `npm run export --workspace @aperture/mobile -- --platform all --output-dir .expo-phase31-final` (Android, iOS, and web exports pass)
-- Last push: `f2d5863` pushed to `origin/codex/aperture-v2`; local and upstream matched after the push
+- Ending commit: `1d2017f` (Phase 31); Phase 32 commit pending
+- Last successfully completed command: `npx expo export --platform all --output-dir .expo-phase32-final` (Android, iOS, and web exports pass)
+- Last push: `1d2017f` pushed to `origin/codex/aperture-v2`; Phase 32 remains local until its commit
 - Unresolved concern: supplemental Expo compatibility metadata requests patch updates to Expo, Expo Crypto, and Expo Router; the standard mobile checks pass and unrelated upgrades remain deferred until required by an applicable phase.
 
 ## Phase records
@@ -35,8 +35,8 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | 28 | Complete | `c841033` | 6 database tests; fresh and prior-state migration paths, discovery, ordering, roll-forward guards, schema invariants, RLS, constraints, owner isolation, and synthetic seed pass | Pair gate completed in Phase 29 | `@electric-sql/pglite@0.3.14`; five ordered core/plugin migrations initially covering 74 tables | Authenticated grants/session handling begin in Phase 30; no remote database was contacted |
 | 29 | Complete | `f2d5863` | 10 PostgreSQL adapter tests / 3 files plus 6 migration tests; all 62 repository surfaces, owner isolation, transactions, decimals, pagination, date filters, defensive mapping, structured errors, composition, and equipment usage pass | 5,130 tests / 65 suites or files; workspace type-check/lint, 31-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | `@aperture/postgres-repositories@0.1.0`; repository-alignment migration adds Health equipment usage and aligns domain constraints, bringing the schema to 75 tables | Direct SQL adapter is intended for server-side PostgreSQL connections; authenticated client composition begins in Phases 30–31 |
 | 30 | Complete | `97da0c4` | 10 shared Auth tests, 7 database tests, 31 web tests, and 50 mobile tests; owner allowlist, unknown accounts, missing/expired sessions, refresh, logout, PKCE callback, SecureStore, development bypass, and restricted-role RLS pass | 5,146 tests / 68 suites or files; workspace type-check/lint, 33-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | `@aperture/auth@0.1.0`, `expo-secure-store@57.0.4`; authentication-role security migration and checked-in Supabase Auth configuration | A production Supabase project must apply the checked-in Auth setting and redirect allowlist; native execution remains unverified in this environment |
-| 31 | Complete; commit pending | — | 8 Supabase adapter tests, 10 PostgreSQL adapter tests, 33 web tests, and 52 mobile tests; shared clients, composition selection, retry confirmation, duplicate rejection, owner isolation, REST paging, sync state, and failed-network behavior pass | 5,158 tests / 71 suites or files; workspace type-check/lint, 33-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/supabase-repositories@0.1.0`; existing `@supabase/supabase-js@2.114.0`; no new external dependency or database migration | Cloud-synchronized with no offline record cache or write outbox; Finance favorites/recent use and academic comparisons remain declared session UI state |
-| 32 | Not started | — | — | — | — | Modular dashboard shell and generated registries |
+| 31 | Complete | `1d2017f` | 8 Supabase adapter tests, 10 PostgreSQL adapter tests, 33 web tests, and 52 mobile tests; shared clients, composition selection, retry confirmation, duplicate rejection, owner isolation, REST paging, sync state, and failed-network behavior pass | 5,158 tests / 71 suites or files; workspace type-check/lint, 33-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/supabase-repositories@0.1.0`; existing `@supabase/supabase-js@2.114.0`; no new external dependency or database migration | Cloud-synchronized with no offline record cache or write outbox; Finance favorites/recent use and academic comparisons remain declared session UI state |
+| 32 | Complete; commit pending | — | 5 registry tests, 35 web tests, and 54 mobile tests; manifest validation, duplicate rejection, route matching, search, navigation, feature enablement, widget discovery, command palette behavior, loading/error/not-found states, and generated imports pass | 5,167 tests / 74 suites or files; workspace type-check/lint, 35-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/feature-registry@0.5.0`; no new external dependency or database migration | Feature visibility is mounted-shell state until Phase 34; Today and Settings are shell placeholders pending their declared vertical-slice phases; native device execution remains unverified |
 | 33 | Not started | — | — | — | — | Today and Planner vertical slices |
 | 34 | Not started | — | — | — | — | Settings and privacy controls |
 | 35 | Not started | — | — | — | — | Export, import, backup, and restoration |
@@ -47,14 +47,14 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Current phase details
 
-- Files changed: Supabase repository transport and synchronization monitor; platform-neutral durable repository UUID/cursor utilities; authenticated web/mobile data composition roots; shared sync-status UI; Supabase API exposure; app copy, tests, dependency manifests, lockfile, and synchronization documentation
-- Dependencies added: local `@aperture/supabase-repositories@0.1.0` links for web/mobile; no new external runtime package
-- Database migrations added: none; Phase 31 uses the existing Phase 28–30 schema, grants, and RLS policies
-- Tests added: independent web/mobile composition selection, shared cloud visibility, owner isolation, definitive duplicates, ambiguous create/update/delete confirmation, bounded thrown and returned-network retries, provider row-limit pagination, observable failure/success state, and explicit memory isolation
-- Focused verification result: 8/8 Supabase adapter tests, 10/10 PostgreSQL adapter tests, 33/33 web tests, and 52/52 mobile tests pass
-- Full regression result: 5,158 tests / 71 suites or files pass; workspace type-check and lint pass; the 33-route Next production build and Expo Android/iOS/web exports pass
-- Expo Doctor result: 20/21 at the accepted baseline; only Expo patch-version recommendations remain
+- Files changed: six plugin manifests; manifest generator and scaffold command; executable feature registry; generated web/mobile frontend loaders; responsive web and native shells; command search; session feature visibility; theme tokens; route loading, error, and not-found states; Today/Settings shell placeholders; tests and architecture documentation
+- Dependencies added: local `@aperture/feature-registry@0.5.0` links for web/mobile; no new external package
+- Database migrations added: none; Phase 32 inventories existing feature-owned migration paths through manifests
+- Tests added: generated inventory, global duplicate rejection, route matching, enablement protections, search, widget ordering, web command palette navigation/visibility, and mobile command search/visibility
+- Focused verification result: 5/5 feature-registry tests, 35/35 web tests, and 54/54 mobile tests pass
+- Full regression result: 5,167 tests / 74 suites or files pass; workspace type-check and lint pass; the 35-route Next production build and Expo Android/iOS/web exports pass
+- Expo Doctor result: 20/21 at the accepted baseline; only four Expo patch-version recommendations remain
 - Audit result: 13 moderate workspace findings in the Expo dependency chain and 0 production-web findings
-- Known limitations: feature records require connectivity; there is no offline data cache or write outbox, a deployed Supabase project must apply the checked-in Auth/API configuration, no remote project was configured or contacted, and native device execution remains unverified
-- Deferred work: modular shell and generated registries in Phase 32, then Phases 33–39
-- Next phase: 32 after the Phase 31 commit and Phase 30–31 push
+- Known limitations: Phase 32 feature visibility lasts for the mounted shell rather than syncing across devices, Today and Settings expose phase-boundary placeholders, no remote project was configured or contacted, and native device execution remains unverified
+- Deferred work: Today and Planner vertical slices in Phase 33, then Phases 34–39
+- Next phase: 33 after the Phase 32 commit

@@ -1,6 +1,7 @@
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 import { MobileAuthProvider, useMobileAuth } from "../lib/auth/mobile-auth-provider";
+import { MobileShellLoading } from "../components/dashboard-shell";
 
 function AuthenticatedNavigator() {
   const authentication = useMobileAuth();
@@ -11,10 +12,10 @@ function AuthenticatedNavigator() {
   useEffect(() => {
     if (authentication.loading) return;
     if (authentication.user === null && !inAuthenticationRoute) router.replace("/sign-in" as never);
-    if (authentication.user !== null && inAuthenticationRoute) router.replace("/education");
+    if (authentication.user !== null && inAuthenticationRoute) router.replace("/today" as never);
   }, [authentication.loading, authentication.user, inAuthenticationRoute, router]);
 
-  if (authentication.loading) return null;
+  if (authentication.loading) return <MobileShellLoading />;
   if (authentication.user === null && !inAuthenticationRoute && segments.length > 0) return null;
   return <Stack screenOptions={{ headerShown: false }} />;
 }

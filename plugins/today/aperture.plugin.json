@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "today",
+  "displayName": "Today",
+  "description": "Your daily plan, deadlines, reminders, and quick actions in one place.",
+  "version": "0.1.0",
+  "status": "enabled",
+  "defaultEnabled": true,
+  "disableAllowed": false,
+  "order": 10,
+  "icon": "sun",
+  "theme": { "accent": "#d88921", "surface": "#fff4dc" },
+  "permissions": [
+    { "id": "today.read", "description": "Read enabled dashboard contributions.", "required": true }
+  ],
+  "routes": [
+    { "id": "today.overview", "label": "Today", "description": "Open the daily dashboard.", "paths": { "web": "/today", "mobile": "/today" }, "navigation": "primary", "order": 10, "searchable": true, "requiresSession": true }
+  ],
+  "widgets": [],
+  "calculatorModules": [],
+  "frontends": {
+    "web": { "source": "apps/web/src/features/today/index.ts", "import": "../features/today/index" },
+    "mobile": { "source": "apps/mobile/src/features/today/index.ts", "import": "../features/today/index" }
+  },
+  "migrations": []
+}

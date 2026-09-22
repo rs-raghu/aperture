@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { featureRegistry } from "@aperture/feature-registry";
 import { HealthShell } from "@/features/health/components/health-shell";
 import { ErrorBanner, StatusBadge, TextInput, toIsoTimestamp } from "@/features/health/components/ui";
-import { healthNavigation } from "@/features/health/navigation/health-navigation";
 
 vi.mock("next/navigation", () => ({ usePathname: () => "/health" }));
 
@@ -30,10 +30,11 @@ describe("Health web accessibility and route surface", () => {
     render(<HealthShell><p>Route content</p></HealthShell>);
     expect(screen.getByRole("navigation", { name: "Health" })).toBeTruthy();
     expect(screen.getByRole("note").textContent).toContain("not medical advice");
+    const healthNavigation = featureRegistry.secondaryNavigation("health", "web");
     expect(healthNavigation).toHaveLength(10);
-    expect(new Set(healthNavigation.map((item) => item.href)).size).toBe(10);
+    expect(new Set(healthNavigation.map((item) => item.path)).size).toBe(10);
     for (const item of healthNavigation) {
-      expect(screen.getByRole("link", { name: item.label }).getAttribute("href")).toBe(item.href);
+      expect(screen.getByRole("link", { name: item.label }).getAttribute("href")).toBe(item.path);
     }
   });
 });

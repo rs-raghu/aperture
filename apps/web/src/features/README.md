@@ -1,3 +1,3 @@
 # Web features
 
-Future feature composition belongs here. Domain contracts remain in shared packages; no feature behavior exists yet.
+Platform-specific feature composition lives here while domain behavior remains in shared packages. Each feature exposed to the dashboard has a checked-in manifest under `plugins/`; `npm run generate:plugins` emits literal frontend loaders and the shared shell derives navigation and search from the generated registry.

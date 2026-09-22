@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
-import { EducationProvider, OverviewScreen, educationNavigation, useEducation } from "../src/features/education";
+import { featureRegistry } from "@aperture/feature-registry";
+import { EducationProvider, OverviewScreen, useEducation } from "../src/features/education";
 import { createEducationTestRuntime } from "../src/features/education/testing/create-test-runtime";
 
 function WorkflowHarness() {
@@ -60,8 +61,9 @@ describe("Education mobile workflow", () => {
     expect(view.getByRole("button", { name: "Start setup" })).toBeTruthy();
   });
 
-  it("publishes seven local links plus the overview route", () => {
-    expect(educationNavigation).toHaveLength(7);
-    expect(new Set(educationNavigation.map((item) => item.href)).size).toBe(7);
+  it("publishes generated Education navigation including the overview route", () => {
+    const educationNavigation = featureRegistry.secondaryNavigation("education", "mobile");
+    expect(educationNavigation).toHaveLength(8);
+    expect(new Set(educationNavigation.map((item) => item.path)).size).toBe(8);
   });
 });

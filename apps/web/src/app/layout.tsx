@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Aperture Education Preview",
+  title: { default: "Aperture", template: "%s · Aperture" },
   description: "A private, synchronized personal dashboard for education, health, and finance.",
 };
 

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "health",
+  "displayName": "Health",
+  "description": "Keep private wellness, activity, nutrition, sleep, and measurement records.",
+  "version": "0.5.0",
+  "status": "enabled",
+  "defaultEnabled": true,
+  "disableAllowed": true,
+  "order": 30,
+  "icon": "heart",
+  "theme": { "accent": "#0b766c", "surface": "#daf4ee" },
+  "permissions": [
+    { "id": "health.read", "description": "Read owner-scoped health records.", "required": true },
+    { "id": "health.write", "description": "Create and update owner-scoped health records.", "required": true }
+  ],
+  "routes": [
+    { "id": "health.overview", "label": "Overview", "description": "Review wellness records and next actions.", "paths": { "web": "/health", "mobile": "/health" }, "navigation": "primary", "order": 30, "searchable": true, "requiresSession": true },
+    { "id": "health.profile", "label": "Profile", "description": "Manage measurement preferences and profile details.", "paths": { "web": "/health/profile", "mobile": "/health/profile" }, "navigation": "secondary", "order": 31, "searchable": true, "requiresSession": true },
+    { "id": "health.measurements", "label": "Measurements", "description": "Review body measurement history.", "paths": { "web": "/health/measurements", "mobile": "/health/measurements" }, "navigation": "secondary", "order": 32, "searchable": true, "requiresSession": true },
+    { "id": "health.vitals", "label": "Vitals", "description": "Review recorded vital observations.", "paths": { "web": "/health/vitals", "mobile": "/health/vitals" }, "navigation": "secondary", "order": 33, "searchable": true, "requiresSession": true },
+    { "id": "health.workouts", "label": "Workouts", "description": "Manage exercises, plans, sessions, and sets.", "paths": { "web": "/health/workouts", "mobile": "/health/workouts" }, "navigation": "secondary", "order": 34, "searchable": true, "requiresSession": true },
+    { "id": "health.running", "label": "Running", "description": "Review routes, equipment, activities, and results.", "paths": { "web": "/health/running", "mobile": "/health/running" }, "navigation": "secondary", "order": 35, "searchable": true, "requiresSession": true },
+    { "id": "health.sleep", "label": "Sleep", "description": "Review sleep timing and personal quality.", "paths": { "web": "/health/sleep", "mobile": "/health/sleep" }, "navigation": "secondary", "order": 36, "searchable": true, "requiresSession": true },
+    { "id": "health.nutrition", "label": "Nutrition", "description": "Review meal and energy records.", "paths": { "web": "/health/nutrition", "mobile": "/health/nutrition" }, "navigation": "secondary", "order": 37, "searchable": true, "requiresSession": true },
+    { "id": "health.hydration", "label": "Hydration", "description": "Review consumed volume records.", "paths": { "web": "/health/hydration", "mobile": "/health/hydration" }, "navigation": "secondary", "order": 38, "searchable": true, "requiresSession": true },
+    { "id": "health.goals", "label": "Progress", "description": "Review goals, achievements, and recovery observations.", "paths": { "web": "/health/goals", "mobile": "/health/goals" }, "navigation": "secondary", "order": 39, "searchable": true, "requiresSession": true }
+  ],
+  "widgets": [
+    { "id": "health.plans", "title": "Health plans", "description": "Planned workouts and wellness actions.", "platforms": ["web", "mobile"], "order": 30, "defaultEnabled": true }
+  ],
+  "calculatorModules": [],
+  "frontends": {
+    "web": { "source": "apps/web/src/features/health/index.ts", "import": "../features/health/index" },
+    "mobile": { "source": "apps/mobile/src/features/health/index.ts", "import": "../features/health/index" }
+  },
+  "backend": { "source": "packages/health/src/index.ts", "import": "@aperture/health" },
+  "migrations": ["packages/health/migrations/20260921002000_health.sql"]
+}

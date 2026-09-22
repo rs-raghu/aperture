@@ -78,6 +78,10 @@ Root `react` 19.2.3, `react-dom` 19.2.3, `react-native` 0.86.3, and `react-nativ
 
 `npx expo install --check` reports dependencies up to date, and `expo-doctor` validates the monorepo dependency graph. Phase 10 adds no form, global-state, UI-framework, charting, date-picker, persistence, database, auth, analytics, notification, or deployment library. The full audit now reports 13 moderate and 0 high advisories versus the accepted 21-advisory baseline (13 moderate, 8 high), so Phase 10 adds no advisory and removes eight high transitive findings.
 
+## Phase 32 workspace links
+
+Web and mobile now depend on the local `@aperture/feature-registry@0.5.0` workspace. It contains the framework-neutral generated manifest registry, validation, search, route matching, navigation, widget contribution discovery, and enablement rules. Phase 32 adds no external runtime or development dependency. Manifest generation uses Node.js built-ins already available to repository tooling.
+
 ## Phase 11 dependency boundary
 
 Health adds only the existing local `@aperture/validation@0.5.0` workspace dependency. No external package, resolved version, application manifest, or transitive dependency record changes. The lockfile diff contains only that workspace link.

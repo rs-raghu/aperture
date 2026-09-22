@@ -1,10 +1,12 @@
 import { useCallback } from "react";
 import type { Assignment, Exam, StudySession } from "@aperture/education";
+import { featureRegistry } from "@aperture/feature-registry";
 import { EmptyState, ErrorBanner, LoadingState, Metric, NavigationCard, PageHeader, Panel, PreviewNotice, RecordCard, Screen } from "../components/ui";
-import { educationNavigation } from "../navigation/education-navigation";
 import { useEducation } from "../providers/education-provider";
 import { useEducationQuery } from "../hooks/use-education-query";
 import { formatDateTime } from "../view-models/formatting";
+
+const educationNavigation = featureRegistry.secondaryNavigation("education", "mobile");
 
 interface OverviewData {
   readonly setupCount: number;
@@ -98,7 +100,7 @@ export function OverviewScreen() {
         </>
       )}
       <Panel title="Education tools" description="Open a focused workflow. Your provider remains mounted as you navigate.">
-        {educationNavigation.map((item) => <NavigationCard key={item.href} href={item.href} title={item.label} description={item.description} />)}
+        {educationNavigation.map((item) => <NavigationCard key={item.id} href={item.path} title={item.label} description={item.description} />)}
       </Panel>
     </Screen>
   );

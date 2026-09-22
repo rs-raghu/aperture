@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getWebOwner } from "@/lib/auth/owner-session";
 import { readWebAuthenticationConfiguration } from "@/lib/auth/configuration";
 import { WebDataProvider, type WebDataConfiguration } from "@/lib/data/web-data-provider";
+import { WebDashboardShell } from "@/components/dashboard-shell";
 
 export const dynamic = "force-dynamic";
 
@@ -23,5 +24,5 @@ export default async function DashboardLayout({ children }: { readonly children:
         supabaseUrl: authentication.supabaseUrl!,
         supabasePublishableKey: authentication.supabasePublishableKey!,
       };
-  return <WebDataProvider configuration={dataConfiguration}>{children}</WebDataProvider>;
+  return <WebDataProvider configuration={dataConfiguration}><WebDashboardShell>{children}</WebDashboardShell></WebDataProvider>;
 }

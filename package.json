@@ -7,6 +7,10 @@
     "packages/*"
   ],
   "scripts": {
+    "validate:plugins": "node tooling/plugins/generate-plugins.mjs --check",
+    "generate:plugins": "node tooling/plugins/generate-plugins.mjs",
+    "generate:calculators": "npm run generate --workspace @aperture/finance",
+    "plugin:create": "node tooling/plugins/create-plugin.mjs",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present"

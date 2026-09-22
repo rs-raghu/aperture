@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "calculators",
+  "displayName": "Calculators",
+  "description": "Run the shared academic and finance calculator catalog.",
+  "version": "0.5.0",
+  "status": "enabled",
+  "defaultEnabled": true,
+  "disableAllowed": true,
+  "order": 50,
+  "icon": "calculator",
+  "theme": { "accent": "#51448b", "surface": "#f2effa" },
+  "permissions": [
+    { "id": "calculators.use", "description": "Run local deterministic calculators.", "required": true }
+  ],
+  "routes": [
+    { "id": "calculators.catalog", "label": "Calculators", "description": "Search and run the calculator catalog.", "paths": { "web": "/calculators", "mobile": "/calculators" }, "navigation": "primary", "order": 50, "searchable": true, "requiresSession": true },
+    { "id": "calculators.detail", "label": "Calculator", "description": "Run a selected calculator.", "paths": { "web": "/calculators/[calculator-id]", "mobile": "/calculators/[calculator-id]" }, "navigation": "hidden", "order": 51, "searchable": false, "requiresSession": true }
+  ],
+  "widgets": [],
+  "calculatorModules": [
+    { "id": "calculators.shared", "source": "packages/calculators/src/runtime.ts", "import": "@aperture/calculators" }
+  ],
+  "frontends": {
+    "web": { "source": "apps/web/src/features/finance/index.ts", "import": "../features/finance/index" },
+    "mobile": { "source": "apps/mobile/src/features/finance/index.ts", "import": "../features/finance/index" }
+  },
+  "backend": { "source": "packages/calculators/src/runtime.ts", "import": "@aperture/calculators" },
+  "migrations": []
+}

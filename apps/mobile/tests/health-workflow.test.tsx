@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
-import { HealthProvider, OverviewScreen, healthNavigation, useHealth } from "../src/features/health";
+import { featureRegistry } from "@aperture/feature-registry";
+import { HealthProvider, OverviewScreen, useHealth } from "../src/features/health";
 import { createHealthTestRuntime } from "../src/features/health/testing/create-test-runtime";
 
 function WorkflowHarness() {
@@ -51,11 +52,12 @@ describe("Health mobile workflow", () => {
     expect((await runtime.service.listRunningActivities(runtime.context)).items[0]?.status).toBe("completed");
   });
 
-  it("renders explicit empty state and the nine Health workflow links", async () => {
+  it("renders explicit empty state and generated Health navigation", async () => {
     const view = await render(<HealthProvider createRuntime={() => createHealthTestRuntime()}><OverviewScreen /></HealthProvider>);
     await view.findByText("Health profile not set up");
     expect(view.getByRole("button", { name: "Open profile" })).toBeTruthy();
-    expect(healthNavigation).toHaveLength(9);
-    expect(new Set(healthNavigation.map((item) => item.href)).size).toBe(9);
+    const healthNavigation = featureRegistry.secondaryNavigation("health", "mobile");
+    expect(healthNavigation).toHaveLength(10);
+    expect(new Set(healthNavigation.map((item) => item.path)).size).toBe(10);
   });
 });

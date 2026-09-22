@@ -260,7 +260,13 @@ Generic data-access contracts do not mention Supabase. Future provider adapters 
 
 ## Modular monolith, not runtime plugins
 
-The feature registry describes Today, Education, Health, Finance, Calculators, and Settings through static metadata contracts. It does not scan files, load code dynamically, install plugins, or provide enterprise organization/authorization behavior.
+The feature registry describes Today, Education, Health, Finance, Calculators, and Settings through static generated metadata. It does not install untrusted runtime plugins or provide enterprise organization/authorization behavior.
+
+## Phase 32 build-time plugin generation supersedes the declaration-only registry
+
+The repository now discovers checked-in `aperture.plugin.json` manifests during generation and emits validated static TypeScript. Generated platform registries contain literal dynamic imports so Next.js and Metro can resolve every frontend module at build time. No manifest, migration, or arbitrary module path is accepted from a running client. This preserves the modular-monolith boundary while allowing a future feature to contribute navigation, search routes, widgets, calculator modules, backend metadata, and migrations without editing the core shell.
+
+Feature visibility in Phase 32 is mounted-shell state. Required Today and Settings features ignore disable overrides, and disabling an optional feature never mutates its records. Phase 34 owns durable, owner-scoped feature preferences.
 
 ## Platform implementation remains deferred
 

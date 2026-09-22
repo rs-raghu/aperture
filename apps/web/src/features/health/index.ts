@@ -1,5 +1,4 @@
 export { HealthProvider, useHealth } from "./providers/health-provider";
-export { healthNavigation } from "./navigation/health-navigation";
 export { HEALTH_DEVELOPMENT_OWNER_ID, createHealthWebRuntime } from "./adapters/health-runtime";
 export type { HealthProviderProps } from "./providers/health-provider";
 export type { HealthWebRuntime } from "./adapters/health-runtime";

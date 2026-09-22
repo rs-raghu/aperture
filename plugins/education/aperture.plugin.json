@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "education",
+  "displayName": "Education",
+  "description": "Plan courses, assessments, attendance, grades, and study sessions.",
+  "version": "0.8.0",
+  "status": "enabled",
+  "defaultEnabled": true,
+  "disableAllowed": true,
+  "order": 20,
+  "icon": "book",
+  "theme": { "accent": "#087f72", "surface": "#dff4ee" },
+  "permissions": [
+    { "id": "education.read", "description": "Read owner-scoped education records.", "required": true },
+    { "id": "education.write", "description": "Create and update owner-scoped education records.", "required": true }
+  ],
+  "routes": [
+    { "id": "education.overview", "label": "Overview", "description": "Review academic progress and next actions.", "paths": { "web": "/education", "mobile": "/education" }, "navigation": "primary", "order": 20, "searchable": true, "requiresSession": true },
+    { "id": "education.setup", "label": "Academic setup", "description": "Manage institution, program, and semester details.", "paths": { "web": "/education/setup", "mobile": "/education/setup" }, "navigation": "secondary", "order": 21, "searchable": true, "requiresSession": true },
+    { "id": "education.courses", "label": "Courses", "description": "Open the course directory.", "paths": { "web": "/education/courses", "mobile": "/education/courses" }, "navigation": "secondary", "order": 22, "searchable": true, "requiresSession": true },
+    { "id": "education.assignments", "label": "Assignments", "description": "Track deadlines and submissions.", "paths": { "web": "/education/assignments", "mobile": "/education/assignments" }, "navigation": "secondary", "order": 23, "searchable": true, "requiresSession": true },
+    { "id": "education.exams", "label": "Exams", "description": "Review the assessment schedule.", "paths": { "web": "/education/exams", "mobile": "/education/exams" }, "navigation": "secondary", "order": 24, "searchable": true, "requiresSession": true },
+    { "id": "education.grades", "label": "Grades", "description": "Review scores, GPA, and CGPA.", "paths": { "web": "/education/grades", "mobile": "/education/grades" }, "navigation": "secondary", "order": 25, "searchable": true, "requiresSession": true },
+    { "id": "education.attendance", "label": "Attendance", "description": "Review attendance records and totals.", "paths": { "web": "/education/attendance", "mobile": "/education/attendance" }, "navigation": "secondary", "order": 26, "searchable": true, "requiresSession": true },
+    { "id": "education.study", "label": "Study sessions", "description": "Plan and complete focused study.", "paths": { "web": "/education/study-sessions", "mobile": "/education/study-sessions" }, "navigation": "secondary", "order": 27, "searchable": true, "requiresSession": true }
+  ],
+  "widgets": [
+    { "id": "education.deadlines", "title": "Education deadlines", "description": "Upcoming assignments and exams.", "platforms": ["web", "mobile"], "order": 20, "defaultEnabled": true }
+  ],
+  "calculatorModules": [
+    { "id": "education.academic", "source": "packages/education/src/index.ts", "import": "@aperture/education" }
+  ],
+  "frontends": {
+    "web": { "source": "apps/web/src/features/education/index.ts", "import": "../features/education/index" },
+    "mobile": { "source": "apps/mobile/src/features/education/index.ts", "import": "../features/education/index" }
+  },
+  "backend": { "source": "packages/education/src/index.ts", "import": "@aperture/education" },
+  "migrations": ["packages/education/migrations/20260921001000_education.sql"]
+}

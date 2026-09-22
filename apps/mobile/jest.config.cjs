@@ -15,6 +15,7 @@ module.exports = {
     "^@aperture/finance$": "<rootDir>/../../packages/finance/dist/runtime.js",
     "^@aperture/finance-memory$": "<rootDir>/../../packages/finance-memory/dist/index.js",
     "^@aperture/finance-memory/adapter-internals$": "<rootDir>/../../packages/finance-memory/dist/adapter-internals.js",
+    "^@aperture/feature-registry$": "<rootDir>/../../packages/feature-registry/dist/index.js",
     "^@aperture/postgres-repositories$": "<rootDir>/../../packages/postgres-repositories/dist/index.js",
     "^@aperture/supabase-repositories$": "<rootDir>/../../packages/supabase-repositories/dist/index.js",
     "^@aperture/validation$": "<rootDir>/../../packages/validation/dist/index.js",
