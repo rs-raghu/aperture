@@ -27,6 +27,6 @@ describe("mobile dashboard shell", () => {
     const view = await render(<MobileDashboardShell><Text>Education content</Text></MobileDashboardShell>);
     await fireEvent.press(view.getByRole("button", { name: "Search Aperture" }));
     await fireEvent.press(await view.findByRole("switch", { name: "Education feature" }));
-    expect(await view.findByText("Education is disabled for this session")).toBeTruthy();
+    expect(await view.findByText("Education is disabled")).toBeTruthy();
   });
 });

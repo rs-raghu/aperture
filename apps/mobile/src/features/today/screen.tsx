@@ -1,19 +1,23 @@
 import { featureRegistry } from "@aperture/feature-registry";
 import type { TodayDashboard } from "@aperture/today";
 import { useRouter, type Href } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { apertureTheme } from "../../theme/foundation";
 import { useToday } from "./provider";
+import { useOptionalSettings } from "../settings";
 
 const definitions = featureRegistry.widgets("mobile");
 
 export function TodayShellScreen() {
   const { service, ownerId, now } = useToday();
+  const settings = useOptionalSettings();
   const router = useRouter();
   const [date, setDate] = useState(() => now().slice(0, 10));
-  const [enabled, setEnabled] = useState(() => new Set(definitions.filter(({ defaultEnabled }) => defaultEnabled).map(({ id }) => id)));
+  const [localEnabled, setLocalEnabled] = useState(() => new Set(definitions.filter(({ defaultEnabled }) => defaultEnabled).map(({ id }) => id)));
+  const widgetPreferences = settings?.snapshot?.preferences.dashboardWidgets;
+  const enabled = useMemo(() => new Set(definitions.filter((widget) => widgetPreferences?.[widget.id] ?? localEnabled.has(widget.id)).map(({ id }) => id)), [localEnabled, widgetPreferences]);
   const [dashboard, setDashboard] = useState<TodayDashboard | null>(null);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
@@ -21,7 +25,10 @@ export function TodayShellScreen() {
     void service.getDashboard({ ownerId, date, enabledWidgetIds: [...enabled] }).then((value) => { if (active) { setDashboard(value); setError(null); } }).catch((caught: unknown) => { if (active) setError(caught instanceof Error ? caught.message : "Unable to load Today."); });
     return () => { active = false; };
   }, [date, enabled, ownerId, service]);
-  const toggle = (id: string) => setEnabled((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; });
+  const toggle = (id: string) => {
+    if (settings?.snapshot) void settings.update({ dashboardWidgets: { [id]: !enabled.has(id) } }).catch(() => undefined);
+    else setLocalEnabled((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; });
+  };
   return <SafeAreaView style={styles.safe}><ScrollView contentContainerStyle={styles.screen}>
     <View style={styles.header}><Text style={styles.eyebrow}>TODAY</Text><Text style={styles.title}>One place for what matters now</Text><Text style={styles.copy}>Manifest-backed contributions from your plan, studies, health, and finances.</Text></View>
     <View style={styles.card}><Text style={styles.label}>Dashboard date</Text><TextInput accessibilityLabel="Dashboard date" style={styles.input} value={date} onChangeText={setDate} placeholder="YYYY-MM-DD" /></View>

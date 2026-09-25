@@ -3,16 +3,20 @@
 import { featureRegistry } from "@aperture/feature-registry";
 import type { TodayDashboard } from "@aperture/today";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useToday } from "./provider";
+import { useOptionalSettings } from "../settings";
 
 const definitions = featureRegistry.widgets("web");
 function pretty(value?: string): string { return value ? new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value)) : "Any time"; }
 
 export function TodayScreen() {
   const { service, ownerId, now } = useToday();
+  const settings = useOptionalSettings();
   const [date, setDate] = useState(() => now().slice(0, 10));
-  const [enabled, setEnabled] = useState(() => new Set(definitions.filter(({ defaultEnabled }) => defaultEnabled).map(({ id }) => id)));
+  const [localEnabled, setLocalEnabled] = useState(() => new Set(definitions.filter(({ defaultEnabled }) => defaultEnabled).map(({ id }) => id)));
+  const widgetPreferences = settings?.snapshot?.preferences.dashboardWidgets;
+  const enabled = useMemo(() => new Set(definitions.filter((widget) => widgetPreferences?.[widget.id] ?? localEnabled.has(widget.id)).map(({ id }) => id)), [localEnabled, widgetPreferences]);
   const [dashboard, setDashboard] = useState<TodayDashboard | null>(null);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
@@ -20,7 +24,10 @@ export function TodayScreen() {
     void service.getDashboard({ ownerId, date, enabledWidgetIds: [...enabled] }).then((value) => { if (active) { setDashboard(value); setError(null); } }).catch((caught: unknown) => { if (active) setError(caught instanceof Error ? caught.message : "Unable to load Today."); });
     return () => { active = false; };
   }, [date, enabled, ownerId, service]);
-  const toggle = (id: string) => setEnabled((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; });
+  const toggle = (id: string) => {
+    if (settings?.snapshot) void settings.update({ dashboardWidgets: { [id]: !enabled.has(id) } }).catch(() => undefined);
+    else setLocalEnabled((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; });
+  };
   return <main className="today-main">
     <header className="page-header"><div><p className="eyebrow">Today · {date}</p><h1>One place for what matters now</h1><p>Planner, study, health, and finance contributions are loaded through their manifest registrations.</p></div><div className="field"><label htmlFor="today-date">Dashboard date</label><input id="today-date" type="date" value={date} onChange={(event) => setDate(event.target.value)} /></div></header>
     {error && <div className="error-banner" role="alert">{error}</div>}

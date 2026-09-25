@@ -145,6 +145,25 @@ describe("Supabase durable repository composition", () => {
     expect(web.synchronization.getSnapshot("education").state).toBe("synchronized");
   });
 
+  it("synchronizes owner settings without exposing integration credentials", async () => {
+    const store = emptyStore();
+    const web = createSupabaseRepositorySet(fakeClient(store));
+    const mobile = createSupabaseRepositorySet(fakeClient(store));
+    const settings = {
+      id: "00000000-0000-4000-8000-000000000109", ownerId: OWNER, createdAt: CREATED_AT, updatedAt: CREATED_AT,
+      theme: "system", locale: "en-IN", timeZone: "Asia/Kolkata", currency: "INR", dateFormat: "day-month-year",
+      units: { measurementSystem: "metric", temperatureUnit: "celsius", distanceUnit: "kilometres", massUnit: "kilograms" },
+      weekStartDay: "monday", fiscalYear: { startMonth: 4, startDay: 1 }, gpaScale: 10,
+      calculatorDefaults: {}, featureEnablement: { education: false }, dashboardWidgets: { "health.plans": false },
+      privacy: { usageAnalytics: false, crashReports: false, personalizedInsights: false, integrationDataSharing: false },
+      platform: { web: { compactNavigation: false, reduceMotion: false }, mobile: { haptics: true, reduceMotion: false } },
+    } as const;
+    await web.settings.createPreferences(settings);
+    expect(await mobile.settings.findPreferences(OWNER)).toEqual(settings);
+    expect(web.synchronization.getSnapshot("platform").state).toBe("synchronized");
+    expect(Object.keys(web.settings)).toEqual(["findPreferences", "createPreferences", "updatePreferences", "listIntegrationStatuses"]);
+  });
+
   it("uses a committed record as proof after a lost create response without writing a duplicate", async () => {
     const store = emptyStore();
     store.failAfterNextInsert = true;

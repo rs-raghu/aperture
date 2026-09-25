@@ -25,7 +25,7 @@ describe("web dashboard shell", () => {
     render(<WebDashboardShell><main>Education content</main></WebDashboardShell>);
     await user.click(screen.getByRole("button", { name: /Search/ }));
     await user.click(screen.getByRole("button", { name: "Disable Education" }));
-    expect(screen.getByRole("heading", { name: "Education is disabled for this session" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Education is disabled" })).toBeTruthy();
     expect(screen.getAllByRole("link", { name: /Today/ }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole("link", { name: /Settings/ }).length).toBeGreaterThan(0);
   });

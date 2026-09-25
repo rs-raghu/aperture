@@ -11,7 +11,9 @@
   "icon": "settings",
   "theme": { "accent": "#4d6470", "surface": "#e7eef1" },
   "permissions": [
-    { "id": "settings.read", "description": "Read personal dashboard settings.", "required": true }
+    { "id": "settings.read", "description": "Read personal dashboard settings.", "required": true },
+    { "id": "settings.write", "description": "Update personal dashboard settings.", "required": true },
+    { "id": "settings.integrations.read", "description": "Read sanitized integration connection status.", "required": true }
   ],
   "routes": [
     { "id": "settings.overview", "label": "Settings", "description": "Open dashboard settings and privacy controls.", "paths": { "web": "/settings", "mobile": "/settings" }, "navigation": "primary", "order": 60, "searchable": true, "requiresSession": true }
@@ -22,5 +24,6 @@
     "web": { "source": "apps/web/src/features/settings/index.ts", "import": "../features/settings/index" },
     "mobile": { "source": "apps/mobile/src/features/settings/index.ts", "import": "../features/settings/index" }
   },
-  "migrations": ["packages/platform-contracts/migrations/20260921004000_platform.sql"]
+  "backend": { "source": "packages/settings/src/index.ts", "import": "@aperture/settings" },
+  "migrations": ["packages/platform-contracts/migrations/20260921004000_platform.sql", "packages/settings/migrations/20260922002000_settings.sql"]
 }

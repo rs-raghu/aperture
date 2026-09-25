@@ -17,7 +17,7 @@ test("discovers core and plugin-owned migrations without a central manifest", as
 
   assert.deepEqual(
     migrations.map(({ scope }) => scope),
-    ["core", "education", "health", "finance", "platform-contracts", "postgres-repositories", "core", "planner"],
+    ["core", "education", "health", "finance", "platform-contracts", "postgres-repositories", "core", "planner", "settings"],
   );
   assert.equal(new Set(migrations.map(({ version }) => version)).size, migrations.length);
   assert.deepEqual(
@@ -94,6 +94,13 @@ test("applies from an empty PostgreSQL database with types, constraints, indexes
       "select count(*)::int as count from information_schema.columns where table_schema in ('education','health','finance','platform','planner') and data_type = 'timestamp with time zone'",
     );
     assert.ok((timestampColumns.rows[0]?.count ?? 0) >= 150);
+
+    const credentialPrivileges = await db.query(`
+      select
+        has_table_privilege('authenticated', 'platform.integration_credentials', 'select') as table_select,
+        has_column_privilege('authenticated', 'platform.integration_credentials', 'ciphertext', 'select') as ciphertext_select
+    `);
+    assert.deepEqual(credentialPrivileges.rows, [{ table_select: false, ciphertext_select: false }]);
 
     const missingBaseColumns = await db.query(`
       with personal_tables as (
@@ -197,7 +204,7 @@ test("loads only the documented synthetic development seed", async () => {
     await db.exec(seed);
 
     const result = await db.query(
-      "select p.email, p.display_name, s.time_zone, s.currency from platform.user_profiles p join platform.user_preferences s on s.owner_id = p.owner_id",
+      "select p.email, p.display_name, s.time_zone, s.currency, s.payload->>'theme' as theme from platform.user_profiles p join platform.user_preferences s on s.owner_id = p.owner_id",
     );
     assert.deepEqual(result.rows, [
       {
@@ -205,6 +212,7 @@ test("loads only the documented synthetic development seed", async () => {
         display_name: "Synthetic Owner",
         time_zone: "UTC",
         currency: "USD",
+        theme: "system",
       },
     ]);
   } finally {

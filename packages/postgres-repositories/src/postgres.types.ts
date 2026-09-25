@@ -42,4 +42,5 @@ export interface PostgresRepositorySet {
   readonly health: import("@aperture/health").HealthRepository;
   readonly finance: import("@aperture/finance").FinanceRepository;
   readonly planner: import("@aperture/planner").PlannerRepository;
+  readonly settings: import("@aperture/settings").SettingsRepository;
 }

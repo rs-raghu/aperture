@@ -21,6 +21,8 @@ The current sequence is:
 5. Settings, synchronization, integrations, exports, backups, and Planner.
 6. Durable-repository alignment and Health equipment usage.
 7. Authenticated and anonymous role grants for the personal-data boundary.
+8. Planner recurrence, deadlines, completion metadata, and synchronization scope.
+9. Settings aggregates, privacy controls, platform preferences, and integration-status indexing.
 
 Each file is transactional and records its version in
 `platform.migration_audit`. The automated guard rejects destructive `DROP`,

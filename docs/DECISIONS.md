@@ -268,6 +268,8 @@ The repository now discovers checked-in `aperture.plugin.json` manifests during 
 
 Feature visibility in Phase 32 is mounted-shell state. Required Today and Settings features ignore disable overrides, and disabling an optional feature never mutates its records. Phase 34 owns durable, owner-scoped feature preferences.
 
+Phase 34 fulfills that boundary with one validated Settings aggregate. Portable preferences sync through the existing owner-scoped repository composition, while web and mobile subrecords are updated through platform-specific service methods. Core manifest features are protected in both registry and service rules. Integration clients receive connection health only; the Settings repository deliberately has no credential-table operation.
+
 ## Today consumes registered contributions
 
 Today receives ordered widget metadata from the generated feature registry and data loaders through the application composition root. Its UI and generic aggregation package do not import platform feature components. Contributors use public repository contracts, return a common Today item model, and fail independently so one unavailable feature does not take down the daily dashboard.

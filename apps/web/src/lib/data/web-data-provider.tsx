@@ -4,6 +4,7 @@ import { createEducationService, type EducationClock } from "@aperture/education
 import { allFinanceCalculatorPlugins, createFinanceApplicationService } from "@aperture/finance";
 import { createHealthService, type HealthClock } from "@aperture/health";
 import { createPlannerService, type PlannerClock } from "@aperture/planner";
+import { createSettingsService } from "@aperture/settings";
 import { createStandardTodayContributors, createTodayService } from "@aperture/today";
 import { featureRegistry } from "@aperture/feature-registry";
 import {
@@ -21,6 +22,7 @@ import { FinanceProvider } from "@/features/finance/providers/finance-provider";
 import type { HealthWebRuntime } from "@/features/health/adapters/health-runtime";
 import { HealthProvider } from "@/features/health/providers/health-provider";
 import { PlannerProvider, type PlannerWebRuntime } from "@/features/planner/providers/planner-provider";
+import { SettingsProvider, type SettingsWebRuntime } from "@/features/settings";
 import { TodayProvider, type TodayWebRuntime } from "@/features/today/provider";
 
 export type WebDataConfiguration =
@@ -37,6 +39,7 @@ export interface WebDataComposition {
   readonly health: HealthWebRuntime;
   readonly finance: FinanceWebRuntime;
   readonly planner: PlannerWebRuntime;
+  readonly settings: SettingsWebRuntime;
   readonly today: TodayWebRuntime;
   readonly mode: WebDataConfiguration["mode"];
   readonly snapshots: () => readonly CloudSynchronizationSnapshot[];
@@ -92,6 +95,15 @@ export function createWebDataComposition(configuration: WebDataConfiguration): W
     context: Object.freeze({ ownerId: configuration.ownerId }),
     clock: plannerClock,
   });
+  const settings = Object.freeze({
+    service: createSettingsService({
+      repository: repositories.settings, clock: { now }, idGenerator: { generate: () => crypto.randomUUID() },
+      protectedFeatureIds: featureRegistry.listFeatures().filter(({ disableAllowed }) => !disableAllowed).map(({ id }) => id),
+      knownFeatureIds: featureRegistry.listFeatures().map(({ id }) => id),
+      knownWidgetIds: featureRegistry.widgets("web").map(({ id }) => id),
+    }),
+    ownerId: configuration.ownerId,
+  });
   const today = Object.freeze({
     service: createTodayService({
       widgets: featureRegistry.widgets("web"),
@@ -111,6 +123,7 @@ export function createWebDataComposition(configuration: WebDataConfiguration): W
     health,
     finance,
     planner,
+    settings,
     today,
     mode: configuration.mode,
     snapshots: () => durable?.synchronization.getAllSnapshots() ?? EMPTY_SYNCHRONIZATION,
@@ -125,8 +138,9 @@ export function WebDataProvider({ configuration, children }: { readonly configur
   return (
     <WebDataContext.Provider value={status}>
       <div className="data-sync-status" role="status" aria-live="polite">{synchronizationLabel(status)}</div>
-      <TodayProvider runtime={composition.today}>
-        <PlannerProvider runtime={composition.planner}>
+      <SettingsProvider runtime={composition.settings}>
+        <TodayProvider runtime={composition.today}>
+          <PlannerProvider runtime={composition.planner}>
           <FinanceProvider ownerId={configuration.ownerId} createRuntime={() => composition.finance}>
             <EducationProvider ownerId={configuration.ownerId} createRuntime={() => composition.education}>
               <HealthProvider ownerId={configuration.ownerId} createRuntime={() => composition.health}>
@@ -134,8 +148,9 @@ export function WebDataProvider({ configuration, children }: { readonly configur
               </HealthProvider>
             </EducationProvider>
           </FinanceProvider>
-        </PlannerProvider>
-      </TodayProvider>
+          </PlannerProvider>
+        </TodayProvider>
+      </SettingsProvider>
     </WebDataContext.Provider>
   );
 }

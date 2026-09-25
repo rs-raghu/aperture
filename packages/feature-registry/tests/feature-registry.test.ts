@@ -38,6 +38,8 @@ describe("feature registry", () => {
     expect(featureRegistry.getFeature("education")?.permissions.map(({ id }) => id)).toContain("education.write");
     expect(featureRegistry.getFeature("calculators")?.calculatorModules.map(({ id }) => id)).toEqual(["calculators.shared"]);
     expect(featureRegistry.getFeature("health")?.migrations).toEqual(["packages/health/migrations/20260921002000_health.sql"]);
+    expect(featureRegistry.getFeature("settings")?.permissions.map(({ id }) => id)).toEqual(["settings.read", "settings.write", "settings.integrations.read"]);
+    expect(featureRegistry.getFeature("settings")?.migrations).toContain("packages/settings/migrations/20260922002000_settings.sql");
   });
 
   it("applies enablement overrides without disabling required features", () => {

@@ -139,3 +139,7 @@ allowing the same repository implementation to bundle for browsers and Expo.
 ## Phase 33 dependency boundary
 
 `@aperture/planner@0.1.0` and `@aperture/today@0.1.0` are local workspace packages. Planner reuses the existing local validation package; Today links the public Education, Health, Finance, and Planner contracts. Web, mobile, PostgreSQL repositories, and the existing Supabase composition add local workspace links only. Phase 33 introduces no external runtime or development dependency.
+
+## Phase 34 dependency boundary
+
+`@aperture/settings@0.1.0` is a local workspace package that reuses `@aperture/validation@0.5.0`. Web, mobile, and PostgreSQL repository composition add local workspace links only. The implementation uses the existing Supabase adapter and React/React Native stacks and introduces no external runtime or development dependency.

@@ -1,6 +1,7 @@
 export { createEducationPostgresRepository } from "./education-postgres.repository.js";
 export { createFinancePostgresRepository } from "./finance-postgres.repository.js";
 export { createPlannerPostgresRepository } from "./planner-postgres.repository.js";
+export { createSettingsPostgresRepository } from "./settings-postgres.repository.js";
 export {
   createHealthPostgresRepository,
   type CreateHealthPostgresRepositoryOptions,
@@ -19,6 +20,8 @@ import { createFinancePostgresRepository } from "./finance-postgres.repository.j
 import { createHealthPostgresRepository } from "./health-postgres.repository.js";
 import { createPlannerPostgresRepository } from "./planner-postgres.repository.js";
 import { createPlannerMemoryRepository } from "@aperture/planner";
+import { createSettingsMemoryRepository } from "@aperture/settings";
+import { createSettingsPostgresRepository } from "./settings-postgres.repository.js";
 import type { CreateHealthPostgresRepositoryOptions } from "./health-postgres.repository.js";
 import {
   createEducationMemoryRepository,
@@ -53,6 +56,7 @@ export function createPostgresRepositorySet(
     health: createHealthPostgresRepository(database, options.health),
     finance: createFinancePostgresRepository(database, options.finance),
     planner: createPlannerPostgresRepository(database),
+    settings: createSettingsPostgresRepository(database),
   });
 }
 
@@ -77,6 +81,7 @@ export function createRepositorySet(configuration: RepositoryComposition): Postg
       health: createHealthMemoryRepository(configuration.health),
       finance: createFinanceMemoryRepository(configuration.finance),
       planner: createPlannerMemoryRepository(),
+      settings: createSettingsMemoryRepository(),
     });
   }
   return Object.freeze({
@@ -84,6 +89,7 @@ export function createRepositorySet(configuration: RepositoryComposition): Postg
     health: createHealthPostgresRepository(configuration.database, configuration.health),
     finance: createFinancePostgresRepository(configuration.database, configuration.finance),
     planner: createPlannerPostgresRepository(configuration.database),
+    settings: createSettingsPostgresRepository(configuration.database),
   });
 }
 

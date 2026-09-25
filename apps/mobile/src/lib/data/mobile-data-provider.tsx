@@ -2,6 +2,7 @@ import { createEducationService, type EducationClock } from "@aperture/education
 import { allFinanceCalculatorPlugins, createFinanceApplicationService } from "@aperture/finance";
 import { createHealthService, type HealthClock } from "@aperture/health";
 import { createPlannerService, type PlannerClock } from "@aperture/planner";
+import { createSettingsService } from "@aperture/settings";
 import { createStandardTodayContributors, createTodayService } from "@aperture/today";
 import { featureRegistry } from "@aperture/feature-registry";
 import {
@@ -21,6 +22,7 @@ import { FinanceProvider } from "../../features/finance/providers/finance-provid
 import type { HealthMobileRuntime } from "../../features/health/adapters/health-runtime";
 import { HealthProvider } from "../../features/health/providers/health-provider";
 import { PlannerProvider, type PlannerMobileRuntime } from "../../features/planner/providers/planner-provider";
+import { SettingsProvider, type SettingsMobileRuntime } from "../../features/settings";
 import { TodayProvider, type TodayMobileRuntime } from "../../features/today/provider";
 import { useMobileAuth } from "../auth/mobile-auth-provider";
 
@@ -29,6 +31,7 @@ export interface MobileDataComposition {
   readonly health: HealthMobileRuntime;
   readonly finance: FinanceMobileRuntime;
   readonly planner: PlannerMobileRuntime;
+  readonly settings: SettingsMobileRuntime;
   readonly today: TodayMobileRuntime;
   readonly mode: "memory" | "supabase";
   readonly snapshots: () => readonly CloudSynchronizationSnapshot[];
@@ -72,6 +75,15 @@ export function createMobileDataComposition(
     context: Object.freeze({ ownerId }),
     clock: plannerClock,
   });
+  const settings = Object.freeze({
+    service: createSettingsService({
+      repository: repositories.settings, clock: { now }, idGenerator: { generate: randomUUID },
+      protectedFeatureIds: featureRegistry.listFeatures().filter(({ disableAllowed }) => !disableAllowed).map(({ id }) => id),
+      knownFeatureIds: featureRegistry.listFeatures().map(({ id }) => id),
+      knownWidgetIds: featureRegistry.widgets("mobile").map(({ id }) => id),
+    }),
+    ownerId,
+  });
   return Object.freeze({
     education: Object.freeze({
       service: createEducationService({ repositories: repositories.education, clock: educationClock, idGenerator: { generate: randomUUID } }),
@@ -93,6 +105,7 @@ export function createMobileDataComposition(
       context: Object.freeze({ ownerId }),
     }),
     planner,
+    settings,
     today: Object.freeze({
       service: createTodayService({
         widgets: featureRegistry.widgets("mobile"),
@@ -131,8 +144,9 @@ export function MobileDataProvider({ children }: { readonly children: ReactNode 
         <View style={styles.status} accessibilityRole="summary" accessibilityLiveRegion="polite">
           <Text style={styles.statusText}>{synchronizationLabel(status)}</Text>
         </View>
-        <TodayProvider runtime={composition.today}>
-          <PlannerProvider runtime={composition.planner}>
+        <SettingsProvider runtime={composition.settings}>
+          <TodayProvider runtime={composition.today}>
+            <PlannerProvider runtime={composition.planner}>
             <FinanceProvider ownerId={ownerId} createRuntime={() => composition.finance}>
               <EducationProvider ownerId={ownerId} createRuntime={() => composition.education}>
                 <HealthProvider ownerId={ownerId} createRuntime={() => composition.health}>
@@ -140,8 +154,9 @@ export function MobileDataProvider({ children }: { readonly children: ReactNode 
                 </HealthProvider>
               </EducationProvider>
             </FinanceProvider>
-          </PlannerProvider>
-        </TodayProvider>
+            </PlannerProvider>
+          </TodayProvider>
+        </SettingsProvider>
       </View>
     </MobileDataContext.Provider>
   );

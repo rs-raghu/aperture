@@ -785,6 +785,16 @@ export const generatedFeatureManifests = [
         "id": "settings.read",
         "description": "Read personal dashboard settings.",
         "required": true
+      },
+      {
+        "id": "settings.write",
+        "description": "Update personal dashboard settings.",
+        "required": true
+      },
+      {
+        "id": "settings.integrations.read",
+        "description": "Read sanitized integration connection status.",
+        "required": true
       }
     ],
     "routes": [
@@ -814,8 +824,13 @@ export const generatedFeatureManifests = [
         "import": "../features/settings/index"
       }
     },
+    "backend": {
+      "source": "packages/settings/src/index.ts",
+      "import": "@aperture/settings"
+    },
     "migrations": [
-      "packages/platform-contracts/migrations/20260921004000_platform.sql"
+      "packages/platform-contracts/migrations/20260921004000_platform.sql",
+      "packages/settings/migrations/20260922002000_settings.sql"
     ]
   }
 ] as const satisfies readonly FeatureManifest[];

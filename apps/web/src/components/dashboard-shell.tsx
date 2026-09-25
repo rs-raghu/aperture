@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { preloadFeatureFrontend } from "@/generated/plugin-frontends.generated";
+import { useOptionalSettings } from "@/features/settings";
 
 function routeIsActive(pathname: string, path: string): boolean {
   return pathname === path || path !== "/" && pathname.startsWith(`${path}/`);
@@ -12,7 +13,8 @@ function routeIsActive(pathname: string, path: string): boolean {
 
 export function WebDashboardShell({ children }: { readonly children: ReactNode }) {
   const pathname = usePathname();
-  const [overrides, setOverrides] = useState<FeatureEnablementOverrides>({});
+  const settings = useOptionalSettings();
+  const [sessionOverrides, setSessionOverrides] = useState<FeatureEnablementOverrides>({});
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [mobileNavigationOpen, setMobileNavigationOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -29,6 +31,7 @@ export function WebDashboardShell({ children }: { readonly children: ReactNode }
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  const overrides = settings?.snapshot?.preferences.featureEnablement ?? sessionOverrides;
   const navigation = featureRegistry.navigation("web", overrides);
   const searchResults = useMemo(() => featureRegistry.search(query, "web", overrides), [query, overrides]);
   const activeRoute = featureRegistry.findRoute("web", pathname);
@@ -42,14 +45,13 @@ export function WebDashboardShell({ children }: { readonly children: ReactNode }
   const toggleFeature = (featureId: FeatureId) => {
     const feature = featureRegistry.getFeature(featureId);
     if (!feature?.disableAllowed) return;
-    setOverrides((current) => {
-      const next = { ...current, [featureId]: !featureRegistry.isEnabled(featureId, current) };
-      return next;
-    });
+    const enabled = !featureRegistry.isEnabled(featureId, overrides);
+    if (settings?.snapshot) void settings.update({ featureEnablement: { [featureId]: enabled } }).catch(() => undefined);
+    else setSessionOverrides((current) => ({ ...current, [featureId]: enabled }));
   };
 
   return (
-    <div className="dashboard-shell" style={themeStyle}>
+    <div className="dashboard-shell" style={themeStyle} data-theme={settings?.snapshot?.preferences.theme ?? "system"} data-compact-navigation={settings?.snapshot?.preferences.platform.web.compactNavigation || undefined} data-reduce-motion={settings?.snapshot?.preferences.platform.web.reduceMotion || undefined}>
       <a className="skip-link" href="#dashboard-content">Skip to content</a>
       <header className="dashboard-header">
         <Link className="dashboard-brand" href="/today" aria-label="Aperture dashboard home">
@@ -71,7 +73,7 @@ export function WebDashboardShell({ children }: { readonly children: ReactNode }
         {activeFeature && !activeFeatureEnabled ? (
           <main className="dashboard-state-page">
             <p className="eyebrow">Feature paused</p>
-            <h1>{activeFeature.displayName} is disabled for this session</h1>
+            <h1>{activeFeature.displayName} is disabled</h1>
             <p>Your saved data is unchanged. Re-enable the feature to return to its workspace.</p>
             <button className="button button-primary" type="button" onClick={() => toggleFeature(activeFeature.id as FeatureId)}>Enable {activeFeature.displayName}</button>
           </main>
@@ -90,7 +92,7 @@ export function WebDashboardShell({ children }: { readonly children: ReactNode }
               {searchResults.length === 0 ? <p className="command-empty">No matching page.</p> : searchResults.map((result) => <Link key={result.id} href={result.path} onClick={() => { setPaletteOpen(false); setQuery(""); }}><span><strong>{result.label}</strong><small>{result.featureName} · {result.description}</small></span><span aria-hidden="true">↗</span></Link>)}
             </div>
             <div className="command-feature-toggles">
-              <p>Session feature visibility</p>
+              <p>Feature visibility</p>
               {featureRegistry.listFeatures().filter(({ disableAllowed }) => disableAllowed).map((feature) => {
                 const enabled = featureRegistry.isEnabled(feature.id, overrides);
                 return <button key={feature.id} type="button" onClick={() => toggleFeature(feature.id as FeatureId)} aria-label={`${enabled ? "Disable" : "Enable"} ${feature.displayName}`} aria-pressed={enabled}><span>{feature.displayName}</span><span>{enabled ? "On" : "Off"}</span></button>;

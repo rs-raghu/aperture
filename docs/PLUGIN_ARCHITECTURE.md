@@ -39,9 +39,9 @@ Calculator source discovery remains owned by the calculator packages. `npm run g
 - feature enablement overrides while preventing required features from being disabled; and
 - ordered widget contribution discovery.
 
-Phase 32 enablement is intentionally scoped to the mounted shell. Phase 34 will persist owner-scoped settings across devices. Disabling a feature only removes its navigation and presentation; it never deletes records.
+Phase 34 persists enablement in the owner-scoped Settings aggregate. Web and mobile shells consume the same manifest-keyed map through their composition roots. Disabling a feature only removes its navigation and presentation; it never deletes records. Manifests with `disableAllowed: false` are enforced again in the Settings service and cannot be disabled by a client request.
 
-Phase 33 uses the same registry for Today composition. Planner, Education, Health, and Finance declare their widget metadata in manifests. The composition root connects each widget ID to an owner-scoped contributor, and the Today feature consumes the generic aggregation service rather than importing another feature's UI internals. Widget failures remain isolated and widget visibility can be changed for the mounted Today screen.
+Phase 33 uses the same registry for Today composition. Planner, Education, Health, and Finance declare their widget metadata in manifests. The composition root connects each widget ID to an owner-scoped contributor, and the Today feature consumes the generic aggregation service rather than importing another feature's UI internals. Widget failures remain isolated. Phase 34 stores widget visibility in Settings, so Today and the Settings interface share the same owner-scoped preference across platforms.
 
 ## Adding a feature
 

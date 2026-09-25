@@ -5,6 +5,7 @@ import { ActivityIndicator, Modal, Pressable, ScrollView, StyleSheet, Text, Text
 import { SafeAreaView } from "react-native-safe-area-context";
 import { preloadFeatureFrontend } from "../generated/plugin-frontends.generated";
 import { apertureTheme } from "../theme/foundation";
+import { useOptionalSettings } from "../features/settings";
 
 const { colors, spacing, radius } = apertureTheme;
 
@@ -19,9 +20,11 @@ function glyph(icon: string): string {
 export function MobileDashboardShell({ children }: { readonly children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [overrides, setOverrides] = useState<FeatureEnablementOverrides>({});
+  const settings = useOptionalSettings();
+  const [sessionOverrides, setSessionOverrides] = useState<FeatureEnablementOverrides>({});
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const overrides = settings?.snapshot?.preferences.featureEnablement ?? sessionOverrides;
   const navigation = featureRegistry.navigation("mobile", overrides);
   const results = useMemo(() => featureRegistry.search(query, "mobile", overrides), [query, overrides]);
   const activeRoute = featureRegistry.findRoute("mobile", pathname);
@@ -36,7 +39,9 @@ export function MobileDashboardShell({ children }: { readonly children: ReactNod
   const toggleFeature = (featureId: FeatureId) => {
     const feature = featureRegistry.getFeature(featureId);
     if (!feature?.disableAllowed) return;
-    setOverrides((current) => ({ ...current, [featureId]: !featureRegistry.isEnabled(featureId, current) }));
+    const enabled = !featureRegistry.isEnabled(featureId, overrides);
+    if (settings?.snapshot) void settings.update({ featureEnablement: { [featureId]: enabled } }).catch(() => undefined);
+    else setSessionOverrides((current) => ({ ...current, [featureId]: enabled }));
   };
 
   return <View style={styles.shell}>
@@ -49,7 +54,7 @@ export function MobileDashboardShell({ children }: { readonly children: ReactNod
         <Pressable accessibilityRole="button" accessibilityLabel="Search Aperture" onPress={() => setSearchOpen(true)} style={styles.searchButton}><Text style={styles.searchGlyph}>⌕</Text><Text style={styles.searchText}>Search</Text></Pressable>
       </View>
     </SafeAreaView>
-    <View style={styles.content}>{activeFeature && !activeFeatureEnabled ? <View style={styles.disabledState}><Text style={styles.stateEyebrow}>Feature paused</Text><Text style={styles.stateTitle}>{activeFeature.displayName} is disabled for this session</Text><Text style={styles.stateDescription}>Your saved data is unchanged. Re-enable the feature to return to its workspace.</Text><Pressable accessibilityRole="button" onPress={() => toggleFeature(activeFeature.id as FeatureId)} style={styles.primaryButton}><Text style={styles.primaryButtonText}>Enable {activeFeature.displayName}</Text></Pressable></View> : children}</View>
+    <View style={styles.content}>{activeFeature && !activeFeatureEnabled ? <View style={styles.disabledState}><Text style={styles.stateEyebrow}>Feature paused</Text><Text style={styles.stateTitle}>{activeFeature.displayName} is disabled</Text><Text style={styles.stateDescription}>Your saved data is unchanged. Re-enable the feature to return to its workspace.</Text><Pressable accessibilityRole="button" onPress={() => toggleFeature(activeFeature.id as FeatureId)} style={styles.primaryButton}><Text style={styles.primaryButtonText}>Enable {activeFeature.displayName}</Text></Pressable></View> : children}</View>
     <SafeAreaView edges={["bottom"]} style={styles.navigationSafeArea}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.navigation} accessibilityRole="tablist">
         {navigation.map((item) => {
@@ -64,7 +69,7 @@ export function MobileDashboardShell({ children }: { readonly children: ReactNod
         <TextInput autoFocus value={query} onChangeText={setQuery} placeholder="Search features and pages…" placeholderTextColor={colors.muted} accessibilityLabel="Search routes" style={styles.searchInput} />
         <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.results}>
           {results.length === 0 ? <Text style={styles.emptyText}>No matching page.</Text> : results.map((result) => <Pressable key={result.id} accessibilityRole="link" accessibilityLabel={`${result.label}, ${result.featureName}`} onPress={() => go(result.path)} style={styles.result}><View style={styles.resultCopy}><Text style={styles.resultTitle}>{result.label}</Text><Text style={styles.resultDescription}>{result.featureName} · {result.description}</Text></View><Text style={styles.resultArrow}>›</Text></Pressable>)}
-          <Text style={styles.toggleHeading}>Session feature visibility</Text>
+          <Text style={styles.toggleHeading}>Feature visibility</Text>
           {featureRegistry.listFeatures().filter(({ disableAllowed }) => disableAllowed).map((feature) => {
             const enabled = featureRegistry.isEnabled(feature.id, overrides);
             return <Pressable key={feature.id} accessibilityRole="switch" accessibilityLabel={`${feature.displayName} feature`} accessibilityState={{ checked: enabled }} onPress={() => toggleFeature(feature.id as FeatureId)} style={styles.toggle}><Text style={styles.toggleLabel}>{feature.displayName}</Text><Text style={[styles.toggleValue, enabled ? styles.toggleValueEnabled : null]}>{enabled ? "On" : "Off"}</Text></Pressable>;

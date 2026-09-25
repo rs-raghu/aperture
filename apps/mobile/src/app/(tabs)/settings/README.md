@@ -1,3 +1,3 @@
 # Settings
 
-Reserves the future `/settings` mobile route. No screen is implemented.
+Implements owner-scoped portable preferences, mobile-only behavior, feature and Today widget visibility, privacy controls, calculator defaults, and sanitized integration status.
