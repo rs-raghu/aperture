@@ -103,6 +103,16 @@ const entitySchemas = {
   goals: educationGoalSchema,
 } as const;
 
+const backupSchemaNames = {
+  institutions: "institutions", programs: "programs", semesters: "semesters", courses: "courses", topics: "topics",
+  assignments: "assignments", exams: "exams", grades: "grades", attendance: "attendance", studySessions: "study_sessions",
+  schedules: "schedules", resources: "resources", certificates: "certificates", goals: "goals",
+} as const;
+
+export function validateEducationBackupRecord(collection: keyof typeof backupSchemaNames, value: unknown): boolean {
+  return entitySchemas[backupSchemaNames[collection]].safeParse(value).success;
+}
+
 class EducationPostgresCollection<TEntity extends EducationMemoryEntity>
   extends EducationEntityCollection<TEntity> {
   readonly #durable: PostgresCollection<TEntity>;

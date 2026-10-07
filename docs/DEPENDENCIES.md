@@ -143,3 +143,13 @@ allowing the same repository implementation to bundle for browsers and Expo.
 ## Phase 34 dependency boundary
 
 `@aperture/settings@0.1.0` is a local workspace package that reuses `@aperture/validation@0.5.0`. Web, mobile, and PostgreSQL repository composition add local workspace links only. The implementation uses the existing Supabase adapter and React/React Native stacks and introduces no external runtime or development dependency.
+
+## Phase 35 dependency and security checkpoint (2026-10-07)
+
+`@aperture/backup@0.1.0` is a new local workspace package. It adds no external library. Clients and PostgreSQL composition link its versioned export, validation, preview, and transactional-recovery contracts.
+
+The resumed audit found newly published advisories: 15 moderate, 59 high, and 2 critical findings before remediation. Compatible updates pin Next.js and its ESLint configuration to `~16.3.8` and update the existing transitive `brace-expansion`, `compression`, `sharp`, `shell-quote`, `source-map-js`, and `undici` packages. No forced fix or major framework upgrade was applied. The reviewed lockfile records the exact resolved versions.
+
+After those updates, the workspace scan reports 15 moderate, 54 high, and 0 critical findings. `npm audit --omit=dev --workspace @aperture/web` reports 2 high, 0 moderate, and 0 critical findings (`braces` and its dependent `micromatch`). These are nonzero audit results, not clean gates. npm's workspace audit follows the shared lock graph; the web production dependency listing does not list either package, while the full dependency explanation includes Expo/Metro and test/build tooling. Production reachability must be assessed again during Phase 38.
+
+The high findings remaining in the workspace derive from [braces stack exhaustion](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) and [node-forge signature verification](https://github.com/advisories/GHSA-86w9-cpqp-85rv). Both advisories list no patched release as of this checkpoint. Aperture does not offer user-provided glob processing or Forge signature verification in feature flows. This limits direct application exposure but does not remove the dependency findings; release hardening must review the build, development-server, and Expo signing boundaries. npm's suggested Expo downgrades and SDK-major changes were not accepted as compatible remediation.

@@ -135,6 +135,20 @@ const institution = {
 };
 
 describe("Supabase durable repository composition", () => {
+  it("includes owner-scoped durable equipment usage in client backup exports", async () => {
+    const store = emptyStore();
+    const usage = { id: ID, ownerId: OWNER, equipmentId: "equipment-1", distance: { value: "12.3456", unit: "kilometer" }, createdAt: CREATED_AT, updatedAt: CREATED_AT };
+    store.tables.set("health.equipment_usage", [
+      { id: ID, owner_id: OWNER, payload: usage, record_version: 1, updated_at: CREATED_AT, deleted_at: null },
+      { id: "other-usage", owner_id: OTHER_OWNER, payload: { ...usage, ownerId: OTHER_OWNER }, record_version: 1, updated_at: CREATED_AT, deleted_at: null },
+    ]);
+    const repositories = createSupabaseRepositorySet(fakeClient(store));
+    const health = repositories.backupAdapters.find(({ featureId }) => featureId === "health")!;
+    const collections = await health.export(OWNER);
+    expect(collections.find(({ name }) => name === "equipmentUsage")!.records).toEqual([usage]);
+    expect(store.tables.has("platform.integration_credentials")).toBe(false);
+  });
+
   it("shares owner-scoped durable data across independent web and mobile compositions", async () => {
     const store = emptyStore();
     const web = createSupabaseRepositorySet(fakeClient(store));
@@ -161,7 +175,7 @@ describe("Supabase durable repository composition", () => {
     await web.settings.createPreferences(settings);
     expect(await mobile.settings.findPreferences(OWNER)).toEqual(settings);
     expect(web.synchronization.getSnapshot("platform").state).toBe("synchronized");
-    expect(Object.keys(web.settings)).toEqual(["findPreferences", "createPreferences", "updatePreferences", "listIntegrationStatuses"]);
+    expect(Object.keys(web.settings)).toEqual(["findPreferences", "createPreferences", "updatePreferences", "deletePreferences", "listIntegrationStatuses", "createIntegrationStatus", "deleteIntegrationStatuses"]);
   });
 
   it("uses a committed record as proof after a lost create response without writing a duplicate", async () => {

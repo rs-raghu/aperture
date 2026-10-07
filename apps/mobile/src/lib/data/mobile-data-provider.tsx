@@ -3,9 +3,11 @@ import { allFinanceCalculatorPlugins, createFinanceApplicationService } from "@a
 import { createHealthService, type HealthClock } from "@aperture/health";
 import { createPlannerService, type PlannerClock } from "@aperture/planner";
 import { createSettingsService } from "@aperture/settings";
+import { createBackupService } from "@aperture/backup";
 import { createStandardTodayContributors, createTodayService } from "@aperture/today";
 import { featureRegistry } from "@aperture/feature-registry";
 import {
+  createBackupFeatureAdapters,
   createPreviewRepositorySet,
   createSupabaseRepositorySet,
   type CloudSynchronizationSnapshot,
@@ -22,7 +24,7 @@ import { FinanceProvider } from "../../features/finance/providers/finance-provid
 import type { HealthMobileRuntime } from "../../features/health/adapters/health-runtime";
 import { HealthProvider } from "../../features/health/providers/health-provider";
 import { PlannerProvider, type PlannerMobileRuntime } from "../../features/planner/providers/planner-provider";
-import { SettingsProvider, type SettingsMobileRuntime } from "../../features/settings";
+import { BackupProvider, SettingsProvider, type BackupMobileRuntime, type SettingsMobileRuntime } from "../../features/settings";
 import { TodayProvider, type TodayMobileRuntime } from "../../features/today/provider";
 import { useMobileAuth } from "../auth/mobile-auth-provider";
 
@@ -32,6 +34,7 @@ export interface MobileDataComposition {
   readonly finance: FinanceMobileRuntime;
   readonly planner: PlannerMobileRuntime;
   readonly settings: SettingsMobileRuntime;
+  readonly backup: BackupMobileRuntime;
   readonly today: TodayMobileRuntime;
   readonly mode: "memory" | "supabase";
   readonly snapshots: () => readonly CloudSynchronizationSnapshot[];
@@ -84,6 +87,16 @@ export function createMobileDataComposition(
     }),
     ownerId,
   });
+  const backup = Object.freeze({
+    service: createBackupService({
+      adapters: durable?.backupAdapters ?? createBackupFeatureAdapters(repositories), clock: { now }, idGenerator: { generate: randomUUID },
+      async readUnits(currentOwnerId: string) {
+        const value = await repositories.settings.findPreferences(currentOwnerId);
+        return value === null ? {} : { currency: value.currency, measurementSystem: value.units.measurementSystem, temperatureUnit: value.units.temperatureUnit, distanceUnit: value.units.distanceUnit, massUnit: value.units.massUnit };
+      },
+      transactionRunner: { async run() { throw new Error("This client cannot apply transactional restores."); } },
+    }), ownerId, canMutate: false,
+  });
   return Object.freeze({
     education: Object.freeze({
       service: createEducationService({ repositories: repositories.education, clock: educationClock, idGenerator: { generate: randomUUID } }),
@@ -106,6 +119,7 @@ export function createMobileDataComposition(
     }),
     planner,
     settings,
+    backup,
     today: Object.freeze({
       service: createTodayService({
         widgets: featureRegistry.widgets("mobile"),
@@ -144,6 +158,7 @@ export function MobileDataProvider({ children }: { readonly children: ReactNode 
         <View style={styles.status} accessibilityRole="summary" accessibilityLiveRegion="polite">
           <Text style={styles.statusText}>{synchronizationLabel(status)}</Text>
         </View>
+        <BackupProvider runtime={composition.backup}>
         <SettingsProvider runtime={composition.settings}>
           <TodayProvider runtime={composition.today}>
             <PlannerProvider runtime={composition.planner}>
@@ -157,6 +172,7 @@ export function MobileDataProvider({ children }: { readonly children: ReactNode 
             </PlannerProvider>
           </TodayProvider>
         </SettingsProvider>
+        </BackupProvider>
       </View>
     </MobileDataContext.Provider>
   );

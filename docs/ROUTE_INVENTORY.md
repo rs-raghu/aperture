@@ -48,12 +48,12 @@ These URLs share the Education provider and local navigation. They are a volatil
 29. `/settings`
 30. `/settings/profile`
 31. `/settings/security`
-32. `/settings/data`
+32. `/settings/data` (implemented recovery interface)
 33. `/settings/integrations`
 
 The `apps/web/src/app/api` directories also reserve future internal boundaries for auth, export, restore, account, and integrations. They are not public route claims and contain no handlers.
 
-## Mobile routes (9)
+## Mobile routes (10)
 
 1. `/sign-in`
 2. `/recover-password`
@@ -64,3 +64,4 @@ The `apps/web/src/app/api` directories also reserve future internal boundaries f
 7. `/finance`
 8. `/calculators`
 9. `/settings`
+10. `/settings/data` (implemented recovery interface)

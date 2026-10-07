@@ -2,9 +2,12 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   createPostgresRepositorySet,
   createRepositorySet,
+  createBackupFeatureAdapters,
   type CreatePostgresRepositorySetOptions,
   type PostgresRepositorySet,
 } from "@aperture/postgres-repositories";
+
+export { createBackupFeatureAdapters } from "@aperture/postgres-repositories";
 
 import {
   createSupabaseSqlExecutor,
@@ -16,6 +19,7 @@ export { createSupabaseSqlExecutor, type SupabaseExecutorConfiguration } from ".
 
 export interface SupabaseRepositorySet extends PostgresRepositorySet {
   readonly synchronization: ReturnType<typeof createSupabaseSqlExecutor>["monitor"];
+  readonly backupAdapters: ReturnType<typeof createBackupFeatureAdapters>;
 }
 
 export interface CreateSupabaseRepositorySetOptions extends CreatePostgresRepositorySetOptions {
@@ -27,8 +31,10 @@ export function createSupabaseRepositorySet(
   options: CreateSupabaseRepositorySetOptions = {},
 ): SupabaseRepositorySet {
   const executor = createSupabaseSqlExecutor(client, options.executor);
+  const repositories = createPostgresRepositorySet(executor, options);
   return Object.freeze({
-    ...createPostgresRepositorySet(executor, options),
+    ...repositories,
+    backupAdapters: createBackupFeatureAdapters(repositories, executor, true),
     synchronization: executor.monitor,
   });
 }

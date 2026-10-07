@@ -22,6 +22,7 @@ pnpm-debug.log*
 
 backups/
 backup/
+!packages/backup/
 dumps/
 dump/
 *.backup

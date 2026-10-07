@@ -16,7 +16,7 @@ export function SettingsScreen() {
   const save = (input: UpdateSettingsInput) => { void update(input).catch(() => undefined); };
   const select = (label: string, value: string, options: readonly string[], onChange: (value: string) => void) => <label className="field"><span>{label}</span><select aria-label={label} value={value} onChange={(event) => onChange(event.target.value)}>{options.map((option) => <option key={option} value={option}>{option}</option>)}</select></label>;
   return <main className="settings-main">
-    <header className="page-header"><div><p className="eyebrow">Settings & privacy</p><h1>Shape your private workspace</h1><p>Portable choices sync through your owner-scoped record. Device-only behavior stays isolated by platform.</p></div><span className="status-badge">Saved automatically</span></header>
+    <header className="page-header"><div><p className="eyebrow">Settings & privacy</p><h1>Shape your private workspace</h1><p>Portable choices sync through your owner-scoped record. Device-only behavior stays isolated by platform.</p></div><div><span className="status-badge">Saved automatically</span><p><a href="/settings/data">Data & recovery</a></p></div></header>
     <section className="settings-grid">
       <article className="panel settings-card"><div className="panel-heading"><h2>Appearance & region</h2><p>Formatting and defaults shared by web and mobile.</p></div><div className="settings-fields">
         {select("Theme", settings.theme, ["system", "light", "dark"], (value) => save({ theme: value as UserSettings["theme"] }))}

@@ -43,3 +43,18 @@ PGlite databases. They cover all 62 aggregate repositories plus Health profile
 and equipment-usage behavior, owner isolation, soft delete, decimal fidelity,
 date filtering, pagination invalidation, cross-record constraints, transaction
 rollback, persistent state across adapter instances, and defensive mapping.
+
+## Backup transaction boundary
+
+Phase 35 registers every durable feature repository with `@aperture/backup`.
+Exports traverse repository cursors and retain validated payloads rather than
+physical database rows. Before restore, the adapter applies the same Education,
+Health, Finance, Planner, and Settings schemas used by normal repository writes.
+Confirmed replacement and deletion use explicit table allowlists inside a
+`TransactionalSqlExecutor`; physical removal is limited to the selected owner
+and ordered around foreign keys. Credentials are never exported. Settings
+replacement deletes credentials before sanitized connection metadata so a
+restored integration always reconnects through its normal authorization flow.
+
+See [Data backup and recovery](DATA_BACKUP_AND_RECOVERY.md) for the archive
+contract, compatibility policy, privacy boundary, and operator procedure.

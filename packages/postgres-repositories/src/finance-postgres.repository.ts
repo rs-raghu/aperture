@@ -102,6 +102,10 @@ const configurations = {
   calculatorScenarios: { key: "calculator-scenarios", table: "calculator_scenarios", schema: savedCalculatorScenarioSchema, filterFields: ["calculatorId"], order: [{ field: "name" }], project: (entity) => ({ calculator_id: field(entity, "calculatorId"), calculator_version: field(entity, "calculatorVersion"), name: field(entity, "name"), input: field(entity, "input") }) },
 } as const satisfies Readonly<Record<string, Configuration>>;
 
+export function validateFinanceBackupRecord(collection: keyof typeof configurations, value: unknown): boolean {
+  return configurations[collection].schema.safeParse(value).success;
+}
+
 function nestedValue(record: Readonly<Record<string, unknown>>, path: string): unknown {
   return path.split(".").reduce<unknown>(
     (value, segment) => typeof value === "object" && value !== null

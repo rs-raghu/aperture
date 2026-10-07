@@ -17,7 +17,7 @@ test("discovers core and plugin-owned migrations without a central manifest", as
 
   assert.deepEqual(
     migrations.map(({ scope }) => scope),
-    ["core", "education", "health", "finance", "platform-contracts", "postgres-repositories", "core", "planner", "settings"],
+    ["core", "education", "health", "finance", "platform-contracts", "postgres-repositories", "core", "planner", "settings", "backup"],
   );
   assert.equal(new Set(migrations.map(({ version }) => version)).size, migrations.length);
   assert.deepEqual(

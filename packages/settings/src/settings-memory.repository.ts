@@ -18,8 +18,16 @@ export function createSettingsMemoryRepository(initialIntegrations: readonly Int
       if (current.createdAt !== settings.createdAt) throw new Error("Settings identity is immutable.");
       preferences.set(settings.ownerId, clone(settings)); return clone(settings);
     },
+    async deletePreferences(ownerId: string) { preferences.delete(ownerId); },
     async listIntegrationStatuses(ownerId: string) {
       return integrations.filter((item) => item.ownerId === ownerId).sort((left, right) => left.integrationId.localeCompare(right.integrationId)).map(clone);
+    },
+    async createIntegrationStatus(status: IntegrationStatus) {
+      if (integrations.some((item) => item.id === status.id || (item.ownerId === status.ownerId && item.integrationId === status.integrationId))) throw new Error("Integration status already exists.");
+      integrations.push(clone(status)); return clone(status);
+    },
+    async deleteIntegrationStatuses(ownerId: string) {
+      for (let index = integrations.length - 1; index >= 0; index -= 1) if (integrations[index]!.ownerId === ownerId) integrations.splice(index, 1);
     },
   });
 }

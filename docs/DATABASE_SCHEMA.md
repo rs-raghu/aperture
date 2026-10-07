@@ -23,6 +23,7 @@ The current sequence is:
 7. Authenticated and anonymous role grants for the personal-data boundary.
 8. Planner recurrence, deadlines, completion metadata, and synchronization scope.
 9. Settings aggregates, privacy controls, platform preferences, and integration-status indexing.
+10. Backup scope, record counts, plaintext notices, and owner/time metadata indexes.
 
 Each file is transactional and records its version in
 `platform.migration_audit`. The automated guard rejects destructive `DROP`,

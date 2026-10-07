@@ -191,6 +191,19 @@ const entitySchemas = {
   recovery_entries: recoveryEntrySchema,
 } as const;
 
+const backupSchemaNames = {
+  profiles: "profiles", measurements: "measurements", vitalReadings: "vital_readings", bodyComposition: "body_composition",
+  sleepRecords: "sleep_records", nutritionEntries: "nutrition_entries", hydrationEntries: "hydration_entries", medications: "medications",
+  medicationLogs: "medication_logs", symptomEntries: "symptom_entries", appointments: "appointments", laboratoryResults: "laboratory_results",
+  exercises: "exercises", workoutPlans: "workout_plans", workoutSessions: "workout_sessions", exerciseSets: "exercise_sets",
+  activityRoutes: "activity_routes", equipment: "equipment", runningActivities: "running_activities", runningSplits: "running_splits",
+  personalRecords: "personal_records", recoveryEntries: "recovery_entries",
+} as const;
+
+export function validateHealthBackupRecord(collection: keyof typeof backupSchemaNames, value: unknown): boolean {
+  return entitySchemas[backupSchemaNames[collection]].safeParse(value).success;
+}
+
 class HealthPostgresCollection<TEntity extends HealthMemoryEntity>
   extends HealthEntityCollection<TEntity> {
   readonly #durable: PostgresCollection<TEntity>;

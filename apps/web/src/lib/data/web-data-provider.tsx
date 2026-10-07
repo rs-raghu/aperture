@@ -5,9 +5,11 @@ import { allFinanceCalculatorPlugins, createFinanceApplicationService } from "@a
 import { createHealthService, type HealthClock } from "@aperture/health";
 import { createPlannerService, type PlannerClock } from "@aperture/planner";
 import { createSettingsService } from "@aperture/settings";
+import { createBackupService } from "@aperture/backup";
 import { createStandardTodayContributors, createTodayService } from "@aperture/today";
 import { featureRegistry } from "@aperture/feature-registry";
 import {
+  createBackupFeatureAdapters,
   createPreviewRepositorySet,
   createSupabaseRepositorySet,
   type CloudSynchronizationSnapshot,
@@ -23,6 +25,7 @@ import type { HealthWebRuntime } from "@/features/health/adapters/health-runtime
 import { HealthProvider } from "@/features/health/providers/health-provider";
 import { PlannerProvider, type PlannerWebRuntime } from "@/features/planner/providers/planner-provider";
 import { SettingsProvider, type SettingsWebRuntime } from "@/features/settings";
+import { BackupProvider, type BackupWebRuntime } from "@/features/settings/backup-provider";
 import { TodayProvider, type TodayWebRuntime } from "@/features/today/provider";
 
 export type WebDataConfiguration =
@@ -40,6 +43,7 @@ export interface WebDataComposition {
   readonly finance: FinanceWebRuntime;
   readonly planner: PlannerWebRuntime;
   readonly settings: SettingsWebRuntime;
+  readonly backup: BackupWebRuntime;
   readonly today: TodayWebRuntime;
   readonly mode: WebDataConfiguration["mode"];
   readonly snapshots: () => readonly CloudSynchronizationSnapshot[];
@@ -104,6 +108,18 @@ export function createWebDataComposition(configuration: WebDataConfiguration): W
     }),
     ownerId: configuration.ownerId,
   });
+  const backup = Object.freeze({
+    service: createBackupService({
+      adapters: durable?.backupAdapters ?? createBackupFeatureAdapters(repositories), clock: { now }, idGenerator: { generate: () => crypto.randomUUID() },
+      async readUnits(ownerId: string) {
+        const value = await repositories.settings.findPreferences(ownerId);
+        return value === null ? {} : { currency: value.currency, measurementSystem: value.units.measurementSystem, temperatureUnit: value.units.temperatureUnit, distanceUnit: value.units.distanceUnit, massUnit: value.units.massUnit };
+      },
+      transactionRunner: { async run() { throw new Error("This client cannot apply transactional restores."); } },
+    }),
+    ownerId: configuration.ownerId,
+    canMutate: false,
+  });
   const today = Object.freeze({
     service: createTodayService({
       widgets: featureRegistry.widgets("web"),
@@ -124,6 +140,7 @@ export function createWebDataComposition(configuration: WebDataConfiguration): W
     finance,
     planner,
     settings,
+    backup,
     today,
     mode: configuration.mode,
     snapshots: () => durable?.synchronization.getAllSnapshots() ?? EMPTY_SYNCHRONIZATION,
@@ -138,6 +155,7 @@ export function WebDataProvider({ configuration, children }: { readonly configur
   return (
     <WebDataContext.Provider value={status}>
       <div className="data-sync-status" role="status" aria-live="polite">{synchronizationLabel(status)}</div>
+      <BackupProvider runtime={composition.backup}>
       <SettingsProvider runtime={composition.settings}>
         <TodayProvider runtime={composition.today}>
           <PlannerProvider runtime={composition.planner}>
@@ -151,6 +169,7 @@ export function WebDataProvider({ configuration, children }: { readonly configur
           </PlannerProvider>
         </TodayProvider>
       </SettingsProvider>
+      </BackupProvider>
     </WebDataContext.Provider>
   );
 }

@@ -4,13 +4,14 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 34 — Settings and privacy
-- Current phase status: complete; full gate passed and commit pending
+- Current phase: 35 — Export, import, backup, and restoration
+- Current phase status: implementation verified; commit and pair push pending; nonzero dependency audits documented
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: `9568d66` (Phase 33); Phase 34 commit pending
-- Last successfully completed command: `npx expo-doctor apps/mobile` (20/21 checks pass at the accepted Expo patch-version baseline)
-- Last push: `9568d66` pushed to `origin/codex/aperture-v2`; Phase 34 remains local until its commit
-- Unresolved concern: supplemental Expo compatibility metadata requests patch updates to Expo, Expo Router, Expo Crypto, and Expo Metro Runtime; the standard mobile checks pass and unrelated upgrades remain deferred until required by an applicable phase.
+- Ending commit: `f328f41` (Phase 34); Phase 35 is uncommitted
+- Last successfully completed command: `npm run validate:plugins` (passes after full tests, type-check, lint, Next build, Expo exports, and focused recovery regression)
+- Last push: `9568d66` pushed to `origin/codex/aperture-v2`; Phase 34 remains local until the Phase 34–35 pair gate passes
+- Workspace relocation: resumed at `D:\Hello World\2. Automations\Personal Dashboard\aperture v2`; repaired stale npm workspace links with `npm install --ignore-scripts --offline --no-audit`, preserving the lockfile dependency versions
+- Unresolved concern: upstream braces/node-forge advisories remain unpatched; audits are nonzero and require Phase 38 exposure review. Expo diagnostics retain four SDK patch-version recommendations; tests and all-platform exports pass.
 
 ## Phase records
 
@@ -38,8 +39,8 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | 31 | Complete | `1d2017f` | 8 Supabase adapter tests, 10 PostgreSQL adapter tests, 33 web tests, and 52 mobile tests; shared clients, composition selection, retry confirmation, duplicate rejection, owner isolation, REST paging, sync state, and failed-network behavior pass | 5,158 tests / 71 suites or files; workspace type-check/lint, 33-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/supabase-repositories@0.1.0`; existing `@supabase/supabase-js@2.114.0`; no new external dependency or database migration | Cloud-synchronized with no offline record cache or write outbox; Finance favorites/recent use and academic comparisons remain declared session UI state |
 | 32 | Complete | `cbc716b` | 5 registry tests, 35 web tests, and 54 mobile tests; manifest validation, duplicate rejection, route matching, search, navigation, feature enablement, widget discovery, command palette behavior, loading/error/not-found states, and generated imports pass | 5,167 tests / 74 suites or files; workspace type-check/lint, 35-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/feature-registry@0.5.0`; no new external dependency or database migration | Feature visibility is mounted-shell state until Phase 34; Today and Settings are shell placeholders pending their declared vertical-slice phases; native device execution remains unverified |
 | 33 | Complete | `9568d66` | 4 Planner, 3 Today, 12 PostgreSQL adapter, 7 database, 37 web, and 55 mobile tests; planning, recurrence, overdue derivation, contributor isolation, repository durability, owner isolation, manifest widgets, and end-to-end UI workflows pass | 5,179 tests / 79 suites or files; workspace type-check/lint, 37-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/planner@0.1.0` and `@aperture/today@0.1.0`; planner alignment migration `20260922001000_planner.sql`; no new external dependency | Recurrence projections are UTC/date-based; no remote database or native device was exercised |
-| 34 | Complete; commit pending | — | 4 Settings, 14 PostgreSQL adapter, 9 Supabase adapter, 7 database, 38 web, and 56 mobile tests; safe defaults, serialized mutation, owner isolation, cross-device synchronization, core-feature protection, platform isolation, credential exclusion, and UI workflows pass | 5,188 tests / 83 suites or files; workspace type-check/lint, 37-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/settings@0.1.0`; settings migration `20260922002000_settings.sql`; no new external dependency | Integration management remains read-only until its feature phase; no remote database or native device was exercised |
-| 35 | Not started | — | — | — | — | Export, import, backup, and restoration |
+| 34 | Complete | `f328f41` | 4 Settings, 14 PostgreSQL adapter, 9 Supabase adapter, 7 database, 38 web, and 56 mobile tests; safe defaults, serialized mutation, owner isolation, cross-device synchronization, core-feature protection, platform isolation, credential exclusion, and UI workflows pass | 5,188 tests / 83 suites or files; workspace type-check/lint, 37-route Next production build, and Expo Android/iOS/web exports pass; Expo Doctor 20/21 at accepted patch baseline | Local `@aperture/settings@0.1.0`; settings migration `20260922002000_settings.sql`; no new external dependency | Integration management remains read-only until its feature phase; no remote database or native device was exercised |
+| 35 | Complete; commit pending | — | 6 Backup, 17 PostgreSQL, 10 Supabase, 7 database, 39 web, and 57 mobile tests pass; exact money, Unicode integrity, owner isolation, corruption/migration, dry-run conflicts, stale/confirmed mutations, credential exclusion, durable usage, and transactional rollback verified | 5,200 current tests / 87 suites or files; full workspace test command plus new focused checksum test, type-check/lint, 38-route Next build, and Expo all-platform exports pass; Doctor 20/21; audits remain nonzero as documented | Local `@aperture/backup@0.1.0`; backup migration `20260922003000_backup.sql`; compatible security patch updates | Recovery mutations require server PostgreSQL composition; no remote/native execution; upstream advisories remain |
 | 36 | Not started | — | — | — | — | Optional Strava integration |
 | 37 | Not started | — | — | — | — | Professional portfolio |
 | 38 | Not started | — | — | — | — | Release hardening |
@@ -47,14 +48,14 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Current phase details
 
-- Files changed: Settings domain and memory repository, PostgreSQL adapter, Supabase platform synchronization, settings migration and seed payload, manifest metadata, persisted shell and Today preferences, web/mobile Settings interfaces, tests, and architecture documentation
-- Dependencies added: local `@aperture/settings@0.1.0` links; no new external package
-- Database migrations added: `20260922002000_settings.sql` adds unit, calculator, feature, widget, privacy, and platform preference JSON columns, backfills aggregate payloads, and indexes sanitized integration status
-- Tests added: Settings defaults, mutation serialization, owner isolation, core-feature protection, identifier validation, platform isolation, integration credential exclusion, durable PGlite storage, Supabase cross-device synchronization, and web/mobile settings workflows
-- Focused verification result: 4/4 Settings tests, 14/14 PostgreSQL adapter tests, 9/9 Supabase adapter tests, 7/7 database tests, 38/38 web tests, and 56/56 mobile tests pass
-- Full regression result: 5,188 tests / 83 suites or files pass; workspace type-check and lint pass; the 37-route Next production build and Expo Android/iOS/web exports pass
-- Expo Doctor result: 20/21 at the accepted baseline; only four Expo patch-version recommendations remain
-- Audit result: 13 moderate workspace findings in the Expo dependency chain and 0 production-web findings
-- Known limitations: Integration connections are status-only until their integration phase, no remote project was configured or contacted, and native device execution remains unverified
-- Deferred work: Export, import, backup, and restoration in Phase 35, then Phases 36–39
-- Next phase: 35 after the Phase 34 commit
+- Files changed: new Backup package, transactional PostgreSQL recovery composition, Settings deletion/status methods, domain backup validators, durable equipment-usage export, Supabase export composition, web/mobile Data & recovery routes and providers, migration discovery, generated Settings manifest, tests, and recovery documentation
+- Dependencies added: local `@aperture/backup@0.1.0` links; compatible security updates to Next.js/ESLint 16.3.8 and existing transitive packages, documented in DEPENDENCIES.md
+- Database migrations added: `20260922003000_backup.sql` adds export scope, record counts, privacy metadata, and backup manifest indexes
+- Tests added: exact-decimal and Unicode archives, full/scoped export, owner rebinding, stale previews for edits and membership changes, independently checked confirmation, corruption, v1 migration, future/additive fields, rollback, equipment-usage recovery, credential exclusion/removal, disconnected integration-status recovery, Supabase owner-scoped equipment-usage export, and web/mobile preflight workflows
+- Focused verification result: 6/6 Backup tests, 3/3 PostgreSQL recovery tests, and 3/3 affected mobile tests pass; aggregate PostgreSQL 17/17 and Supabase 10/10 pass
+- Full regression result: 5,199 tests / 87 suites or files pass in the full workspace command; the subsequently added canonical Unicode checksum test passes in the 6-test Backup suite, yielding 5,200 current passing tests. Workspace type-check and lint pass; Next.js 16.3.8 production build (38 routes) and Expo Android/iOS/web exports pass
+- Expo Doctor result: 20/21; four existing patch mismatches remain (Expo 57.0.19 versus ~57.0.27, Router 57.0.18 versus ~57.0.25, Crypto 57.0.2 versus ~57.0.3, Metro Runtime 57.0.15 versus ~57.0.16)
+- Audit result: initial scan found 15 moderate, 59 high, and 2 critical advisories; compatible updates remove all critical findings. Current workspace audit: 15 moderate, 54 high, 0 critical. Production-web workspace audit command: 2 high, 0 moderate, 0 critical. Unpatched braces/node-forge advisories remain; the audit is nonzero and release exposure review remains Phase 38 work
+- Known limitations: clients export and inspect archives; mutation requires the configured server-side PostgreSQL transaction service. Plaintext archives contain personal data. Integration secrets are excluded and restored connections are disconnected. Volatile preview equipment-usage summaries are not durable archive records. No remote database or native device was exercised
+- Deferred work: live recovery endpoint deployment and credentials, release dependency-exposure review, and Phases 36–39
+- Next phase: 36 after the Phase 35 commit and pair push

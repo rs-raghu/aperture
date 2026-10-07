@@ -29,6 +29,15 @@ export function createSettingsPostgresRepository(database: SqlExecutor): Setting
     findPreferences: async (ownerId: string) => (await preferences.findMany({ ownerId, limit: 1 }, () => true, (left, right) => left.id.localeCompare(right.id))).items[0] ?? null,
     createPreferences: (settings: UserSettings) => preferences.create(settings),
     updatePreferences: (settings: UserSettings) => preferences.update(settings),
+    deletePreferences: async (ownerId: string) => {
+      const current = (await preferences.findMany({ ownerId, limit: 1 }, () => true, (left, right) => left.id.localeCompare(right.id))).items[0];
+      if (current !== undefined) await preferences.delete(current.id, ownerId);
+    },
     listIntegrationStatuses: async (ownerId: string) => (await integrations.findMany({ ownerId }, () => true, (left, right) => left.integrationId.localeCompare(right.integrationId))).items,
+    createIntegrationStatus: (status: IntegrationStatus) => integrations.create(status),
+    deleteIntegrationStatuses: async (ownerId: string) => {
+      const current = (await integrations.findMany({ ownerId }, () => true, (left, right) => left.integrationId.localeCompare(right.integrationId))).items;
+      for (const status of current) await integrations.delete(status.id, ownerId);
+    },
   });
 }

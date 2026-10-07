@@ -3,6 +3,11 @@ export { createFinancePostgresRepository } from "./finance-postgres.repository.j
 export { createPlannerPostgresRepository } from "./planner-postgres.repository.js";
 export { createSettingsPostgresRepository } from "./settings-postgres.repository.js";
 export {
+  createBackupFeatureAdapters,
+  createPostgresBackupService,
+  type CreatePostgresBackupServiceOptions,
+} from "./backup-postgres.service.js";
+export {
   createHealthPostgresRepository,
   type CreateHealthPostgresRepositoryOptions,
 } from "./health-postgres.repository.js";

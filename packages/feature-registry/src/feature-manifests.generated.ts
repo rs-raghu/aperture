@@ -769,7 +769,7 @@ export const generatedFeatureManifests = [
     "schemaVersion": 1,
     "id": "settings",
     "displayName": "Settings",
-    "description": "Control the dashboard experience, privacy, and enabled features.",
+    "description": "Control the dashboard experience, privacy, enabled features, and personal-data recovery.",
     "version": "0.1.0",
     "status": "enabled",
     "defaultEnabled": true,
@@ -810,6 +810,19 @@ export const generatedFeatureManifests = [
         "order": 60,
         "searchable": true,
         "requiresSession": true
+      },
+      {
+        "id": "settings.data",
+        "label": "Data & recovery",
+        "description": "Export, validate, preview, restore, or delete personal feature data.",
+        "paths": {
+          "web": "/settings/data",
+          "mobile": "/settings/data"
+        },
+        "navigation": "secondary",
+        "order": 61,
+        "searchable": true,
+        "requiresSession": true
       }
     ],
     "widgets": [],
@@ -830,7 +843,8 @@ export const generatedFeatureManifests = [
     },
     "migrations": [
       "packages/platform-contracts/migrations/20260921004000_platform.sql",
-      "packages/settings/migrations/20260922002000_settings.sql"
+      "packages/settings/migrations/20260922002000_settings.sql",
+      "packages/backup/migrations/20260922003000_backup.sql"
     ]
   }
 ] as const satisfies readonly FeatureManifest[];

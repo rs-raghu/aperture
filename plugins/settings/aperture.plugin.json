@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "settings",
   "displayName": "Settings",
-  "description": "Control the dashboard experience, privacy, and enabled features.",
+  "description": "Control the dashboard experience, privacy, enabled features, and personal-data recovery.",
   "version": "0.1.0",
   "status": "enabled",
   "defaultEnabled": true,
@@ -16,7 +16,8 @@
     { "id": "settings.integrations.read", "description": "Read sanitized integration connection status.", "required": true }
   ],
   "routes": [
-    { "id": "settings.overview", "label": "Settings", "description": "Open dashboard settings and privacy controls.", "paths": { "web": "/settings", "mobile": "/settings" }, "navigation": "primary", "order": 60, "searchable": true, "requiresSession": true }
+    { "id": "settings.overview", "label": "Settings", "description": "Open dashboard settings and privacy controls.", "paths": { "web": "/settings", "mobile": "/settings" }, "navigation": "primary", "order": 60, "searchable": true, "requiresSession": true },
+    { "id": "settings.data", "label": "Data & recovery", "description": "Export, validate, preview, restore, or delete personal feature data.", "paths": { "web": "/settings/data", "mobile": "/settings/data" }, "navigation": "secondary", "order": 61, "searchable": true, "requiresSession": true }
   ],
   "widgets": [],
   "calculatorModules": [],
@@ -25,5 +26,5 @@
     "mobile": { "source": "apps/mobile/src/features/settings/index.ts", "import": "../features/settings/index" }
   },
   "backend": { "source": "packages/settings/src/index.ts", "import": "@aperture/settings" },
-  "migrations": ["packages/platform-contracts/migrations/20260921004000_platform.sql", "packages/settings/migrations/20260922002000_settings.sql"]
+  "migrations": ["packages/platform-contracts/migrations/20260921004000_platform.sql", "packages/settings/migrations/20260922002000_settings.sql", "packages/backup/migrations/20260922003000_backup.sql"]
 }
