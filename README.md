@@ -42,3 +42,5 @@ Phase 5 schema and validation rules are documented in [Education models and vali
 Phase 4 inventories are documented in [the platform skeleton](docs/PLATFORM_SKELETON.md), [planned routes](docs/ROUTE_INVENTORY.md), [environment variables](docs/ENVIRONMENT_VARIABLES.md), [dependencies](docs/DEPENDENCIES.md), and [deployment plan](docs/DEPLOYMENT_PLAN.md).
 
 Phase 36's optional integration, server secrets, web/mobile controls, queue behavior, and live verification steps are documented in [Strava integration](docs/STRAVA_INTEGRATION.md).
+
+Phase 37's curated content, private drafts, publication gates, owner-scoped storage, and recovery are documented in [Portfolio](docs/PORTFOLIO.md).

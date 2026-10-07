@@ -35,6 +35,7 @@ Phase 4 records names and classifications only. The example files contain no val
 | `STRAVA_TOKEN_ENCRYPTION_KEY` | 32-byte canonical-base64 secret key for owner-bound AES-GCM token envelopes. |
 | `STRAVA_WEBHOOK_VERIFY_TOKEN` | Server-held webhook challenge verification secret. |
 | `STRAVA_WEBHOOK_SUBSCRIPTION_ID` | Assigned subscription identifier, checked on every delivery. |
+| `APERTURE_PORTFOLIO_PUBLIC` | Explicit operator publication gate; false by default. Requires a separately prepared curated snapshot, fixed owner UUID, and canonical HTTPS origin. |
 
 Service-role keys and integration credentials must never use public prefixes or appear in the mobile example.
 

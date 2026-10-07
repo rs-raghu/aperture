@@ -12,6 +12,7 @@ export const mobileFeatureModuleLoaders: Readonly<Partial<Record<FeatureId, Feat
   "calculators": () => import("../features/finance/index"),
   "settings": () => import("../features/settings/index"),
   "strava": () => import("../features/strava/index"),
+  "portfolio": () => import("../features/portfolio/index"),
 });
 
 export function preloadFeatureFrontend(featureId: FeatureId): void {

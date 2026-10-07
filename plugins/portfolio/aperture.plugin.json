@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1, "id": "portfolio", "displayName": "Portfolio", "description": "Curate a private professional profile and prepare an explicitly configured public presentation.", "version": "0.1.0", "status": "enabled", "defaultEnabled": false, "disableAllowed": true, "order": 80, "icon": "briefcase",
+  "theme": { "accent": "#355f56", "surface": "#edf4f0" },
+  "permissions": [{ "id": "portfolio.edit", "description": "Edit curated professional content.", "required": true }, { "id": "portfolio.publish", "description": "Prepare or remove an explicitly confirmed public snapshot.", "required": true }],
+  "routes": [
+    { "id": "portfolio.editor", "label": "Portfolio", "description": "Edit a private professional portfolio.", "paths": { "web": "/portfolio/edit", "mobile": "/portfolio/edit" }, "navigation": "primary", "order": 80, "searchable": true, "requiresSession": true },
+    { "id": "portfolio.public", "label": "Public portfolio", "description": "View explicitly published professional content.", "paths": { "web": "/portfolio", "mobile": "/portfolio" }, "navigation": "hidden", "order": 81, "searchable": false, "requiresSession": false }
+  ],
+  "widgets": [], "calculatorModules": [],
+  "frontends": { "web": { "source": "apps/web/src/features/portfolio/index.ts", "import": "../features/portfolio/index" }, "mobile": { "source": "apps/mobile/src/features/portfolio/index.ts", "import": "../features/portfolio/index" } },
+  "backend": { "source": "packages/portfolio/src/index.ts", "import": "@aperture/portfolio" }, "migrations": ["packages/portfolio/migrations/20261007001000_portfolio.sql"]
+}

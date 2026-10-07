@@ -1,7 +1,7 @@
 project_id = "aperture-v2-local"
 
 [api]
-schemas = ["public", "education", "health", "finance"]
+schemas = ["public", "education", "health", "finance", "portfolio"]
 extra_search_path = ["public", "extensions"]
 
 [auth]

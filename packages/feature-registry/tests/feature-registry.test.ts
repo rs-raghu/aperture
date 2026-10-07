@@ -31,7 +31,7 @@ function manifest(id: string, path: string): FeatureManifest {
 
 describe("feature registry", () => {
   it("publishes generated navigation, searchable routes, widgets, permissions, modules, and migrations", () => {
-    expect(generatedFeatureManifests.map(({ id }) => id)).toEqual(["today", "education", "health", "finance", "planner", "calculators", "settings", "strava"]);
+    expect(generatedFeatureManifests.map(({ id }) => id)).toEqual(["today", "education", "health", "finance", "planner", "calculators", "settings", "strava", "portfolio"]);
     expect(featureRegistry.navigation("web").map(({ path }) => path)).toEqual(["/today", "/education", "/health", "/finance", "/planner", "/calculators", "/settings"]);
     expect(featureRegistry.search("assignment", "web").map(({ id }) => id)).toEqual(["education.assignments"]);
     expect(featureRegistry.widgets("mobile").map(({ id }) => id)).toEqual(["planner.items", "education.deadlines", "education.study", "health.plans", "finance.reminders"]);

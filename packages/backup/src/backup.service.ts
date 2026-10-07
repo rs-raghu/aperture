@@ -85,6 +85,8 @@ export class BackupService {
     this.#adapters = adapters;
   }
 
+  public featureIds(): readonly string[] { return Object.freeze([...this.#adapters.keys()]); }
+
   public async export(ownerId: string, requestedFeatureIds?: readonly string[]): Promise<ApertureBackup> {
     const featureIds = requestedFeatureIds === undefined ? [...this.#adapters.keys()] : [...new Set(requestedFeatureIds)];
     if (featureIds.length === 0) throw new Error("At least one backup feature is required.");

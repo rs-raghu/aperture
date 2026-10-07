@@ -5,8 +5,6 @@ import { featureRegistry } from "@aperture/feature-registry";
 import { useMemo, useState } from "react";
 import { useBackup } from "./backup-provider";
 
-const BACKUP_FEATURES = ["education", "health", "finance", "planner", "settings"] as const;
-
 function downloadJson(contents: string, filename: string): void {
   if (typeof URL.createObjectURL !== "function" || navigator.userAgent.includes("jsdom")) return;
   const url = URL.createObjectURL(new Blob([contents], { type: "application/json" }));
@@ -15,7 +13,8 @@ function downloadJson(contents: string, filename: string): void {
 
 export function DataRecoveryScreen() {
   const runtime = useBackup();
-  const [selected, setSelected] = useState<readonly string[]>(BACKUP_FEATURES);
+  const backupFeatures = useMemo(() => runtime.service.featureIds(), [runtime.service]);
+  const [selected, setSelected] = useState<readonly string[]>(backupFeatures);
   const [exportStatus, setExportStatus] = useState("");
   const [source, setSource] = useState("");
   const [mode, setMode] = useState<"merge" | "replace">("merge");
@@ -27,7 +26,7 @@ export function DataRecoveryScreen() {
   const generate = async () => {
     setBusy(true);
     try {
-      const backup = await runtime.service.export(runtime.ownerId, selected.length === BACKUP_FEATURES.length ? undefined : selected);
+      const backup = await runtime.service.export(runtime.ownerId, selected.length === backupFeatures.length ? undefined : selected);
       const contents = runtime.service.serialize(backup);
       downloadJson(contents, `aperture-backup-${backup.exportedAt.slice(0, 10)}.json`);
       setExportStatus(`Generated ${backup.recordCount} records · checksum ${backup.integrity.digest}`);
@@ -48,7 +47,7 @@ export function DataRecoveryScreen() {
     <div className="error-banner" role="note"><strong>Plaintext export.</strong> {BACKUP_PRIVACY_WARNING.replace("Privacy warning: ", "")}</div>
     <section className="settings-grid">
       <article className="panel settings-card"><div className="panel-heading"><h2>Export</h2><p>Choose every workspace for a full archive or select individual features.</p></div>
-        <div className="settings-fields">{BACKUP_FEATURES.map((featureId) => <label className="settings-toggle" key={featureId}><span>{names.get(featureId) ?? featureId}</span><input aria-label={`Export ${names.get(featureId) ?? featureId}`} type="checkbox" checked={selected.includes(featureId)} onChange={(event) => setSelected((current) => event.target.checked ? [...current, featureId] : current.filter((id) => id !== featureId))} /></label>)}</div>
+        <div className="settings-fields">{backupFeatures.map((featureId) => <label className="settings-toggle" key={featureId}><span>{names.get(featureId) ?? featureId}</span><input aria-label={`Export ${names.get(featureId) ?? featureId}`} type="checkbox" checked={selected.includes(featureId)} onChange={(event) => setSelected((current) => event.target.checked ? [...current, featureId] : current.filter((id) => id !== featureId))} /></label>)}</div>
         <button type="button" disabled={busy || selected.length === 0} onClick={() => { void generate(); }}>Download JSON backup</button>
         {exportStatus.length > 0 ? <p role="status">{exportStatus}</p> : null}
       </article>

@@ -187,12 +187,13 @@ async function recordMetadata(database: SqlExecutor, value: BackupMetadata): Pro
 export interface CreatePostgresBackupServiceOptions {
   readonly clock: { now(): string };
   readonly idGenerator: { generate(): string };
+  readonly additionalAdapters?: (database: SqlExecutor) => readonly BackupFeatureAdapter[];
 }
 
 export function createPostgresBackupService(database: TransactionalSqlExecutor, options: CreatePostgresBackupServiceOptions): BackupService {
   const repositories = repositorySet(database);
   return createBackupService({
-    adapters: createBackupFeatureAdapters(repositories, database),
+    adapters: [...createBackupFeatureAdapters(repositories, database), ...(options.additionalAdapters?.(database) ?? [])],
     clock: options.clock,
     idGenerator: options.idGenerator,
     async readUnits(ownerId) {
@@ -209,7 +210,7 @@ export function createPostgresBackupService(database: TransactionalSqlExecutor, 
     transactionRunner: {
       async run(work) {
         if (typeof database.transaction !== "function") throw new Error("Transactional restore is unavailable.");
-        return database.transaction((transaction) => work(createBackupFeatureAdapters(repositorySet(transaction), transaction)));
+        return database.transaction((transaction) => work([...createBackupFeatureAdapters(repositorySet(transaction), transaction), ...(options.additionalAdapters?.(transaction) ?? [])]));
       },
     },
   });

@@ -6,6 +6,10 @@ import { createHealthService, type HealthClock } from "@aperture/health";
 import { createPlannerService, type PlannerClock } from "@aperture/planner";
 import { createSettingsService } from "@aperture/settings";
 import { createBackupService } from "@aperture/backup";
+import { createPortfolioService, createPortfolioMemoryRepository, type PortfolioRuntime } from "@aperture/portfolio";
+import { createPortfolioBackupAdapter } from "@aperture/portfolio/backup";
+import { createSupabasePortfolioRepository } from "@aperture/portfolio/supabase";
+import { PortfolioProvider } from "@/features/portfolio";
 import { createStandardTodayContributors, createTodayService } from "@aperture/today";
 import { featureRegistry } from "@aperture/feature-registry";
 import {
@@ -44,6 +48,7 @@ export interface WebDataComposition {
   readonly planner: PlannerWebRuntime;
   readonly settings: SettingsWebRuntime;
   readonly backup: BackupWebRuntime;
+  readonly portfolio: PortfolioRuntime;
   readonly today: TodayWebRuntime;
   readonly mode: WebDataConfiguration["mode"];
   readonly snapshots: () => readonly CloudSynchronizationSnapshot[];
@@ -67,11 +72,12 @@ function synchronizationLabel(status: WebDataStatus): string {
 }
 
 export function createWebDataComposition(configuration: WebDataConfiguration): WebDataComposition {
-  const durable = configuration.mode === "supabase"
-    ? createSupabaseRepositorySet(createBrowserClient(configuration.supabaseUrl, configuration.supabasePublishableKey))
-    : null;
+  const client = configuration.mode === "supabase" ? createBrowserClient(configuration.supabaseUrl, configuration.supabasePublishableKey) : null;
+  const durable = client === null ? null : createSupabaseRepositorySet(client);
   const repositories = durable ?? createPreviewRepositorySet();
   const now = () => new Date().toISOString();
+  const portfolioRepository = client === null ? createPortfolioMemoryRepository() : createSupabasePortfolioRepository(client);
+  const portfolio = { ownerId: configuration.ownerId, service: createPortfolioService({ repository: portfolioRepository, clock: { now }, idGenerator: { generate: () => crypto.randomUUID() } }) };
   const educationClock: EducationClock = Object.freeze({ now });
   const healthClock: HealthClock = Object.freeze({ now });
   const plannerClock: PlannerClock = Object.freeze({ now });
@@ -110,7 +116,7 @@ export function createWebDataComposition(configuration: WebDataConfiguration): W
   });
   const backup = Object.freeze({
     service: createBackupService({
-      adapters: durable?.backupAdapters ?? createBackupFeatureAdapters(repositories), clock: { now }, idGenerator: { generate: () => crypto.randomUUID() },
+      adapters: [...(durable?.backupAdapters ?? createBackupFeatureAdapters(repositories)), createPortfolioBackupAdapter(portfolioRepository)], clock: { now }, idGenerator: { generate: () => crypto.randomUUID() },
       async readUnits(ownerId: string) {
         const value = await repositories.settings.findPreferences(ownerId);
         return value === null ? {} : { currency: value.currency, measurementSystem: value.units.measurementSystem, temperatureUnit: value.units.temperatureUnit, distanceUnit: value.units.distanceUnit, massUnit: value.units.massUnit };
@@ -141,6 +147,7 @@ export function createWebDataComposition(configuration: WebDataConfiguration): W
     planner,
     settings,
     backup,
+    portfolio,
     today,
     mode: configuration.mode,
     snapshots: () => durable?.synchronization.getAllSnapshots() ?? EMPTY_SYNCHRONIZATION,
@@ -157,6 +164,7 @@ export function WebDataProvider({ configuration, children }: { readonly configur
       <div className="data-sync-status" role="status" aria-live="polite">{synchronizationLabel(status)}</div>
       <BackupProvider runtime={composition.backup}>
       <SettingsProvider runtime={composition.settings}>
+      <PortfolioProvider runtime={composition.portfolio}>
         <TodayProvider runtime={composition.today}>
           <PlannerProvider runtime={composition.planner}>
           <FinanceProvider ownerId={configuration.ownerId} createRuntime={() => composition.finance}>
@@ -168,6 +176,7 @@ export function WebDataProvider({ configuration, children }: { readonly configur
           </FinanceProvider>
           </PlannerProvider>
         </TodayProvider>
+      </PortfolioProvider>
       </SettingsProvider>
       </BackupProvider>
     </WebDataContext.Provider>

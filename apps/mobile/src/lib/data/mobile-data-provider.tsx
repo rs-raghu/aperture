@@ -4,6 +4,10 @@ import { createHealthService, type HealthClock } from "@aperture/health";
 import { createPlannerService, type PlannerClock } from "@aperture/planner";
 import { createSettingsService } from "@aperture/settings";
 import { createBackupService } from "@aperture/backup";
+import { createPortfolioService, createPortfolioMemoryRepository, type PortfolioRuntime } from "@aperture/portfolio";
+import { createPortfolioBackupAdapter } from "@aperture/portfolio/backup";
+import { createSupabasePortfolioRepository } from "@aperture/portfolio/supabase";
+import { PortfolioProvider } from "../../features/portfolio";
 import { createStandardTodayContributors, createTodayService } from "@aperture/today";
 import { featureRegistry } from "@aperture/feature-registry";
 import {
@@ -35,6 +39,7 @@ export interface MobileDataComposition {
   readonly planner: PlannerMobileRuntime;
   readonly settings: SettingsMobileRuntime;
   readonly backup: BackupMobileRuntime;
+  readonly portfolio: PortfolioRuntime;
   readonly today: TodayMobileRuntime;
   readonly mode: "memory" | "supabase";
   readonly snapshots: () => readonly CloudSynchronizationSnapshot[];
@@ -70,6 +75,8 @@ export function createMobileDataComposition(
     : null;
   const repositories = durable ?? createPreviewRepositorySet();
   const now = () => new Date().toISOString();
+  const portfolioRepository = durable === null || supabaseClient === null ? createPortfolioMemoryRepository() : createSupabasePortfolioRepository(supabaseClient);
+  const portfolio = { ownerId, service: createPortfolioService({ repository: portfolioRepository, clock: { now }, idGenerator: { generate: randomUUID } }) };
   const educationClock: EducationClock = Object.freeze({ now });
   const healthClock: HealthClock = Object.freeze({ now });
   const plannerClock: PlannerClock = Object.freeze({ now });
@@ -89,7 +96,7 @@ export function createMobileDataComposition(
   });
   const backup = Object.freeze({
     service: createBackupService({
-      adapters: durable?.backupAdapters ?? createBackupFeatureAdapters(repositories), clock: { now }, idGenerator: { generate: randomUUID },
+      adapters: [...(durable?.backupAdapters ?? createBackupFeatureAdapters(repositories)), createPortfolioBackupAdapter(portfolioRepository)], clock: { now }, idGenerator: { generate: randomUUID },
       async readUnits(currentOwnerId: string) {
         const value = await repositories.settings.findPreferences(currentOwnerId);
         return value === null ? {} : { currency: value.currency, measurementSystem: value.units.measurementSystem, temperatureUnit: value.units.temperatureUnit, distanceUnit: value.units.distanceUnit, massUnit: value.units.massUnit };
@@ -120,6 +127,7 @@ export function createMobileDataComposition(
     planner,
     settings,
     backup,
+    portfolio,
     today: Object.freeze({
       service: createTodayService({
         widgets: featureRegistry.widgets("mobile"),
@@ -160,6 +168,7 @@ export function MobileDataProvider({ children }: { readonly children: ReactNode 
         </View>
         <BackupProvider runtime={composition.backup}>
         <SettingsProvider runtime={composition.settings}>
+        <PortfolioProvider runtime={composition.portfolio}>
           <TodayProvider runtime={composition.today}>
             <PlannerProvider runtime={composition.planner}>
             <FinanceProvider ownerId={ownerId} createRuntime={() => composition.finance}>
@@ -171,6 +180,7 @@ export function MobileDataProvider({ children }: { readonly children: ReactNode 
             </FinanceProvider>
             </PlannerProvider>
           </TodayProvider>
+        </PortfolioProvider>
         </SettingsProvider>
         </BackupProvider>
       </View>

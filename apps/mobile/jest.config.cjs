@@ -4,6 +4,9 @@ module.exports = {
   setupFilesAfterEnv: ["<rootDir>/tests/setup.ts"],
   collectCoverageFrom: ["src/features/{education,health,finance,planner,today,settings}/**/*.{ts,tsx}"],
   moduleNameMapper: {
+    "^@aperture/portfolio$": "<rootDir>/../../packages/portfolio/dist/index.js",
+    "^@aperture/portfolio/supabase$": "<rootDir>/../../packages/portfolio/dist/supabase.js",
+    "^@aperture/portfolio/backup$": "<rootDir>/../../packages/portfolio/dist/backup.js",
     "^@aperture/strava$": "<rootDir>/../../packages/strava/dist/index.js",
     "^@aperture/backup$": "<rootDir>/../../packages/backup/dist/index.js",
     "^@aperture/auth$": "<rootDir>/../../packages/auth/dist/index.js",
