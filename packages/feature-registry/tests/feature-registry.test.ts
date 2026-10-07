@@ -31,7 +31,7 @@ function manifest(id: string, path: string): FeatureManifest {
 
 describe("feature registry", () => {
   it("publishes generated navigation, searchable routes, widgets, permissions, modules, and migrations", () => {
-    expect(generatedFeatureManifests.map(({ id }) => id)).toEqual(["today", "education", "health", "finance", "planner", "calculators", "settings"]);
+    expect(generatedFeatureManifests.map(({ id }) => id)).toEqual(["today", "education", "health", "finance", "planner", "calculators", "settings", "strava"]);
     expect(featureRegistry.navigation("web").map(({ path }) => path)).toEqual(["/today", "/education", "/health", "/finance", "/planner", "/calculators", "/settings"]);
     expect(featureRegistry.search("assignment", "web").map(({ id }) => id)).toEqual(["education.assignments"]);
     expect(featureRegistry.widgets("mobile").map(({ id }) => id)).toEqual(["planner.items", "education.deadlines", "education.study", "health.plans", "finance.reminders"]);
@@ -39,6 +39,8 @@ describe("feature registry", () => {
     expect(featureRegistry.getFeature("calculators")?.calculatorModules.map(({ id }) => id)).toEqual(["calculators.shared"]);
     expect(featureRegistry.getFeature("health")?.migrations).toEqual(["packages/health/migrations/20260921002000_health.sql"]);
     expect(featureRegistry.getFeature("settings")?.permissions.map(({ id }) => id)).toEqual(["settings.read", "settings.write", "settings.integrations.read"]);
+    expect(featureRegistry.getFeature("strava")?.defaultEnabled).toBe(false);
+    expect(featureRegistry.navigation("web", { strava: true }).some(({ path }) => path === "/strava")).toBe(true);
     expect(featureRegistry.getFeature("settings")?.migrations).toContain("packages/settings/migrations/20260922002000_settings.sql");
   });
 

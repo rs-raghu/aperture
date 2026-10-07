@@ -40,3 +40,5 @@ Phase 14 memory behavior and reusable repository contracts are documented in [He
 Phase 5 schema and validation rules are documented in [Education models and validation](docs/EDUCATION_MODELS_AND_VALIDATION.md). Phase 6 formulas are documented in [Education calculations](docs/EDUCATION_CALCULATIONS.md). Phase 7 workflows are documented in [Education services](docs/EDUCATION_SERVICES.md). Phase 8 storage behavior is documented in [Education memory repository](docs/EDUCATION_MEMORY_REPOSITORY.md). Phase 9 web routes and composition are documented in [Education web](docs/EDUCATION_WEB.md). Phase 10 mobile routes, composition, and verification are documented in [Education mobile](docs/EDUCATION_MOBILE.md).
 
 Phase 4 inventories are documented in [the platform skeleton](docs/PLATFORM_SKELETON.md), [planned routes](docs/ROUTE_INVENTORY.md), [environment variables](docs/ENVIRONMENT_VARIABLES.md), [dependencies](docs/DEPENDENCIES.md), and [deployment plan](docs/DEPLOYMENT_PLAN.md).
+
+Phase 36's optional integration, server secrets, web/mobile controls, queue behavior, and live verification steps are documented in [Strava integration](docs/STRAVA_INTEGRATION.md).

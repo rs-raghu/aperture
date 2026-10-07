@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1, "id": "strava", "displayName": "Strava", "description": "Optional owner-authorized running imports and connection controls.", "version": "0.1.0", "status": "enabled", "defaultEnabled": false, "disableAllowed": true, "order": 70, "icon": "activity",
+  "theme": { "accent": "#a13d14", "surface": "#fff0e8" },
+  "permissions": [{ "id": "strava.manage", "description": "Connect, synchronize, or disconnect the owner's Strava account.", "required": true }],
+  "routes": [{ "id": "strava.overview", "label": "Strava", "description": "Manage an optional running integration.", "paths": { "web": "/strava", "mobile": "/strava" }, "navigation": "primary", "order": 70, "searchable": true, "requiresSession": true }],
+  "widgets": [], "calculatorModules": [],
+  "frontends": { "web": { "source": "apps/web/src/features/strava/index.ts", "import": "../features/strava/index" }, "mobile": { "source": "apps/mobile/src/features/strava/index.ts", "import": "../features/strava/index" } },
+  "backend": { "source": "packages/strava/src/index.ts", "import": "@aperture/strava" }, "migrations": ["packages/strava/migrations/20261007000000_strava.sql"]
+}

@@ -6,9 +6,11 @@ import { textSchema } from "../internal/primitives.js";
 import { hasDefinedUpdate, orderedInstants } from "../internal/validation.helpers.js";
 import { activityRouteIdSchema } from "../routes/activity-route.types.js";
 import { workoutSessionIdSchema } from "../workouts/workout-session.types.js";
+import { runningActivitySourceSchema } from "./running-activity.types.js";
 
 export const createRunningActivityInputSchema = z.strictObject({
   ownerId: ownerIdSchema,
+  sourceReference: runningActivitySourceSchema.optional(),
   workoutSessionId: workoutSessionIdSchema.optional(),
   routeId: activityRouteIdSchema.optional(),
   equipmentIds: z.array(equipmentIdSchema).readonly().optional(),

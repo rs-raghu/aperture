@@ -17,6 +17,7 @@ Phase 4 records names and classifications only. The example files contain no val
 | `EXPO_PUBLIC_SUPABASE_URL` | Public Supabase project endpoint. |
 | `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public mobile-safe publishable key. |
 | `EXPO_PUBLIC_APP_SCHEME` | Mobile deep-link scheme. |
+| `EXPO_PUBLIC_APERTURE_WEB_URL` | Owned HTTPS web server origin for authenticated Strava API requests. Contains no integration secret. |
 
 ## Server-only
 
@@ -24,9 +25,16 @@ Phase 4 records names and classifications only. The example files contain no val
 | --- | --- |
 | `SUPABASE_SERVICE_ROLE_KEY` | Privileged server access. Never expose to browsers or mobile bundles. |
 | `APERTURE_OWNER_EMAIL` | Future private-owner bootstrap configuration. |
-| `STRAVA_CLIENT_ID` | Future server-side provider identifier. |
-| `STRAVA_CLIENT_SECRET` | Future server-side provider secret. |
-| `STRAVA_REDIRECT_URI` | Future server-side callback configuration. |
+| `APERTURE_OWNER_ID` | Allowlisted owner UUID; required for live Strava server composition. |
+| `APERTURE_STRAVA_MODE` | `disabled` by default, development-only `mock`, or configured `live`. |
+| `APERTURE_WEB_ORIGIN` | Fixed trusted web Origin and Strava callback completion destination. |
+| `DATABASE_URL` | Server-only PostgreSQL connection for transactional integration storage. |
+| `STRAVA_CLIENT_ID` | Server-side provider application identifier. |
+| `STRAVA_CLIENT_SECRET` | Server-side provider secret. |
+| `STRAVA_REDIRECT_URI` | Registered server-side OAuth callback URI. |
+| `STRAVA_TOKEN_ENCRYPTION_KEY` | 32-byte canonical-base64 secret key for owner-bound AES-GCM token envelopes. |
+| `STRAVA_WEBHOOK_VERIFY_TOKEN` | Server-held webhook challenge verification secret. |
+| `STRAVA_WEBHOOK_SUBSCRIPTION_ID` | Assigned subscription identifier, checked on every delivery. |
 
 Service-role keys and integration credentials must never use public prefixes or appear in the mobile example.
 
