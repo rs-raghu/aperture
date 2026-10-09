@@ -1,0 +1,26 @@
+# Local deployment records and credentials must never be uploaded as source.
+.deployment/
+**/.env*
+**/.vercel/
+supabase/.temp/
+
+# Generated local output is rebuilt on Vercel from the workspace sources.
+**/node_modules/
+**/.next/
+**/dist/
+**/coverage/
+**/.expo*/
+**/playwright-report/
+**/.playwright-results/
+*.tsbuildinfo
+**/*.log
+/backups/
+/backup/
+/dumps/
+/dump/
+**/*.backup
+**/*.bak
+**/*.dump
+**/*.db
+**/*.sqlite
+**/*.sqlite3
