@@ -4,7 +4,7 @@ import { createPortfolioMemoryRepository, createPortfolioService, type Portfolio
 import { createSupabasePortfolioRepository } from "@aperture/portfolio/supabase";
 import { useMobileAuth } from "../../lib/auth/mobile-auth-provider";
 const PortfolioContext = createContext<PortfolioRuntime | null>(null);
-export function PortfolioProvider({ runtime: injected, children }: { readonly runtime?: PortfolioRuntime; readonly children: ReactNode }) {
+export function PortfolioProvider({ runtime: injected, children }: { readonly runtime?: PortfolioRuntime; readonly children?: ReactNode }) {
   const auth = useMobileAuth();
   const runtime = useMemo(() => {
     if (injected !== undefined) return injected;

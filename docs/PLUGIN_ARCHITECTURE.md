@@ -59,3 +59,11 @@ npm run validate:plugins
 ```
 
 The shared shells consume the generated navigation and search metadata without handwritten central imports. File-based route modules remain thin platform adapters and feature implementation stays within its platform or shared package boundary.
+
+## Feature-owned runtime and recovery contributions
+
+An optional `dataContributions` manifest field declares `web`, `mobile`, and `server` entries, each with `source`, a literal `import`, and `exportName`. The source must be a repository-owned `.ts` file and the export name a JavaScript identifier. Generation emits `plugin-data-contributions.generated.ts` for each frontend and `plugin-recovery-adapters.generated.ts` for the Node server. The checked TypeScript signatures validate each exported factory.
+
+Frontend factories receive the owner, shared Supabase client or null for preview, injected clock, and ID generator. They return a feature identity, backup adapters, and a provider wrapper. Composition roots consume this generic list, allowing a new feature to own its service, repository choice, provider, and recovery registration without adding its name to the root. Portfolio demonstrates this contract. Existing Education, Health, Finance, Planner, and Settings composition predates the hook and remains explicit.
+
+Server factories receive a transaction-scoped `SqlExecutor` and return a `BackupFeatureAdapter`. Mutating adapters declare their trusted qualified `transactionTables`; the recovery service validates those identifiers and acquires their locks before mutation. Never import a Node driver or server secret through a frontend factory or the shared package root. Registry generation tests check discovery on both frontends and the server, drift detection, invalid export names, traversal, and missing sources.

@@ -5,11 +5,9 @@ import { allFinanceCalculatorPlugins, createFinanceApplicationService } from "@a
 import { createHealthService, type HealthClock } from "@aperture/health";
 import { createPlannerService, type PlannerClock } from "@aperture/planner";
 import { createSettingsService } from "@aperture/settings";
-import { createBackupService } from "@aperture/backup";
-import { createPortfolioService, createPortfolioMemoryRepository, type PortfolioRuntime } from "@aperture/portfolio";
-import { createPortfolioBackupAdapter } from "@aperture/portfolio/backup";
-import { createSupabasePortfolioRepository } from "@aperture/portfolio/supabase";
-import { PortfolioProvider } from "@/features/portfolio";
+import { createBackupService, createRecoveryClient } from "@aperture/backup";
+import { webDataContributionFactories } from "@/generated/plugin-data-contributions.generated";
+import type { FeatureDataContribution } from "./feature-data-contribution";
 import { createStandardTodayContributors, createTodayService } from "@aperture/today";
 import { featureRegistry } from "@aperture/feature-registry";
 import {
@@ -39,6 +37,7 @@ export type WebDataConfiguration =
       readonly ownerId: string;
       readonly supabaseUrl: string;
       readonly supabasePublishableKey: string;
+      readonly recoveryEnabled?: boolean;
     };
 
 export interface WebDataComposition {
@@ -48,7 +47,7 @@ export interface WebDataComposition {
   readonly planner: PlannerWebRuntime;
   readonly settings: SettingsWebRuntime;
   readonly backup: BackupWebRuntime;
-  readonly portfolio: PortfolioRuntime;
+  readonly featureContributions: readonly FeatureDataContribution[];
   readonly today: TodayWebRuntime;
   readonly mode: WebDataConfiguration["mode"];
   readonly snapshots: () => readonly CloudSynchronizationSnapshot[];
@@ -76,8 +75,7 @@ export function createWebDataComposition(configuration: WebDataConfiguration): W
   const durable = client === null ? null : createSupabaseRepositorySet(client);
   const repositories = durable ?? createPreviewRepositorySet();
   const now = () => new Date().toISOString();
-  const portfolioRepository = client === null ? createPortfolioMemoryRepository() : createSupabasePortfolioRepository(client);
-  const portfolio = { ownerId: configuration.ownerId, service: createPortfolioService({ repository: portfolioRepository, clock: { now }, idGenerator: { generate: () => crypto.randomUUID() } }) };
+  const featureContributions = webDataContributionFactories.map((factory) => factory({ ownerId: configuration.ownerId, client, clock: { now }, idGenerator: { generate: () => crypto.randomUUID() } }));
   const educationClock: EducationClock = Object.freeze({ now });
   const healthClock: HealthClock = Object.freeze({ now });
   const plannerClock: PlannerClock = Object.freeze({ now });
@@ -96,7 +94,7 @@ export function createWebDataComposition(configuration: WebDataConfiguration): W
       repositories: repositories.finance,
       calculatorRegistry: allFinanceCalculatorPlugins,
       clock: { now },
-      idGenerator: { next: (scope: string) => `${scope.replaceAll(" ", "-")}-${crypto.randomUUID()}` },
+      idGenerator: { next: () => crypto.randomUUID() },
     }),
     context: Object.freeze({ ownerId: configuration.ownerId }),
   });
@@ -116,7 +114,7 @@ export function createWebDataComposition(configuration: WebDataConfiguration): W
   });
   const backup = Object.freeze({
     service: createBackupService({
-      adapters: [...(durable?.backupAdapters ?? createBackupFeatureAdapters(repositories)), createPortfolioBackupAdapter(portfolioRepository)], clock: { now }, idGenerator: { generate: () => crypto.randomUUID() },
+      adapters: [...(durable?.backupAdapters ?? createBackupFeatureAdapters(repositories)), ...featureContributions.flatMap((contribution) => contribution.backupAdapters)], clock: { now }, idGenerator: { generate: () => crypto.randomUUID() },
       async readUnits(ownerId: string) {
         const value = await repositories.settings.findPreferences(ownerId);
         return value === null ? {} : { currency: value.currency, measurementSystem: value.units.measurementSystem, temperatureUnit: value.units.temperatureUnit, distanceUnit: value.units.distanceUnit, massUnit: value.units.massUnit };
@@ -124,7 +122,8 @@ export function createWebDataComposition(configuration: WebDataConfiguration): W
       transactionRunner: { async run() { throw new Error("This client cannot apply transactional restores."); } },
     }),
     ownerId: configuration.ownerId,
-    canMutate: false,
+    canMutate: configuration.mode === "supabase" && configuration.recoveryEnabled === true,
+    ...(configuration.mode === "supabase" && configuration.recoveryEnabled === true ? { recovery: createRecoveryClient({ endpoint: "/api/recovery" }) } : {}),
   });
   const today = Object.freeze({
     service: createTodayService({
@@ -147,7 +146,7 @@ export function createWebDataComposition(configuration: WebDataConfiguration): W
     planner,
     settings,
     backup,
-    portfolio,
+    featureContributions,
     today,
     mode: configuration.mode,
     snapshots: () => durable?.synchronization.getAllSnapshots() ?? EMPTY_SYNCHRONIZATION,
@@ -164,19 +163,17 @@ export function WebDataProvider({ configuration, children }: { readonly configur
       <div className="data-sync-status" role="status" aria-live="polite">{synchronizationLabel(status)}</div>
       <BackupProvider runtime={composition.backup}>
       <SettingsProvider runtime={composition.settings}>
-      <PortfolioProvider runtime={composition.portfolio}>
         <TodayProvider runtime={composition.today}>
           <PlannerProvider runtime={composition.planner}>
           <FinanceProvider ownerId={configuration.ownerId} createRuntime={() => composition.finance}>
             <EducationProvider ownerId={configuration.ownerId} createRuntime={() => composition.education}>
               <HealthProvider ownerId={configuration.ownerId} createRuntime={() => composition.health}>
-                {children}
+                {composition.featureContributions.reduceRight((content, contribution) => contribution.wrap(content), children)}
               </HealthProvider>
             </EducationProvider>
           </FinanceProvider>
           </PlannerProvider>
         </TodayProvider>
-      </PortfolioProvider>
       </SettingsProvider>
       </BackupProvider>
     </WebDataContext.Provider>

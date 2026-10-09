@@ -1,14 +1,10 @@
 # Aperture v2
 
-Aperture v2 is being built incrementally as a new, independent project.
+Aperture v2 is an owner-only personal dashboard with Next.js web and Expo mobile applications. Education, Health, Finance, 38 Finance calculators, Today, Planner, Settings, and reviewed data recovery share strict domain contracts and durable owner-scoped Supabase repositories. Optional Strava imports remain isolated; Portfolio contains explicitly curated content and defaults to private.
 
-Phase 5 implements runtime Education models and validation, Phase 6 implements seven academic calculators, Phase 7 implements dependency-injected Education services, Phase 8 provides an isolated Education in-memory repository adapter, Phase 9 adds an Education-only Next.js preview, and Phase 10 adds an Education-only Expo/React Native preview. Phase 11 adds Health runtime models and structural validation, Phase 12 implements all 11 declared Health calculations, Phase 13 implements the owner-scoped Health application service and lifecycle workflows, Phase 14 provides an isolated Health memory repository adapter, Phase 15 adds the Health Next.js preview, Phase 16 adds the matching Expo/React Native preview, and Phase 17 hardens the complete Health vertical slice. Finance remains declaration-only.
+Production authentication verifies the configured owner's Supabase identity. Database migrations enforce owner RLS and keep integration credentials server-only. Cloud mode shares data across platforms with explicit network errors and no offline record cache or write outbox. The opt-in development bypass uses temporary synthetic memory data and is rejected in production.
 
-Education and Health objects can be parsed with strict Zod schemas; calculators and owner-scoped workflows power responsive web and mobile previews through volatile memory adapters. Preview data disappears on browser/app reload and is not the future Supabase repository. Aperture is not a complete or production-ready application. There is no authentication, synchronization, API, durable storage, or Finance UI.
-
-Do not enter personal or financial data. The existing Aperture project is retained separately and is not imported into this project.
-
-Phase 14 implements every Health repository interface in `@aperture/health-memory`. Each factory is isolated and empty, all operations are owner-scoped, values are defensively copied, queries have deterministic ordering and validated cursors, and equipment usage supports unit-safe aggregation. Phase 15 composes that adapter and the real Health service into ten responsive Health web routes. Phase 16 provides the same feature through ten mobile-native Expo Router routes with safe-area, keyboard, virtualized-list, accessibility, and medical-safety boundaries.
+Phase 38 performs release hardening and authenticated browser workflow verification. Local checks do not establish a remote deployment or native-device result. Dependency advisories remain disclosed in [the security review](docs/SECURITY_REVIEW.md); inspect [release readiness](docs/RELEASE_READINESS.md) and [the execution ledger](docs/EXECUTION_LEDGER.md) before selecting a deployment target. The earlier Aperture project remains separate.
 
 ## Structural verification
 
@@ -28,6 +24,8 @@ npm run lint --workspace @aperture/mobile
 npm run typecheck --workspace @aperture/mobile
 npm run export --workspace @aperture/mobile -- --platform web
 ```
+
+After building the web app, run the synthetic authenticated browser fixture with `npm run test:e2e --workspace @aperture/e2e`. It uses installed Chrome, an isolated in-memory PostgreSQL database, and a local Auth/REST fixture. It never connects to a remote project. See [the test matrix](docs/TEST_MATRIX.md) for coverage and its limits.
 
 See [the phase plan](docs/PHASES.md), [the Education inventory](docs/EDUCATION_SKELETON.md), [the Health inventory](docs/HEALTH_SKELETON.md), [the Finance inventory](docs/FINANCE_SKELETON.md), and [architectural decisions](docs/DECISIONS.md).
 

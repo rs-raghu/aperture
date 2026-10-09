@@ -20,7 +20,13 @@ A dry-run compares archive identities with durable owner records. It reports add
 
 `createPostgresBackupService` rebuilds feature adapters inside the supplied `TransactionalSqlExecutor`. Replacement purges only explicit allowlisted feature tables in foreign-key-safe reverse order, then recreates schema-validated records in dependency order. Any failure rolls the transaction back. Settings replacement removes server-held integration credentials and restores only sanitized connection status; integrations therefore require reconnection after recovery.
 
-The browser and mobile compositions deliberately provide read, export, validation, and dry-run operations only. They do not emulate transactions over separate Supabase REST requests. Production restore and deletion must call the server-side service with a real PostgreSQL transaction.
+The browser and mobile compositions export through their owner-scoped repositories. Phase 38 adds reviewed restore and deletion through the authenticated `/api/recovery` Node API, backed by one PostgreSQL transaction. It requires `APERTURE_RECOVERY_ENABLED=true`, a server-only `DATABASE_URL`, the configured Supabase owner, and the owned web origin. Mobile supplies the verified Supabase bearer session to `EXPO_PUBLIC_APERTURE_WEB_URL`; browsers use their session cookie and an exact Origin check. With recovery disabled, export and local validation remain available and mutation controls stay unavailable.
+
+The API accepts at most 8 MiB including its JSON envelope and rejects excessive nesting, unknown command fields, corrupt archives, and cross-owner records. Responses contain counts and confirmation text, never archive payloads or provider diagnostics. Every mutation recomputes its preview and checks exact confirmation and the current state fingerprint. Both merge and replacement require typed confirmation in this interface. Selected-feature deletion has a separate review and confirmation. Changing an archive or mode invalidates the pending review.
+
+Recovery locks the registered feature tables in a deterministic order with a ten-second lock timeout before checking the state fingerprint and writing. This prevents a concurrent REST write from invalidating the preview inside the transaction. Locks can temporarily block normal writes; restore during a quiet period. Node transaction queries are serialized on their checked-out driver connection and drained before commit or rollback. An authenticated process limits recovery POST requests to 30 per minute; production edge limits remain necessary across multiple server instances. Export a new archive after recovery and reload open feature screens.
+
+Feature-owned adapters can register through manifest `dataContributions.server` exports. Portfolio archives contain only curated private content; recovery clears publication snapshots. Credentials and publication status are never restored.
 
 ## Operator recovery procedure
 

@@ -1,5 +1,5 @@
 import { randomBytes, randomUUID } from "node:crypto";
-import { Pool } from "pg";
+import { createSecurePostgresPool } from "@aperture/postgres-repositories/node";
 import { createStravaService } from "./strava.service.js";
 import { StravaError } from "./strava.types.js";
 import { createStravaTokenCipher } from "./token-cipher.js";
@@ -25,16 +25,13 @@ export function createStravaServerRuntime(environment: Readonly<Record<string, s
   if (environment.APERTURE_OWNER_ID !== ownerId) throw new StravaError("strava-owner-denied", "The server integration owner does not match the authenticated owner.");
   const url = new URL(required("DATABASE_URL"));
   if (!["postgres:", "postgresql:"].includes(url.protocol)) throw new StravaError("strava-invalid-configuration", "Strava storage requires PostgreSQL.");
-  const local = ["localhost", "127.0.0.1", "::1", "[::1]"].includes(url.hostname);
-  // Strip URL SSL switches so they cannot override certificate verification on the Pool.
-  for (const name of ["sslmode", "sslcert", "sslkey", "sslrootcert"]) url.searchParams.delete(name);
   const cipher = createStravaTokenCipher(required("STRAVA_TOKEN_ENCRYPTION_KEY"));
   const transport = createStravaHttpTransport({ clientId: required("STRAVA_CLIENT_ID"), clientSecret: required("STRAVA_CLIENT_SECRET"), redirectUri: required("STRAVA_REDIRECT_URI"), clock });
   const verifyToken = required("STRAVA_WEBHOOK_VERIFY_TOKEN");
   const subscription = environment.STRAVA_WEBHOOK_SUBSCRIPTION_ID;
   const subscriptionId = subscription === undefined || subscription === "" ? undefined : Number(subscription);
   if (subscriptionId !== undefined && (!Number.isSafeInteger(subscriptionId) || subscriptionId <= 0)) throw new StravaError("strava-invalid-configuration", "The Strava subscription identifier must be a positive integer.");
-  const pool = new Pool({ connectionString: url.toString(), ssl: local ? false : { rejectUnauthorized: true }, max: 3, connectionTimeoutMillis: 10_000, idleTimeoutMillis: 30_000 });
+  const pool = createSecurePostgresPool(url.toString(), 3);
   pool.on("error", () => { console.warn("Strava database connection closed unexpectedly."); });
   const database = createNodePostgresExecutor(pool);
   const options = { clock, idGenerator };

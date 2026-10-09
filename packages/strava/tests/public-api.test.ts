@@ -4,4 +4,4 @@ it("exposes client-safe and server APIs through separate public imports", async 
   expect(client.createStravaClient).toBeTypeOf("function"); expect(client.createStravaService).toBeTypeOf("function");
   expect("createStravaTokenCipher" in client).toBe(false); expect(server.createStravaTokenCipher).toBeTypeOf("function");
   expect(server.createStravaPostgresUnitOfWork).toBeTypeOf("function");
-});
+}, 15_000);

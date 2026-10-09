@@ -5,7 +5,7 @@ import { createPortfolioMemoryRepository, createPortfolioService, type Portfolio
 import { createSupabasePortfolioRepository } from "@aperture/portfolio/supabase";
 export type PortfolioWebConfiguration = { readonly mode: "memory"; readonly ownerId: string } | { readonly mode: "supabase"; readonly ownerId: string; readonly supabaseUrl: string; readonly supabasePublishableKey: string };
 const PortfolioContext = createContext<PortfolioRuntime | null>(null);
-export function PortfolioProvider({ configuration, runtime: injected, children }: { readonly configuration?: PortfolioWebConfiguration; readonly runtime?: PortfolioRuntime; readonly children: ReactNode }) {
+export function PortfolioProvider({ configuration, runtime: injected, children }: { readonly configuration?: PortfolioWebConfiguration; readonly runtime?: PortfolioRuntime; readonly children?: ReactNode }) {
   const runtime = useMemo(() => {
     if (injected !== undefined) return injected;
     if (configuration === undefined) throw new Error("Portfolio configuration is missing.");

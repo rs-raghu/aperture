@@ -9,6 +9,8 @@ export interface BackupRecordIdentity {
 export interface BackupFeatureAdapter {
   readonly featureId: string;
   readonly schemaVersion: number;
+  /** Trusted server adapter metadata used to block concurrent writes during recovery. */
+  readonly transactionTables?: readonly string[];
   export(ownerId: string): Promise<readonly BackupCollection[]>;
   validate(ownerId: string, payload: BackupFeaturePayload): Promise<readonly BackupIssue[]>;
   migrate?(payload: BackupFeaturePayload): Promise<BackupFeaturePayload>;

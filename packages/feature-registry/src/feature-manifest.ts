@@ -37,6 +37,8 @@ export interface CalculatorModuleManifest extends FeatureModuleReference {
   readonly id: string;
 }
 
+export interface FeatureDataContributionReference extends FeatureModuleReference { readonly exportName: string; }
+
 export interface FeatureManifest {
   readonly schemaVersion: 1;
   readonly id: string;
@@ -58,6 +60,7 @@ export interface FeatureManifest {
   readonly calculatorModules: readonly CalculatorModuleManifest[];
   readonly frontends: Readonly<Partial<Record<FeaturePlatform, FeatureModuleReference>>>;
   readonly backend?: FeatureModuleReference;
+  readonly dataContributions?: Readonly<Partial<Record<FeaturePlatform | "server", FeatureDataContributionReference>>>;
   readonly migrations: readonly string[];
 }
 

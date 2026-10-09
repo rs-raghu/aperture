@@ -17,7 +17,7 @@ test("discovers core and plugin-owned migrations without a central manifest", as
 
   assert.deepEqual(
     migrations.map(({ scope }) => scope),
-    ["core", "education", "health", "finance", "platform-contracts", "postgres-repositories", "core", "planner", "settings", "backup", "strava", "portfolio"],
+    ["core", "education", "health", "finance", "platform-contracts", "postgres-repositories", "core", "planner", "settings", "backup", "strava", "portfolio", "core", "portfolio"],
   );
   assert.equal(new Set(migrations.map(({ version }) => version)).size, migrations.length);
   assert.deepEqual(
@@ -248,4 +248,27 @@ test("enforces authenticated owner RLS and denies anonymous and cross-owner acce
   } finally {
     await db.close();
   }
+});
+
+test("modern PostgREST claims govern RLS and portfolio RPC without inheriting stale legacy claims", async () => {
+  const db = new PGlite();
+  const ownerA = "10000000-0000-4000-8000-000000000001";
+  const ownerB = "20000000-0000-4000-8000-000000000001";
+  try {
+    await apply(db, await discoverMigrations());
+    await db.query("insert into education.institutions(id, owner_id, name) values ('30000000-0000-4000-8000-000000000001', $1, 'A'), ('30000000-0000-4000-8000-000000000002', $2, 'B')", [ownerA, ownerB]);
+    await db.exec("set role authenticated");
+    await db.query("select set_config('request.jwt.claim.sub', $1, false), set_config('request.jwt.claims', $2, false)", [ownerA, JSON.stringify({ sub: ownerB, role: "authenticated" })]);
+    assert.deepEqual((await db.query("select owner_id from education.institutions")).rows, [{ owner_id: ownerB }]);
+    const candidate = { id: "40000000-0000-4000-8000-000000000001", ownerId: ownerB, revision: 1, createdAt: "2040-01-01T00:00:00.000Z", updatedAt: "2040-01-01T00:00:00.000Z", content: {}, publication: null };
+    assert.equal((await db.query("select portfolio.save_draft($1::jsonb, 0) as saved", [JSON.stringify(candidate)])).rows[0].saved, true);
+    await assert.rejects(db.query("select portfolio.save_draft($1::jsonb, 0)", [JSON.stringify({ ...candidate, ownerId: ownerA })]), /owner denied/);
+    await db.query("select set_config('request.jwt.claims', '{}', false)");
+    assert.deepEqual((await db.query("select owner_id from education.institutions")).rows, []);
+    await assert.rejects(db.query("select portfolio.save_draft($1::jsonb, 0)", [JSON.stringify(candidate)]), /owner denied/);
+    await db.query("select set_config('request.jwt.claims', $1, false)", [JSON.stringify({ sub: "not-a-uuid" })]);
+    await assert.rejects(db.query("select owner_id from education.institutions"), /uuid/);
+    await db.query("select set_config('request.jwt.claims', '', false)");
+    assert.deepEqual((await db.query("select owner_id from education.institutions")).rows, [{ owner_id: ownerA }]);
+  } finally { await db.close(); }
 });

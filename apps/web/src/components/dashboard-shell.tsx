@@ -11,7 +11,7 @@ function routeIsActive(pathname: string, path: string): boolean {
   return pathname === path || path !== "/" && pathname.startsWith(`${path}/`);
 }
 
-export function WebDashboardShell({ children }: { readonly children: ReactNode }) {
+export function WebDashboardShell({ children, accountControls }: { readonly children: ReactNode; readonly accountControls?: ReactNode }) {
   const pathname = usePathname();
   const settings = useOptionalSettings();
   const [sessionOverrides, setSessionOverrides] = useState<FeatureEnablementOverrides>({});
@@ -62,6 +62,7 @@ export function WebDashboardShell({ children }: { readonly children: ReactNode }
           {navigation.map((item) => <Link key={item.id} href={item.path} aria-current={routeIsActive(pathname, item.path) ? "page" : undefined} onMouseEnter={() => preloadFeatureFrontend(item.featureId as FeatureId)} onFocus={() => preloadFeatureFrontend(item.featureId as FeatureId)}>{item.label}</Link>)}
         </nav>
         <div className="dashboard-header-actions">
+          {accountControls}
           <button className="dashboard-search-button" type="button" onClick={() => setPaletteOpen(true)} aria-haspopup="dialog"><span aria-hidden="true">⌕</span><span>Search</span><kbd>Ctrl K</kbd></button>
           <button className="dashboard-menu-button" type="button" onClick={() => setMobileNavigationOpen((open) => !open)} aria-expanded={mobileNavigationOpen} aria-controls="dashboard-mobile-nav"><span aria-hidden="true">☰</span><span className="sr-only">Menu</span></button>
         </div>

@@ -1,0 +1,28 @@
+# Release security review
+
+Phase 38 review, 2026-10-09. This records application controls and dependency exposure separately. It is not a penetration-test certificate or an assertion that the dependency audit is clean.
+
+| Boundary | Control and verification |
+| --- | --- |
+| Authentication | Supabase `getUser` verifies the fixed owner email and configured UUID. Unknown users, expired/missing sessions, logout, callback safety, and production bypass rejection have contract tests. The production browser fixture verifies login and logout with the real SDK and synthetic provider. |
+| RLS and owner claims | Restricted-role migration tests verify owner SELECT/INSERT/UPDATE isolation, denied credentials, modern JSON `request.jwt.claims` precedence, invalid/missing subjects, and legacy compatibility. The Portfolio invoker RPC uses the same owner claim rule. Modern claims never fall back to a stale legacy subject. |
+| Client schema access | `education`, `health`, `finance`, `platform`, `planner`, and `portfolio` are configured API schemas. Anonymous grants remain denied; exposing a schema does not bypass RLS. Integration credential tables are revoked from authenticated and anonymous clients. |
+| Secrets | Database URLs, service-role keys, Strava client secrets, webhook secrets, and encryption keys are server-only. Client-safe package roots exclude Node drivers and token-vault modules. Environment examples contain placeholders; generated bundle and tracked-file scans are release gates. |
+| Recovery | Verified owner first; cookie requests require exact Origin, native requests verified bearer authorization. Strict commands exclude owner overrides. Limits: 8 MiB request envelope, 40 levels, 250,000 nodes, 30 authenticated POSTs/minute per process. Fresh review, exact confirmation, table locks, and a single transaction prevent stale approval and partial mutation. |
+| OAuth and webhooks | Strava uses cryptographic state with ten-minute expiry, consumed transactionally before exchange, encrypted owner-bound tokens, fixed HTTPS transport with timeout/no redirects, rate backoff, and bounded idempotent queue ingress. Unsigned events require authoritative provider fetch; integration remains disabled by default. |
+| Token storage | Web uses Supabase SSR session cookies. Native sessions use SecureStore rather than AsyncStorage. Strava access/refresh material is AES-256-GCM ciphertext with owner-associated data and a server-held key; archives exclude it. |
+| XSS and navigation | React renders curated text without HTML injection. Portfolio/contact/resume URLs use strict allowed schemes. Auth and integration completion destinations are fixed or validated local destinations. User inputs never become SQL identifiers or arbitrary provider fetch URLs. |
+| Caching and publication | Private layout and integration/recovery APIs are dynamic; recovery responses are `no-store`. Public Portfolio reads are uncached and fail closed unless operator configuration and an independently prepared snapshot are both present. Recovery never republishes. |
+| Errors and logs | Application errors are mapped to safe messages; integration/recovery logs omit requests, payloads, credentials, database diagnostics, and owner records. Error-state component tests and browser page-error collection cover the touched workflows. |
+
+## Dependency audit and reachability
+
+The 2026-10-09 workspace audit reports **15 moderate, 50 high, 0 critical** findings after compatible Expo SDK patch updates. It exits nonzero. npm counts vulnerable dependants as well as leaf packages; these are not 65 distinct advisory mechanisms. No forced audit fix or unrelated major upgrade was used. Unrelated Radix/native peer versions were preserved from the Phase 37 lockfile.
+
+Two high-severity leaf advisories currently have no published fix: [braces nested-pattern stack exhaustion](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) and [node-forge RSA signature verification](https://github.com/advisories/GHSA-86w9-cpqp-85rv). The affected graph primarily enters through Expo CLI/Metro, Jest, and certificate/signing utilities. `npm ls braces node-forge --workspace @aperture/web --omit=dev` reports neither package in the web production dependency graph. Application code does not accept glob expressions or verify RSA signatures with Forge. This is a reachability assessment, not proof that every build-tool path is harmless.
+
+Keep Metro, test fixture servers, and build tooling on trusted machines/networks. Do not accept untrusted build globs, signing certificates, or development-server requests. Recheck upstream patches before deployment and whenever the lock changes. Moderate transitive findings include URI parsing, formatting, UUID, and tooling dependants; audit output is preserved in the local validation log. Hosted web and native artifact scans are required because workspace audit metadata alone cannot establish deployed exposure. Multi-instance edge rate limits and provider-side Auth limits must be configured on the verified target; the application process limit is not distributed.
+
+## Scope and unresolved verification
+
+The browser fixture executes production Next.js, real Supabase SDK requests, real migration/RLS SQL, and the Node PostgreSQL wire driver against isolated PGlite. It emulates Auth/REST HTTP and does not verify a hosted Supabase service, remote TLS/pooler configuration, or concurrent physical PostgreSQL clients. No live Strava account, public publication, production target, or native runtime was exercised. Native session storage and device accessibility remain device smoke-test requirements. Security readiness therefore retains the disclosed dependency and external-verification conditions.

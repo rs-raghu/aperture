@@ -163,3 +163,11 @@ The lockfile review shows the intended local links, PostgreSQL driver/types and 
 ## Phase 37 dependency checkpoint
 
 `@aperture/portfolio@0.1.0` is a local workspace package. It reuses validation, Backup contracts, the existing Supabase SDK for its injected cloud adapter, and PGlite for storage tests. Its root import exposes domain, service, and memory contracts; cloud, SQL, and backup adapters use separate entry points. No new external library or unrelated upgrade is added. The reviewed lockfile adds the intended workspace links and package declaration only. The phase-pair audit follows the full regression gates.
+
+## Phase 38 release dependencies (2026-10-09)
+
+The isolated `@aperture/e2e` workspace adds test-only `@playwright/test@1.63.0` and the compatible `@electric-sql/pglite@0.5.8` / `@electric-sql/pglite-socket@0.2.11` pair. Socket support exercises the real `pg` wire driver in a production browser recovery test. Existing repository/migration contracts retain PGlite 0.3.14. Chrome is already installed; no browser was downloaded. PGlite extension peers remain confined to the test graph.
+
+Expo is pinned to `~57.0.27`, Router to `~57.0.25`, Metro runtime to `~57.0.16`, and Crypto to `~57.0.3`. Required compatible SDK transitive patches update alongside them; unrelated Radix and native peer versions were restored to their Phase 37 baseline. Expo Doctor now passes 21/21. The PostgreSQL package's new Node-only subpath explicitly declares the existing `pg` and type versions; its client-safe root remains portable. Recovery schemas reuse the existing local validation package.
+
+The workspace audit reports 15 moderate, 50 high, and 0 critical findings, with nonzero exit status. See SECURITY_REVIEW.md for leaf advisory links and exposure assessment. No forced upgrade was used.

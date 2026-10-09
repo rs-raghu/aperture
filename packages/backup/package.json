@@ -9,6 +9,7 @@
       "import": "./dist/index.js"
     }
   },
+  "dependencies": { "@aperture/validation": "^0.5.0" },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "test": "vitest run",

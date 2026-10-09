@@ -971,12 +971,30 @@ export const generatedFeatureManifests = [
         "import": "../features/portfolio/index"
       }
     },
+    "dataContributions": {
+      "web": {
+        "source": "apps/web/src/features/portfolio/data-contribution.ts",
+        "import": "../features/portfolio/data-contribution",
+        "exportName": "createPortfolioDataContribution"
+      },
+      "mobile": {
+        "source": "apps/mobile/src/features/portfolio/data-contribution.ts",
+        "import": "../features/portfolio/data-contribution",
+        "exportName": "createPortfolioDataContribution"
+      },
+      "server": {
+        "source": "packages/portfolio/src/backup.ts",
+        "import": "@aperture/portfolio/backup",
+        "exportName": "createPortfolioPostgresBackupAdapter"
+      }
+    },
     "backend": {
       "source": "packages/portfolio/src/index.ts",
       "import": "@aperture/portfolio"
     },
     "migrations": [
-      "packages/portfolio/migrations/20261007001000_portfolio.sql"
+      "packages/portfolio/migrations/20261007001000_portfolio.sql",
+      "packages/portfolio/migrations/20261007002100_portfolio_owner_claims.sql"
     ]
   }
 ] as const satisfies readonly FeatureManifest[];

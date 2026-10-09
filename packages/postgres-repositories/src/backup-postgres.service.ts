@@ -78,6 +78,7 @@ function settingsAdapter(repository: SettingsRepository, database?: SqlExecutor)
   const adapter: BackupFeatureAdapter = {
     featureId: "settings",
     schemaVersion: 1,
+    transactionTables: ["platform.user_preferences", "platform.integration_connections", "platform.integration_credentials"],
     async export(ownerId: string) { return [
       { name: "preferences", records: await preferences(ownerId) as unknown as readonly import("@aperture/backup").JsonObject[] },
       { name: "integrationStatuses", records: await integrations(ownerId) as unknown as readonly import("@aperture/backup").JsonObject[] },
@@ -124,6 +125,7 @@ function withHardDelete(
   };
   return Object.freeze({
     ...adapter,
+    transactionTables: tables.map((table) => `${schema}.${table}`),
     async replace(ownerId: string, payload: import("@aperture/backup").BackupFeaturePayload) { await deleteAll(ownerId); await adapter.merge(ownerId, payload); },
     deleteAll,
   });
@@ -188,6 +190,7 @@ export interface CreatePostgresBackupServiceOptions {
   readonly clock: { now(): string };
   readonly idGenerator: { generate(): string };
   readonly additionalAdapters?: (database: SqlExecutor) => readonly BackupFeatureAdapter[];
+  readonly lockForRecovery?: boolean;
 }
 
 export function createPostgresBackupService(database: TransactionalSqlExecutor, options: CreatePostgresBackupServiceOptions): BackupService {
@@ -210,7 +213,16 @@ export function createPostgresBackupService(database: TransactionalSqlExecutor, 
     transactionRunner: {
       async run(work) {
         if (typeof database.transaction !== "function") throw new Error("Transactional restore is unavailable.");
-        return database.transaction((transaction) => work([...createBackupFeatureAdapters(repositorySet(transaction), transaction), ...(options.additionalAdapters?.(transaction) ?? [])]));
+        return database.transaction(async (transaction) => {
+          const adapters = [...createBackupFeatureAdapters(repositorySet(transaction), transaction), ...(options.additionalAdapters?.(transaction) ?? [])];
+          if (options.lockForRecovery) {
+            const tables = [...new Set(adapters.flatMap((adapter) => adapter.transactionTables ?? []))].sort();
+            if (tables.length === 0 || tables.some((table) => !/^[a-z][a-z0-9_]*\.[a-z][a-z0-9_]*$/.test(table))) throw new Error("Recovery table metadata is invalid.");
+            await transaction.query("set local lock_timeout = '10s'");
+            await transaction.query(`lock table ${tables.join(", ")} in share row exclusive mode`);
+          }
+          return work(adapters);
+        });
       },
     },
   });

@@ -1,13 +1,17 @@
 import { createClient } from "@supabase/supabase-js";
 
 import { createMobileDataComposition } from "../src/lib/data/mobile-data-provider";
+import { PortfolioDataContribution } from "../src/features/portfolio/data-contribution";
 
 const OWNER = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 
 describe("mobile data composition", () => {
   it("includes private portfolio drafts in owner-scoped recovery", async () => {
-    const composition = createMobileDataComposition(OWNER, "development-bypass", null); const draft = await composition.portfolio.service.getDraft(OWNER);
-    await composition.portfolio.service.saveDraft(OWNER, draft.content, 0);
+    const composition = createMobileDataComposition(OWNER, "development-bypass", null);
+    const contribution = composition.featureContributions.find((value) => value instanceof PortfolioDataContribution);
+    if (contribution === undefined) throw new Error("Portfolio contribution is missing.");
+    const draft = await contribution.runtime.service.getDraft(OWNER);
+    await contribution.runtime.service.saveDraft(OWNER, draft.content, 0);
     const archive = await composition.backup.service.export(OWNER, ["portfolio"]); expect(archive.features[0]?.collections[0]?.records).toHaveLength(1); expect(archive.features[0]?.collections[0]?.records[0]?.publication).toBeNull();
   });
   it("keeps memory mode explicit and owner-scoped", () => {

@@ -1,12 +1,13 @@
 "use client";
 
-import type { BackupService } from "@aperture/backup";
+import type { BackupService, RecoveryClient } from "@aperture/backup";
 import { createContext, useContext, type ReactNode } from "react";
 
 export interface BackupWebRuntime {
   readonly service: BackupService;
   readonly ownerId: string;
   readonly canMutate: boolean;
+  readonly recovery?: RecoveryClient;
 }
 
 const BackupContext = createContext<BackupWebRuntime | null>(null);

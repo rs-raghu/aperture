@@ -4,10 +4,8 @@ import { createHealthService, type HealthClock } from "@aperture/health";
 import { createPlannerService, type PlannerClock } from "@aperture/planner";
 import { createSettingsService } from "@aperture/settings";
 import { createBackupService } from "@aperture/backup";
-import { createPortfolioService, createPortfolioMemoryRepository, type PortfolioRuntime } from "@aperture/portfolio";
-import { createPortfolioBackupAdapter } from "@aperture/portfolio/backup";
-import { createSupabasePortfolioRepository } from "@aperture/portfolio/supabase";
-import { PortfolioProvider } from "../../features/portfolio";
+import { mobileDataContributionFactories } from "../../generated/plugin-data-contributions.generated";
+import type { FeatureDataContribution } from "./feature-data-contribution";
 import { createStandardTodayContributors, createTodayService } from "@aperture/today";
 import { featureRegistry } from "@aperture/feature-registry";
 import {
@@ -31,6 +29,7 @@ import { PlannerProvider, type PlannerMobileRuntime } from "../../features/plann
 import { BackupProvider, SettingsProvider, type BackupMobileRuntime, type SettingsMobileRuntime } from "../../features/settings";
 import { TodayProvider, type TodayMobileRuntime } from "../../features/today/provider";
 import { useMobileAuth } from "../auth/mobile-auth-provider";
+import { createMobileRecoveryClient } from "../../features/settings/recovery-client";
 
 export interface MobileDataComposition {
   readonly education: EducationMobileRuntime;
@@ -39,7 +38,7 @@ export interface MobileDataComposition {
   readonly planner: PlannerMobileRuntime;
   readonly settings: SettingsMobileRuntime;
   readonly backup: BackupMobileRuntime;
-  readonly portfolio: PortfolioRuntime;
+  readonly featureContributions: readonly FeatureDataContribution[];
   readonly today: TodayMobileRuntime;
   readonly mode: "memory" | "supabase";
   readonly snapshots: () => readonly CloudSynchronizationSnapshot[];
@@ -75,8 +74,7 @@ export function createMobileDataComposition(
     : null;
   const repositories = durable ?? createPreviewRepositorySet();
   const now = () => new Date().toISOString();
-  const portfolioRepository = durable === null || supabaseClient === null ? createPortfolioMemoryRepository() : createSupabasePortfolioRepository(supabaseClient);
-  const portfolio = { ownerId, service: createPortfolioService({ repository: portfolioRepository, clock: { now }, idGenerator: { generate: randomUUID } }) };
+  const featureContributions = mobileDataContributionFactories.map((factory) => factory({ ownerId, client: durable === null ? null : supabaseClient, clock: { now }, idGenerator: { generate: randomUUID } }));
   const educationClock: EducationClock = Object.freeze({ now });
   const healthClock: HealthClock = Object.freeze({ now });
   const plannerClock: PlannerClock = Object.freeze({ now });
@@ -94,15 +92,16 @@ export function createMobileDataComposition(
     }),
     ownerId,
   });
+  const recovery = mode === "supabase" ? createMobileRecoveryClient(supabaseClient, process.env.EXPO_PUBLIC_APERTURE_WEB_URL) : undefined;
   const backup = Object.freeze({
     service: createBackupService({
-      adapters: [...(durable?.backupAdapters ?? createBackupFeatureAdapters(repositories)), createPortfolioBackupAdapter(portfolioRepository)], clock: { now }, idGenerator: { generate: randomUUID },
+      adapters: [...(durable?.backupAdapters ?? createBackupFeatureAdapters(repositories)), ...featureContributions.flatMap((contribution) => contribution.backupAdapters)], clock: { now }, idGenerator: { generate: randomUUID },
       async readUnits(currentOwnerId: string) {
         const value = await repositories.settings.findPreferences(currentOwnerId);
         return value === null ? {} : { currency: value.currency, measurementSystem: value.units.measurementSystem, temperatureUnit: value.units.temperatureUnit, distanceUnit: value.units.distanceUnit, massUnit: value.units.massUnit };
       },
       transactionRunner: { async run() { throw new Error("This client cannot apply transactional restores."); } },
-    }), ownerId, canMutate: false,
+    }), ownerId, canMutate: recovery !== undefined, ...(recovery === undefined ? {} : { recovery }),
   });
   return Object.freeze({
     education: Object.freeze({
@@ -120,14 +119,14 @@ export function createMobileDataComposition(
         repositories: repositories.finance,
         calculatorRegistry: allFinanceCalculatorPlugins,
         clock: { now },
-        idGenerator: { next: (scope: string) => `${scope.replaceAll(" ", "-")}-${randomUUID()}` },
+        idGenerator: { next: randomUUID },
       }),
       context: Object.freeze({ ownerId }),
     }),
     planner,
     settings,
     backup,
-    portfolio,
+    featureContributions,
     today: Object.freeze({
       service: createTodayService({
         widgets: featureRegistry.widgets("mobile"),
@@ -168,19 +167,17 @@ export function MobileDataProvider({ children }: { readonly children: ReactNode 
         </View>
         <BackupProvider runtime={composition.backup}>
         <SettingsProvider runtime={composition.settings}>
-        <PortfolioProvider runtime={composition.portfolio}>
           <TodayProvider runtime={composition.today}>
             <PlannerProvider runtime={composition.planner}>
             <FinanceProvider ownerId={ownerId} createRuntime={() => composition.finance}>
               <EducationProvider ownerId={ownerId} createRuntime={() => composition.education}>
                 <HealthProvider ownerId={ownerId} createRuntime={() => composition.health}>
-                  {children}
+                {composition.featureContributions.reduceRight((content, contribution) => contribution.wrap(content), children)}
                 </HealthProvider>
               </EducationProvider>
             </FinanceProvider>
             </PlannerProvider>
           </TodayProvider>
-        </PortfolioProvider>
         </SettingsProvider>
         </BackupProvider>
       </View>

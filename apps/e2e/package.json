@@ -1,0 +1,17 @@
+{
+  "name": "@aperture/e2e",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "lint": "node --check fixture-server.mjs && node --check playwright.config.mjs && node --check tests/owner-workflows.spec.mjs"
+  },
+  "devDependencies": {
+    "@aperture/postgres-repositories": "^0.1.0",
+    "@electric-sql/pglite": "0.5.8",
+    "@electric-sql/pglite-socket": "0.2.11",
+    "@playwright/test": "1.63.0",
+    "pg": "^8.23.1"
+  }
+}
