@@ -6,6 +6,13 @@ accepts only the normalized `APERTURE_OWNER_EMAIL` and, when configured, the
 exact `APERTURE_OWNER_ID`. A provider session for any other account is cleared
 before the application returns data.
 
+The global `auth.enable_signup` setting stays false, while
+`auth.email.enable_signup` stays true so the email provider can authenticate the
+manually provisioned owner. On the verified hosted project, setting both false
+also disabled email sign-in. Hosted `/auth/v1/settings` must report signup
+disabled and the email provider enabled; the email/UUID application allowlist
+remains a separate boundary.
+
 ## Web
 
 Next.js uses `@supabase/ssr` on the server. The proxy refreshes Supabase cookies
