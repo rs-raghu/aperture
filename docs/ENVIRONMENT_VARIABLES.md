@@ -28,7 +28,7 @@ Local examples are `apps/web/.env.example` and `apps/mobile/.env.example`. Produ
 | `STRAVA_TOKEN_ENCRYPTION_KEY` | Canonical base64 encoding of exactly 32 random bytes; keep recoverable in the owner's secret vault. |
 | `STRAVA_WEBHOOK_VERIFY_TOKEN`, `STRAVA_WEBHOOK_SUBSCRIPTION_ID` | Provider challenge secret and approved subscription identifier. |
 
-Use the provider's server connection/pooler configuration for the verified project. Pool sizes are one for recovery, one for readiness, and three for live Strava per server process; account for multiple instances. Individual driver statements/queries and connections are bounded. If a custom trust root is necessary, configure the platform trust store rather than disabling TLS verification.
+Use the provider's server connection/pooler configuration for the verified project. Pool sizes are one for recovery, one for readiness, and three for live Strava per server process; account for multiple instances. Individual driver statements/queries and connections are bounded. For hosted Supabase pooler and direct database hostnames, the Node driver bundles Supabase's public Root 2021 CA and verifies both the certificate chain and hostname. Other remote hosts use Node's default trust store; custom roots can be configured through the platform trust store. Never disable TLS verification. See [Supabase's certificate guidance](https://supabase.com/docs/guides/database/connecting-to-postgres#ssl) and the source/fingerprint in `packages/postgres-repositories/src/supabase-ca.ts`. Update that public trust anchor when the provider rotates it.
 
 ## Mobile public and build configuration
 

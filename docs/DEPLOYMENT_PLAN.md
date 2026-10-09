@@ -47,6 +47,8 @@ Use `apps/web` as Root Directory and permit workspace files outside it during th
 
 Recovery runs on Node with a 60-second function budget; readiness uses 30 seconds. Remote database connections verify TLS, connection establishment is limited to ten seconds, and individual queries/statements to twenty seconds. Configure provider/edge limits for Auth, recovery, and public webhook ingress; per-process counters do not coordinate multiple instances.
 
+The Node database driver includes the public Supabase Root 2021 CA for hosted Supabase pooler/direct database hostnames, so verified database connections work in the setup script and Vercel without changing machine-wide trust. Certificate-chain and hostname verification remain enabled, and connection URL SSL switches cannot override them. The certificate's official download source, SHA-256 fingerprint, and expiry are recorded in `packages/postgres-repositories/src/supabase-ca.ts`; review and update it when Supabase rotates its database CA.
+
 Vercel's documented request/response limit is 4.5 MB, below the application's 8 MiB recovery-envelope ceiling. A hosted recovery request must fit the lower limit, including JSON escaping/envelope overhead. Larger archives need an owner-operated PostgreSQL recovery procedure on a verified trusted host; do not split an atomic replacement into independent REST writes or upload plaintext backups publicly. [Vercel function limits](https://vercel.com/docs/functions/limitations)
 
 ## Expo/EAS procedure
