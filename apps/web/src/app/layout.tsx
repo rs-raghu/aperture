@@ -4,6 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: { default: "Aperture", template: "%s · Aperture" },
   description: "A private, synchronized personal dashboard for education, health, and finance.",
+  icons: { icon: "/icon.svg" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

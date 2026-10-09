@@ -1,10 +1,10 @@
 # Aperture v2
 
-Aperture v2 is an owner-only personal dashboard with Next.js web and Expo mobile applications. Education, Health, Finance, 38 Finance calculators, Today, Planner, Settings, and reviewed data recovery share strict domain contracts and durable owner-scoped Supabase repositories. Optional Strava imports remain isolated; Portfolio contains explicitly curated content and defaults to private.
+Aperture v2 is an owner-only personal dashboard with Next.js web and Expo mobile applications. Education, Health, Finance, 38 shared calculators, Today, Planner, Settings, and reviewed data recovery share strict domain contracts and durable owner-scoped Supabase repositories. Optional Strava imports remain isolated; Portfolio contains explicitly curated content and defaults to private.
 
 Production authentication verifies the configured owner's Supabase identity. Database migrations enforce owner RLS and keep integration credentials server-only. Cloud mode shares data across platforms with explicit network errors and no offline record cache or write outbox. The opt-in development bypass uses temporary synthetic memory data and is rejected in production.
 
-Phase 38 performs release hardening and authenticated browser workflow verification. Local checks do not establish a remote deployment or native-device result. Dependency advisories remain disclosed in [the security review](docs/SECURITY_REVIEW.md); inspect [release readiness](docs/RELEASE_READINESS.md) and [the execution ledger](docs/EXECUTION_LEDGER.md) before selecting a deployment target. The earlier Aperture project remains separate.
+Phase 38 hardens the release and verifies authenticated browser workflows. Phase 39 supplies production templates, Vercel/EAS configuration, ordered migration staging, health checks, safe operational hooks, and [deployment procedures](docs/DEPLOYMENT_PLAN.md). Local checks do not establish a remote deployment or native-device result. Dependency advisories remain disclosed in [the security review](docs/SECURITY_REVIEW.md); inspect [release readiness](docs/RELEASE_READINESS.md) and [the execution ledger](docs/EXECUTION_LEDGER.md) before selecting a deployment target. The earlier Aperture project remains separate.
 
 ## Structural verification
 
@@ -42,3 +42,5 @@ Phase 4 inventories are documented in [the platform skeleton](docs/PLATFORM_SKEL
 Phase 36's optional integration, server secrets, web/mobile controls, queue behavior, and live verification steps are documented in [Strava integration](docs/STRAVA_INTEGRATION.md).
 
 Phase 37's curated content, private drafts, publication gates, owner-scoped storage, and recovery are documented in [Portfolio](docs/PORTFOLIO.md).
+
+Phase 39's operator procedures include [disaster recovery](docs/DISASTER_RECOVERY.md) and [deployment smoke tests](docs/POST_DEPLOYMENT_SMOKE_TESTS.md). Generate and verify all core/feature migration artifacts with `npm run deployment:prepare` and `npm run deployment:check`. Production environment checks report missing variable names with `npm run deployment:env` or `npm run deployment:env -- --mobile`; they never prove target ownership or log values.

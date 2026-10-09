@@ -4,14 +4,14 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 
 ## Mission state
 
-- Current phase: 38 — Release hardening
-- Current phase status: complete; all internal gates pass with documented nonzero dependency audit
+- Current phase: 39 — Deployment readiness
+- Current phase status: complete for local implementation/readiness; external deployment awaits verified identities/configuration
 - Starting commit: `f90cb716093d1ead5435a02bbbf66cb0b12d2d39`
-- Ending commit: `3833bd7` (Phase 37); worktree clean at the phase boundary
-- Last successfully completed command: production build and expanded three-test browser suite pass after TLS URL override hardening; all-platform Expo exports and 21/21 Doctor pass
-- Last push: `3833bd7` pushed to `origin/codex/aperture-v2`; Phases 36–37 are remote
+- Ending commit: `HEAD` of the Phase 39 release checkpoint, identified by `chore(release): complete phase 39 deployment readiness`; resolved hash is recorded in the final report
+- Last successfully completed command: final root 5,286-test regression, type-check/lint, 49-entry production build, 3 browser workflows, all-platform exports, Doctor 21/21, migration staging/check, and privacy scans pass
+- Push gate: Phases 36–37 were confirmed remote at `3833bd7`; the final 38–39 pair is pushed after this release checkpoint and its verified remote hash is recorded in the final report
 - Workspace relocation: resumed at `D:\Hello World\2. Automations\Personal Dashboard\aperture v2`; repaired stale npm workspace links with `npm install --ignore-scripts --offline --no-audit`, preserving the lockfile dependency versions
-- Unresolved concern: upstream braces/node-forge advisories remain unpatched; audit is nonzero at 15 moderate/50 high/0 critical. Resolved web production graph and 50 dependency traces exclude them; documented operating conditions remain. Hosted/native verification is external.
+- Unresolved concern: upstream braces/node-forge advisories remain unpatched; final root audit is nonzero at 15 moderate/52 high/0 critical. Resolved web production graph and 53 dependency traces exclude them; documented operating conditions remain. Hosted/native verification is external.
 
 ## Phase records
 
@@ -43,20 +43,22 @@ This ledger is the resumable checkpoint for the continuous implementation missio
 | 35 | Complete | `9e07afe` | 6 Backup, 17 PostgreSQL, 10 Supabase, 7 database, 39 web, and 57 mobile tests pass; exact money, Unicode integrity, owner isolation, corruption/migration, dry-run conflicts, stale/confirmed mutations, credential exclusion, durable usage, and transactional rollback verified | 5,200 current tests / 87 suites or files; full workspace test command plus new focused checksum test, type-check/lint, 38-route Next build, and Expo all-platform exports pass; Doctor 20/21; audits remain nonzero as documented | Local `@aperture/backup@0.1.0`; backup migration `20260922003000_backup.sql`; compatible security patch updates | Recovery mutations require server PostgreSQL composition; no remote/native execution; upstream advisories remain |
 | 36 | Complete | `4a2596f` | 35 Strava, 4,151 Health, 295 Health Memory, 17 PostgreSQL, 10 Supabase, 7 database, 5 registry, 43 web, and 60 mobile tests pass; affected type-check/lint/builds, 43-route Next build, and Expo Android/iOS/web exports pass | Full pair gate due after Phase 37; audit unchanged at 15 moderate/54 high/0 critical | Local `@aperture/strava`; server `pg@8.23.1`, types, and `server-only@0.0.1`; migration `20261007000000_strava.sql` | No live account/subscription, remote database, or native device verification; development imports use an isolated temporary store |
 | 37 | Complete | `3833bd7` | 10 Portfolio tests, 50 web tests, 62 mobile tests, and migration tests pass; affected type-check/lint pass | 5,261 tests across 107 suites/files pass across the workspace run and isolated timeout reruns; full type-check/lint, 45-route Next build, and Expo Android/iOS/web exports pass; Doctor 20/21; audit remains nonzero | Local `@aperture/portfolio` using existing dependencies; migration `20261007001000_portfolio.sql` | Publication remains off; no live remote/native execution or automatic dashboard-data import |
-| 38 | Complete | Pending checkpoint hash | 5,273 workspace tests/103 suites or files and 3 browser E2E tests pass; owner claims, real local RLS, wire transactions, reviewed restore, and curated Portfolio verified | Full type-check and clean root lint pass; 46-route Next build, all-platform Expo exports, 21/21 Doctor | Two owner-claim roll-forward migrations; isolated Playwright/PGlite socket test graph; compatible Expo patches | Audit 15 moderate/50 high/0 critical remains nonzero with reviewed exposure; hosted/native execution remains external |
-| 39 | Not started | — | — | — | — | Deployment readiness and permitted deployment |
+| 38 | Complete | `6990462` | 5,273 workspace tests/103 suites or files and 3 browser E2E tests pass; owner claims, real local RLS, wire transactions, reviewed restore, and curated Portfolio verified | Full type-check and clean root lint pass; 46-route Next build, all-platform Expo exports, 21/21 Doctor | Two owner-claim roll-forward migrations; isolated Playwright/PGlite socket test graph; compatible Expo patches | Audit 15 moderate/50 high/0 critical remains nonzero with reviewed exposure; hosted/native execution remains external |
+| 39 | Complete (readiness) | Release checkpoint `HEAD` | 8 deployment contracts, 5 operations tests, 3 production browser workflows; 14 staged migrations verified; safe monitoring/headers/assets checked | 5,286 tests/105 suites or files; full root type-check/lint, 49-entry Next build, all-platform Expo exports, Doctor 21/21 pass; final root audit remains nonzero | No new external dependency or migration | Owned hosting identities/configuration absent; remote migration/deployment, native execution, live Strava/public publication not performed |
 
 ## Current phase details
 
-- Starting phase commit: `3833bd7`
-- Files changed: owner-claim roll-forward migrations, API schema exposure, Finance UUID generation, sign-out controls, generic manifest data contributions, authenticated web/mobile recovery, Node PostgreSQL transaction queue, isolated production browser harness, compatible Expo patches, and release documentation
-- Dependencies added: test-only @playwright/test 1.63.0, @electric-sql/pglite 0.5.8 and socket 0.2.11 in @aperture/e2e; Node-only PostgreSQL entry point declares existing pg/types; existing validation link for recovery schemas. Unrelated Radix/native peer versions preserved
-- Database migrations added: core `20261007002000_modern_owner_claims.sql` and Portfolio-owned `20261007002100_portfolio_owner_claims.sql`; old applied migrations unchanged
-- Tests added: modern/legacy claim precedence, authenticated recovery origin/body/stale-state/rate limits, reviewed mutation UI, generic manifest generation, Node wire sequencing/rollback, and eleven critical production web workflows
-- Focused baseline: migration 8/8, web/mobile recovery, composition checks, and expanded browser 3/3 pass. Wire driver sequences parallel calls, rolls back failures, and enforces remote TLS even when the URL requests insecure SSL
-- Full regression result: 5,273 tests/103 suites or files pass on 2026-10-09; full type-check, clean root lint, 46-route Next build, and Android/iOS/web exports pass. The affected mobile composition/editor/recovery rerun passes 6/6. Web uses a single worker thread; assertions unchanged
-- Audit result: 15 moderate, 50 high, 0 critical; unresolved upstream leaf advisories and reachability documented in SECURITY_REVIEW.md
-- Expo Doctor result: 21/21 pass after compatible SDK patch updates
-- Known limitations: local browser uses synthetic Auth/REST with the real SDK and real PostgreSQL-compatible RLS; no hosted Supabase, physical PostgreSQL concurrency, live Strava, public publication, or native-device execution
-- Deferred work: Phase 39 deployment artifacts and owner-target verification
-- Next phase: 39 after completing and committing Phase 38
+- Starting phase commit: `6990462`
+- Files changed: production web/mobile templates, Vercel/EAS configuration and shared-package build hook, safe migration staging/environment validators, public liveness/private readiness, fixed-schema operational reporting, installation manifest/SVG icon, baseline response headers/log redaction, route inventory, deployment/backup/rollback/smoke procedures
+- Dependencies added: none. No unrelated dependency version or migration changed
+- Database artifacts: all 14 core/feature migrations staged and SHA-256 verified locally; schema inspection reports 82 tables, 81 with RLS, and 411 indexes. The remaining non-RLS table is platform migration audit metadata
+- Tests added: eight deployment/staging/secret-configuration contracts and five web readiness/reporting/privacy tests; browser coverage adds liveness, private readiness, headers, and installation assets
+- Focused result: deployment 8/8, operations/public-reader 8/8, migration staging/check, effective Expo config, and production browser 3/3 pass
+- Full regression result: 5,286 tests across 105 suites or files pass; full root type-check/lint pass; Next.js 16.3.8 production build emits 49 entries; Android/iOS/web exports pass. No tests skipped
+- Expo Doctor result: 21/21 pass with dynamic build configuration
+- Audit result: final full-root 15 moderate/52 high/0 critical, web production audit 2 high; both nonzero. Earlier mobile-directory scope was 15 moderate/50 high/0 critical. Scope differences and reachability are documented
+- Privacy scan: 1,159 tracked/unignored source/config/documentation files have no credential-pattern findings; 47 generated client JavaScript files contain no server-only credential variable names; 53 Next traces contain no braces/micromatch/node-forge
+- Deployment state: no hosted identity/credentials or local Vercel link available. Production environment checks fail as expected for missing configuration. No remote migration, deployment, EAS cloud build, app-store publication, live Strava action, or Portfolio publication performed
+- External requirements: verify owned Vercel/Supabase/domain/EAS identities, supply managed environment values, review remote migration history/backups, and execute hosted/native smoke tests. Live Strava and public Portfolio remain optional explicit setup
+- Known limitations: nonzero dependency audit; synthetic Auth/REST fixture rather than hosted provider; no physical PostgreSQL concurrency/device test; no offline record cache/outbox; owner-wide filtering/personal-scale query budgets; host recovery request limits
+- Next phase: none in the authorized implementation mission. External deployment uses the completed operator runbook after identity/configuration verification

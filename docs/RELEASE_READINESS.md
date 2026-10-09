@@ -2,6 +2,8 @@
 
 Phase 38 hardens the existing vertical slices and closes the authenticated recovery path. Final gate results and counts are recorded in [TEST_MATRIX.md](TEST_MATRIX.md) and [EXECUTION_LEDGER.md](EXECUTION_LEDGER.md); this document does not authorize remote deployment.
 
+Phase 39's final local gate passes 5,286 workspace tests plus three production browser tests, root type-check/lint, a 49-entry Next production build, Expo Doctor 21/21, and all-platform exports. Fourteen ordered migration artifacts were generated and checksum-verified locally. Production environment checks correctly fail for missing target values; no hosted identity or credentials were configured. Follow [DEPLOYMENT_PLAN.md](DEPLOYMENT_PLAN.md) once the owned targets are verified.
+
 Implemented corrections include modern PostgREST owner claims, missing Settings/Planner API-schema exposure, UUID Finance identities, usable sign-out controls, reviewed server transactions for restore/deletion, serialized Node transaction queries, editor controls locked during saves, and manifest-owned provider/recovery contributions. Compatible Expo patches remove the four earlier Doctor recommendations.
 
 ## Release gate

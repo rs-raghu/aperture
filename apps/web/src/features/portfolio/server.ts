@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { portfolioDraftSchema, readPortfolioPublicationConfiguration, publicPortfolioSchema, type PublicPortfolio } from "@aperture/portfolio";
+import { reportOperationalEvent } from "@/lib/operations/reporter";
 
 export const readPublicPortfolio = cache(async (): Promise<{ readonly snapshot: PublicPortfolio; readonly origin: string } | null> => {
   try {
@@ -15,5 +16,5 @@ export const readPublicPortfolio = cache(async (): Promise<{ readonly snapshot: 
     const draft = portfolioDraftSchema.safeParse(result.data.payload);
     if (!draft.success || draft.data.ownerId !== configuration.ownerId || draft.data.publication === null) return null;
     return { origin: configuration.origin, snapshot: publicPortfolioSchema.parse(draft.data.publication) };
-  } catch { console.warn("The public portfolio is unavailable; private data remains protected."); return null; }
+  } catch { reportOperationalEvent("portfolio-unavailable"); return null; }
 });

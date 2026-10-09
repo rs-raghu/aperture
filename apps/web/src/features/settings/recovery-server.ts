@@ -8,6 +8,7 @@ import { createNodePostgresExecutor, createSecurePostgresPool } from "@aperture/
 import { serverRecoveryAdapterFactories } from "@/generated/plugin-recovery-adapters.generated";
 import { readWebAuthenticationConfiguration } from "@/lib/auth/configuration";
 import { getWebOwner } from "@/lib/auth/owner-session";
+import { reportOperationalEvent } from "@/lib/operations/reporter";
 
 let pool: Pool | undefined;
 let recoveryWindow = { startedAt: 0, requests: 0 };
@@ -20,7 +21,7 @@ function database(): TransactionalSqlExecutor | null {
   if (process.env.APERTURE_RECOVERY_ENABLED !== "true" || !process.env.DATABASE_URL) return null;
   if (pool === undefined) {
     pool = createSecurePostgresPool(process.env.DATABASE_URL, 1);
-    pool.on("error", () => console.warn("Recovery database connection is unavailable."));
+    pool.on("error", () => reportOperationalEvent("recovery-connection-unavailable"));
   }
   return createNodePostgresExecutor(pool);
 }
@@ -46,7 +47,7 @@ export async function handleRecoveryRequest(request: Request): Promise<Response>
         }
         return (await getWebOwner())?.ownerId ?? null;
       },
-      onUnavailable: () => console.warn("Transactional recovery is unavailable; no personal payload was logged."),
+      onUnavailable: () => reportOperationalEvent("recovery-unavailable"),
     })(request);
   } catch { return Response.json({ error: "recovery-unconfigured" }, { status: 503, headers: { "cache-control": "no-store" } }); }
 }

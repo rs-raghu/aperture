@@ -1,11 +1,12 @@
 # Release test matrix
 
-Phase 38, 2026-10-09. The root regression command passed **5,273 tests across 103 suites/files**. Separately, three production browser tests passed, covering all eleven required workflows, curated Portfolio persistence, narrow/keyboard navigation, and Node wire-driver rollback. No tests were skipped.
+Final Phase 39 gate, 2026-10-09: the root regression command passed **5,286 tests across 105 suites/files**. Separately, three production browser tests passed, covering all eleven required workflows, curated Portfolio persistence, narrow/keyboard navigation, Node wire-driver rollback, public liveness/installation assets, and private readiness. No tests were skipped. The earlier Phase 38 gate passed 5,273 tests/103 suites or files.
 
 | Workspace | Passing tests |
 | --- | ---: |
+| Deployment tooling (E2E workspace's Node suite) | 8 |
 | Mobile | 63 |
-| Web | 51 |
+| Web | 56 |
 | Auth | 10 |
 | Backup | 11 |
 | Calculators | 6 |
@@ -26,17 +27,19 @@ Phase 38, 2026-10-09. The root regression command passed **5,273 tests across 10
 | Today | 3 |
 | Validation | 5 |
 
-Workspace type-checks passed. Strict lint passed after correcting provider child arguments; the original lint failure remains in the local log and affected checks were rerun. The Next.js production build emits 46 routes. Expo Doctor passes 21/21 and Android, iOS, and web exports pass. Export bundle sizes are approximately 5.1 MB Android, 4.8 MB iOS, and 2.5 MB web; Next's combined client JavaScript chunks total about 1.61 MB, not the bytes downloaded by each route. Native bundles were not run on devices.
+Final root workspace type-check and strict lint commands passed. An earlier Phase 38 lint failure was corrected by passing provider children as React element arguments; its failure log was preserved. The Next.js production build emits 49 entries, including manifest/not-found, with 47 executable page/handler files and 39 mobile route files. Expo Doctor passes 21/21 and Android, iOS, and web exports pass. Export bundle sizes are approximately 5.1 MB Android, 4.8 MB iOS, and 2.5 MB web; Next's combined client JavaScript chunks total about 1.61 MB, not the bytes downloaded by each route. Native bundles were not run on devices.
 
 The complete browser workflow recorded 200 REST reads and 16 writes. This includes repeated navigation, settings loads, owner-wide exports, and verification; it is not a production query-latency benchmark. There were no browser page errors or PostgreSQL concurrent-query warnings. Harmless Playwright CLI color-environment warnings remain in the harness log. The tested Portfolio text colors against white have contrast ratios 12.26, 5.91, 7.19, and 9.14; focus/touch/assistive-technology checks still require device review.
 
-Tracked-file credential-pattern scanning inspected 1,140 source/config/documentation files with no findings. Scanning 47 generated client JavaScript files found no server-only credential variable names. Fifty Next dependency traces contained no braces, micromatch, or node-forge package files. The workspace audit still exits nonzero at 15 moderate/50 high/0 critical; the web production audit has 2 high findings despite those packages being absent from the resolved production graph/traces. See the security review for its limits.
+Final credential-pattern scanning inspected 1,159 tracked/unignored source/config/documentation files with no findings. Scanning 47 generated client JavaScript files found no server-only credential variable names. Fifty-three Next dependency traces contained no braces, micromatch, or node-forge package files. The final full-root audit exits nonzero at 15 moderate/52 high/0 critical; the earlier mobile-directory scope reported 50 high. The web production audit has 2 high findings despite those packages being absent from the resolved production graph/traces. See the security review for its limits.
+
+All 14 staged migration checksums match source. Local schema inspection reports 82 tables, 81 with RLS (the exception is migration audit metadata), and 411 indexes. Production web/mobile environment checks exit 1 as expected because no verified target values or credentials are configured; this is an external deployment gate, not a passing hosted test.
 
 | Layer | Coverage | Verification boundary |
 | --- | --- | --- |
 | Education | Models, calculations, services, lifecycle, memory/durable contracts, web/mobile workflows | Synthetic owners; domain and SQL tests |
 | Health | All 11 declared calculations, reference inputs, 137 service methods, 22 repository interfaces, units and equipment usage | Synthetic records; no clinical recommendations or live provider |
-| Finance | Exact decimal money, 38 plug-ins, assumptions, date/rate inputs, calculation references, service/repository/UI workflows | User-supplied financial/tax assumptions; no embedded current official rates |
+| Finance | Exact decimal money, 36 Finance plug-ins plus shared Education GPA/CGPA presentations, assumptions, date/rate inputs, calculation references, service/repository/UI workflows | User-supplied financial/tax assumptions; no embedded current official rates |
 | Auth | Owner allowlist, session lifecycle, callback safety, development bypass, native storage adapter | Synthetic provider and mocked secure storage; no hosted/device execution |
 | SQL and Supabase adapters | Owner filtering, validation, pagination, network failures, sync state, transaction rollback | Isolated PGlite and SDK/REST contracts |
 | Migrations and RLS | Ordered discovery, fresh/upgrade paths, grants, constraints, indexes, modern/legacy claims, owner isolation | Local PostgreSQL-compatible engine; no remote migration |

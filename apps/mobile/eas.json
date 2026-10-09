@@ -1,0 +1,17 @@
+{
+  "cli": { "appVersionSource": "local" },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "environment": "preview",
+      "android": { "buildType": "apk" },
+      "ios": { "simulator": true },
+      "env": { "EXPO_PUBLIC_APERTURE_AUTH_DEV_BYPASS": "false" }
+    },
+    "production": {
+      "environment": "production",
+      "autoIncrement": false,
+      "env": { "EXPO_PUBLIC_APERTURE_AUTH_DEV_BYPASS": "false" }
+    }
+  }
+}

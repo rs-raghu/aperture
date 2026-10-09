@@ -4,6 +4,7 @@ import { after } from "next/server";
 import { createStravaServerRuntime, createStravaHttpHandlers, type StravaServerRuntime } from "@aperture/strava/server";
 import { readWebAuthenticationConfiguration } from "@/lib/auth/configuration";
 import { getWebOwner } from "@/lib/auth/owner-session";
+import { reportOperationalEvent } from "@/lib/operations/reporter";
 
 let runtime: StravaServerRuntime | undefined;
 type Operation = "status" | "command" | "callback" | "verify" | "webhook";
@@ -27,7 +28,7 @@ export async function handleStravaRequest(request: Request, operation: Operation
         }
         return (await getWebOwner())?.ownerId ?? null;
       },
-      schedule: (work) => after(async () => { try { await work(); } catch { console.warn("Strava webhook processing is unavailable; pending jobs remain queued."); } }),
+      schedule: (work) => after(async () => { try { await work(); } catch { reportOperationalEvent("strava-queue-unavailable"); } }),
     });
     return handlers[operation](request);
   } catch { return Response.json({ error: "strava-unconfigured" }, { status: 503, headers: { "cache-control": "no-store", "referrer-policy": "no-referrer" } }); }

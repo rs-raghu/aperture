@@ -5,9 +5,10 @@ import { readWebAuthenticationConfiguration } from "@/lib/auth/configuration";
 import { delegatesStravaAuthentication } from "@/features/strava/route-policy";
 import { isPublicPortfolioRoute } from "@/features/portfolio/route-policy";
 import { delegatesRecoveryAuthentication } from "@/features/settings/recovery-route-policy";
+import { isPublicOperationalRoute } from "@/lib/operations/route-policy";
 
 export async function proxy(request: NextRequest) {
-  if (delegatesStravaAuthentication(request.nextUrl.pathname) || delegatesRecoveryAuthentication(request.nextUrl.pathname) || isPublicPortfolioRoute(request.nextUrl.pathname)) return NextResponse.next();
+  if (delegatesStravaAuthentication(request.nextUrl.pathname) || delegatesRecoveryAuthentication(request.nextUrl.pathname) || isPublicPortfolioRoute(request.nextUrl.pathname) || isPublicOperationalRoute(request.nextUrl.pathname)) return NextResponse.next();
   let configuration;
   try {
     configuration = readWebAuthenticationConfiguration();

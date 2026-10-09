@@ -15,6 +15,9 @@ coverage/
 .env.*
 !.env.example
 !**/.env.example
+!**/.env.production.example
+.deployment/
+**/.vercel/
 *.local
 
 *.log

@@ -11,6 +11,9 @@
     "generate:plugins": "node tooling/plugins/generate-plugins.mjs",
     "generate:calculators": "npm run generate --workspace @aperture/finance",
     "plugin:create": "node tooling/plugins/create-plugin.mjs",
+    "deployment:prepare": "node tooling/deployment/prepare-supabase.mjs",
+    "deployment:check": "node tooling/deployment/prepare-supabase.mjs --check",
+    "deployment:env": "node tooling/deployment/check-environment.mjs",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present"

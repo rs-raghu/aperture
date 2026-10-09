@@ -31,7 +31,7 @@ export function createRecoveryClient(options: { readonly endpoint: string; reado
     if (!response.ok) {
       if (response.status === 401) throw new Error("Sign in again before using recovery.");
       if (response.status === 409) throw new Error("The confirmation or owner data changed. Run the preview again.");
-      if (response.status === 413) throw new Error("This archive exceeds the server's 8 MiB recovery limit.");
+      if (response.status === 413) throw new Error("This archive exceeds the configured host recovery limit.");
       if (response.status === 429) throw new Error("Recovery is busy. Wait a minute before trying again.");
       if (response.status === 503) throw new Error("Transactional recovery is not configured or is temporarily unavailable.");
       throw new Error("Recovery could not complete. Check the archive and try again.");

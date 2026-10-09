@@ -17,7 +17,7 @@ Phase 38 review, 2026-10-09. This records application controls and dependency ex
 
 ## Dependency audit and reachability
 
-The 2026-10-09 workspace audit reports **15 moderate, 50 high, 0 critical** findings after compatible Expo SDK patch updates. It exits nonzero. npm counts vulnerable dependants as well as leaf packages; these are not 65 distinct advisory mechanisms. No forced audit fix or unrelated major upgrade was used. Unrelated Radix/native peer versions were preserved from the Phase 37 lockfile.
+The final 2026-10-09 full-root audit reports **15 moderate, 52 high, 0 critical** findings after compatible Expo SDK patch updates. It exits nonzero. The earlier audit run from the mobile directory reported 50 high; the root scope includes additional Next ESLint/fast-glob tooling dependants. npm counts vulnerable dependants as well as leaf packages; these are not 67 distinct advisory mechanisms. No forced audit fix or unrelated major upgrade was used. Unrelated Radix/native peer versions were preserved from the Phase 37 lockfile.
 
 Two high-severity leaf advisories currently have no published fix: [braces nested-pattern stack exhaustion](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) and [node-forge RSA signature verification](https://github.com/advisories/GHSA-86w9-cpqp-85rv). The affected graph primarily enters through Expo CLI/Metro, Jest, and certificate/signing utilities. `npm ls braces node-forge --workspace @aperture/web --omit=dev` reports neither package in the web production dependency graph. Application code does not accept glob expressions or verify RSA signatures with Forge. This is a reachability assessment, not proof that every build-tool path is harmless.
 

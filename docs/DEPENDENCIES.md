@@ -171,3 +171,7 @@ The isolated `@aperture/e2e` workspace adds test-only `@playwright/test@1.63.0` 
 Expo is pinned to `~57.0.27`, Router to `~57.0.25`, Metro runtime to `~57.0.16`, and Crypto to `~57.0.3`. Required compatible SDK transitive patches update alongside them; unrelated Radix and native peer versions were restored to their Phase 37 baseline. Expo Doctor now passes 21/21. The PostgreSQL package's new Node-only subpath explicitly declares the existing `pg` and type versions; its client-safe root remains portable. Recovery schemas reuse the existing local validation package.
 
 The workspace audit reports 15 moderate, 50 high, and 0 critical findings, with nonzero exit status. See SECURITY_REVIEW.md for leaf advisory links and exposure assessment. No forced upgrade was used.
+
+## Phase 39 final scope
+
+No external dependency or migration was added. Deployment scripts use Node standard libraries and existing migration discovery; health/monitoring hooks reuse the existing PostgreSQL driver. Production examples, EAS profiles and a post-install workspace-build hook, Vercel configuration, and SVG installation assets introduce no runtime service dependency. The final audit from the repository root reports 15 moderate/52 high/0 critical, while the earlier mobile-directory scope reported 50 high. The root includes additional Next ESLint/fast-glob tooling dependants; the web production audit still reports 2 high despite their absence from the resolved runtime graph/traces.

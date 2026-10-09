@@ -6,7 +6,7 @@ export function createSecurePostgresPool(connectionString: string, max: number):
   if (!["postgres:", "postgresql:"].includes(url.protocol) || !Number.isSafeInteger(max) || max < 1 || max > 10) throw new Error("Invalid PostgreSQL connection configuration.");
   const local = ["localhost", "127.0.0.1", "::1", "[::1]"].includes(url.hostname);
   for (const name of ["ssl", "sslmode", "sslcert", "sslkey", "sslrootcert", "sslnegotiation", "uselibpqcompat"]) url.searchParams.delete(name);
-  return new Pool({ connectionString: url.toString(), ssl: local ? false : { rejectUnauthorized: true }, max, connectionTimeoutMillis: 10_000, idleTimeoutMillis: 30_000 });
+  return new Pool({ connectionString: url.toString(), ssl: local ? false : { rejectUnauthorized: true }, max, connectionTimeoutMillis: 10_000, idleTimeoutMillis: 30_000, statement_timeout: 20_000, query_timeout: 20_000 });
 }
 function scopedExecutor(client: PoolClient): SqlExecutor & { drain(): Promise<void> } {
   let pending = Promise.resolve();

@@ -24,9 +24,13 @@ test("owner authentication, durable feature workflows, reviewed recovery, and lo
   const errors = []; page.on("pageerror", (failure) => errors.push(failure.message));
   const date = new Date().toISOString().slice(0, 10); let contents = "";
   await test.step("1. protect private routes and authenticate the owner", async () => {
+    const live = await request.get("http://127.0.0.1:3100/api/health"); expect(live.status()).toBe(200); expect(await live.json()).toEqual({ status: "ok", service: "aperture-web" }); expect(live.headers()["x-frame-options"]).toBe("DENY");
+    const manifest = await request.get("http://127.0.0.1:3100/manifest.webmanifest"); expect(manifest.status()).toBe(200); expect((await manifest.json()).icons[0].src).toBe("/icon.svg"); expect((await request.get("http://127.0.0.1:3100/icon.svg")).status()).toBe(200);
+    const anonymousReadiness = await request.get("http://127.0.0.1:3100/api/health/ready", { maxRedirects: 0 }); expect(anonymousReadiness.status()).toBe(307); expect(anonymousReadiness.headers().location).toContain("/sign-in");
     await page.goto("/finance/accounts"); await expect(page).toHaveURL(/\/sign-in/);
     expect((await request.get("http://127.0.0.1:3100/api/recovery")).status()).toBe(401);
     await authenticate(page); await expect(page.getByText("Cloud data", { exact: false }).first()).toBeVisible();
+    const ready = await page.request.get("/api/health/ready"); expect(ready.status()).toBe(200); expect(await ready.json()).toEqual({ status: "ready" }); expect(ready.headers()["cache-control"]).toContain("no-store");
     await expect(page.getByText("Other owner private record", { exact: true })).toHaveCount(0);
   });
   await test.step("2. create and view Education records through real owner RLS", async () => {
